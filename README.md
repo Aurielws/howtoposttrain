@@ -19,11 +19,13 @@ rl-pet-peeves-part-1/          01 · You've Never Spent Real Time with Your Mode
 rl-pet-peeves-rubric/          02 · Your Rubric Was Written by Someone Who Has Never Done the Job
 rl-pet-peeves-economic/        03 · Your Tasks Are Not Grounded in Economic Reality
 rl-pet-peeves-simulation/      04 · Your Data Screams "This Is a Simulation"
+rl-pet-peeves-harness/         05 · Stop Shipping Low-Quality Harnesses and Calling It an "Environment"
 glossary/                      RL glossary
 ```
 
-Post 5 (*Environment Quality*) is listed as "Coming" on the index and has no page yet.
-Drafts still live in `aurielws.github.io/writing-drafts/` and were deliberately not copied here.
+Post 5 was ported from the `writing-drafts/harness-failure` draft on the personal site (the
+password overlay stripped, glossary links pointed at `/glossary/`). Later revisions of that draft
+(`harness-failure-v2`, `-v3`) still live in `aurielws.github.io/writing-drafts/`.
 
 ## Theme
 
