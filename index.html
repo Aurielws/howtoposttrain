@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Post-Train &middot; Auriel's RL Pet Peeves</title>
+<meta name="description" content="A no-BS series on what actually goes wrong in RL post-training - trajectory eyeballing, rubrics and verifiers, task design, environment quality - and how to fix it.">
+<link rel="canonical" href="https://howtoposttrain.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="How to Post-Train">
+<meta property="og:title" content="How to Post-Train · Auriel's RL Pet Peeves">
+<meta property="og:description" content="A no-BS series on what actually goes wrong in RL post-training - trajectory eyeballing, rubrics and verifiers, task design, environment quality - and how to fix it.">
+<meta property="og:url" content="https://howtoposttrain.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Post-Train · Auriel's RL Pet Peeves">
+<meta name="twitter:description" content="A no-BS series on what actually goes wrong in RL post-training, and how to fix it.">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<nav class="htpt-nav">
+  <a class="htpt-brand" href="/">How to Post-Train</a>
+  <div class="htpt-links">
+    <a href="/">All posts</a>
+    <a href="/glossary/">Glossary</a>
+    <a href="https://aurielws.github.io/about.html">About Auriel</a>
+    <a href="https://aurielws.github.io/contact.html">Work with me</a>
+  </div>
+</nav>
+
+<main class="lw-page">
+
+  <h1 class="lw-title">How to Post-Train</h1>
+
+  <p class="lw-intro">A running series of rants on what actually goes wrong in RL post-training &mdash; trajectory eyeballing, rubrics and verifiers, task design, and environment quality. Written from years in the trenches, and opinionated on purpose.</p>
+
+  <p class="lw-meta">By <a href="https://aurielws.github.io/">Auriel</a> &middot; 4 posts, 1 in progress</p>
+
+  <section class="lw-section">
+    <div class="lw-section-head">Auriel&rsquo;s RL Pet Peeves</div>
+    <ul class="lw-list">
+
+      <li class="lw-item">
+        <a class="lw-row" href="/rl-pet-peeves-part-1/">
+          <span class="lw-num">01</span>
+          <div>
+            <div class="lw-item-title">You&rsquo;ve Never Spent Real Time with Your Model and We Can ALL Tell</div>
+            <div class="lw-item-sub">A no-BS guide for startups post-training their own models</div>
+          </div>
+          <span class="lw-status lw-status--live">Live</span>
+        </a>
+      </li>
+
+      <li class="lw-item">
+        <a class="lw-row" href="/rl-pet-peeves-rubric/">
+          <span class="lw-num">02</span>
+          <div>
+            <div class="lw-item-title">Your Rubric Was Written by Someone Who Has Never Done the Job</div>
+            <div class="lw-item-sub">Why your evals are measuring the wrong thing</div>
+          </div>
+          <span class="lw-status lw-status--live">Live</span>
+        </a>
+      </li>
+
+      <li class="lw-item">
+        <a class="lw-row" href="/rl-pet-peeves-economic/">
+          <span class="lw-num">03</span>
+          <div>
+            <div class="lw-item-title">Your Tasks Are Not Grounded in Economic Reality</div>
+            <div class="lw-item-sub">Ground your task design in what actually moves the needle</div>
+          </div>
+          <span class="lw-status lw-status--live">Live</span>
+        </a>
+      </li>
+
+      <li class="lw-item">
+        <a class="lw-row" href="/rl-pet-peeves-simulation/">
+          <span class="lw-num">04</span>
+          <div>
+            <div class="lw-item-title">Your Data Screams &ldquo;This Is a Simulation&rdquo;</div>
+            <div class="lw-item-sub">Models detect fake environments and the behavior degrades fast</div>
+          </div>
+          <span class="lw-status lw-status--live">Live</span>
+        </a>
+      </li>
+
+      <li class="lw-item lw-item--soon">
+        <span class="lw-num">05</span>
+        <div>
+          <div class="lw-item-title">Environment Quality</div>
+          <div class="lw-item-sub">The pre-training problems that doom your run before it starts</div>
+        </div>
+        <span class="lw-status">Coming</span>
+      </li>
+
+    </ul>
+  </section>
+
+  <section class="lw-section">
+    <div class="lw-section-head">Reference</div>
+    <ul class="lw-list">
+      <li class="lw-item">
+        <a class="lw-row" href="/glossary/">
+          <span class="lw-num"></span>
+          <div>
+            <div class="lw-item-title">RL Glossary</div>
+            <div class="lw-item-sub">Trajectories, harnesses, verifiers, reward hacking, environment failure rate &mdash; in plain language</div>
+          </div>
+          <span class="lw-status"></span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="lw-section">
+    <div class="lw-section-head">Who this is for</div>
+    <ul class="lw-deflist">
+      <li>
+        <b>Startups post-training their own models</b>
+        <span>You have a training run, a harness, and a growing suspicion that something in your data is quietly wrong. These posts are the checklist.</span>
+      </li>
+      <li>
+        <b>Data and eval teams</b>
+        <span>On writing rubrics a practitioner would recognize, and building verifiers that measure the thing you actually care about.</span>
+      </li>
+      <li>
+        <b>Anyone eyeballing trajectories</b>
+        <span>How to read a trajectory, build a failure taxonomy, and tell a model failure apart from a harness failure before you burn a run on it.</span>
+      </li>
+      <li>
+        <b>People buying RL data</b>
+        <span>What to ask for, what to reject, and the tells that a vendor&rsquo;s environment was built by someone who Googled the domain for an afternoon.</span>
+      </li>
+    </ul>
+    <p class="lw-note">New posts go out on <a href="https://www.linkedin.com/in/aurielws/">LinkedIn</a> and <a href="https://x.com/aurielws">X</a> first.</p>
+  </section>
+
+</main>
+
+<footer class="htpt-foot">
+  <div class="htpt-foot-in">
+    <div><strong>How to Post-Train</strong> &mdash; a series by <a href="https://aurielws.github.io/">Auriel</a></div>
+    <div class="htpt-foot-links">
+      <a href="/">All posts</a>
+      <a href="/glossary/">Glossary</a>
+      <a href="https://x.com/aurielws" target="_blank" rel="noopener">X</a>
+      <a href="https://www.linkedin.com/in/aurielws/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

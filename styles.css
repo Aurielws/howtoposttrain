@@ -1,0 +1,403 @@
+/* ==========================================================================
+   How to Post-Train — LessWrong-styled theme
+   --------------------------------------------------------------------------
+   Design tokens taken from LessWrong's own theme source (ForumMagnum,
+   packages/lesswrong/themes/defaultPalette.ts + createThemeDefaults.ts):
+   font stacks, the #f8f4ee page ground, rgba-alpha text shades, the #327E09
+   link green and #5f9b65 primary.
+
+   This file is linked LAST in <head> on every page, so it also remaps the
+   legacy Heirloom custom properties the post pages declare in their own
+   inline <style> blocks. Those posts keep their component markup and get
+   re-skinned through the variables.
+   ========================================================================== */
+
+:root{
+  /* -- LessWrong font stacks (verbatim) -- */
+  --lw-sans:Calibri,gill-sans-nova,"Gill Sans","Gill Sans MT","Myriad Pro",Myriad,"Liberation Sans","Nimbus Sans L",Tahoma,Geneva,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --lw-serif:warnock-pro,Palatino,"Palatino Linotype","Palatino LT STD","Book Antiqua",Georgia,serif;
+  --lw-mono:ui-monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  /* -- LessWrong palette -- */
+  --lw-bg:#f8f4ee;             /* background.default */
+  --lw-panel:#fff;             /* panelBackground.default */
+  --lw-hover:#f0ebe6;          /* background.hover */
+  --lw-text:rgba(0,0,0,.87);   /* text.normal */
+  --lw-text-slight:rgba(0,0,0,.8);
+  --lw-text-dim:rgba(0,0,0,.54);
+  --lw-text-dim2:rgba(0,0,0,.5);
+  --lw-link:#327E09;           /* link.color */
+  --lw-visited:#798754;        /* link.visited */
+  --lw-primary:#5f9b65;        /* primary.main */
+  --lw-border:rgba(0,0,0,.2);  /* border.normal */
+  --lw-border-faint:rgba(0,0,0,.15);
+  --lw-sep:rgba(0,0,0,.05);    /* border.itemSeparatorBottom */
+
+  --lw-grey50:#fafafa;  --lw-grey100:#f5f5f5; --lw-grey200:#eeeeee;
+  --lw-grey300:#e0e0e0; --lw-grey400:#bdbdbd; --lw-grey500:#9e9e9e;
+  --lw-grey600:#757575; --lw-grey700:#616161; --lw-grey800:#424242;
+  --lw-grey900:#212121;
+
+  /* -- Legacy Heirloom variables, remapped onto the palette above.
+        Keeps the posts' existing component CSS working. -- */
+  --cream:var(--lw-bg);
+  --paper:var(--lw-grey50);
+  --ink:var(--lw-text);
+  --ink2:rgba(0,0,0,.72);
+  --muted:var(--lw-text-dim);
+  --accent:var(--lw-link);
+  --accent2:var(--lw-primary);
+  --border:var(--lw-border-faint);
+  --mono:var(--lw-mono);
+
+  --rose:#5f9b65;   --coral:#788e6a;  --apricot:#9caa8f;
+  --gold:#b4b49a;   --sage:#8A9A7A;   --navy:#616161;
+  /* --s2 warns, --s4 approves; the comparison columns rely on the contrast. */
+  --s1:#5f9b65; --s2:#8a6410; --s3:#2f4d7a; --s4:#327E09;
+
+  --red:#8a2020;    --red-bg:#f7efee;
+  --green:#327E09;  --green-bg:#eef3ea;
+  --yellow:#7a6410; --yellow-bg:#f7f4e9;
+  --blue:#2f4d7a;   --blue-bg:#eef0f5;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+
+body{
+  background:var(--lw-bg);
+  color:var(--lw-text);
+  font-family:var(--lw-serif);
+  font-size:19px;
+  line-height:1.68;
+}
+
+a{color:var(--lw-link);text-decoration:none}
+a:hover{text-decoration:underline}
+a:visited{color:var(--lw-visited)}
+
+img{max-width:100%;height:auto}
+
+/* LessWrong has no chrome bar across the top. */
+.stripe{display:none}
+
+/* Widths match what each post was authored against, so the inline diagrams
+   (.pf-flow and friends) still fit without clipping. */
+.container{max-width:760px;margin:0 auto;padding:0 24px}
+
+
+/* ==========================================================================
+   Site chrome
+   ========================================================================== */
+
+.htpt-nav{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  max-width:1000px;margin:0 auto;padding:20px 24px 18px;
+}
+.htpt-brand{
+  font-family:var(--lw-serif);
+  font-size:20px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--lw-text);text-decoration:none;font-weight:400;
+}
+.htpt-brand:visited{color:var(--lw-text)}
+.htpt-brand:hover{text-decoration:none;color:var(--lw-primary)}
+.htpt-links{display:flex;gap:20px;flex-wrap:wrap;align-items:baseline}
+.htpt-links a{
+  font-family:var(--lw-sans);font-size:14px;
+  color:var(--lw-text-dim);text-decoration:none;
+}
+.htpt-links a:visited{color:var(--lw-text-dim)}
+.htpt-links a:hover{color:var(--lw-primary);text-decoration:none}
+
+.htpt-foot{border-top:1px solid var(--lw-sep);margin-top:72px}
+.htpt-foot-in{
+  max-width:1000px;margin:0 auto;padding:22px 24px 48px;
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  font-family:var(--lw-sans);font-size:14px;color:var(--lw-text-dim);
+}
+.htpt-foot-in strong{color:var(--lw-text-slight);font-weight:600}
+.htpt-foot-in a{color:var(--lw-text-dim)}
+.htpt-foot-in a:visited{color:var(--lw-text-dim)}
+.htpt-foot-in a:hover{color:var(--lw-primary)}
+.htpt-foot-links{display:flex;gap:18px;flex-wrap:wrap}
+
+
+/* ==========================================================================
+   Index page — modelled on LessWrong's Concepts (wikitags/all) layout
+   ========================================================================== */
+
+.lw-page{max-width:760px;margin:0 auto;padding:20px 24px 0}
+
+.lw-title{
+  font-family:var(--lw-serif);
+  font-size:39px;font-weight:400;line-height:1.15;
+  color:var(--lw-grey800);
+  margin-bottom:14px;
+}
+.lw-intro{
+  font-size:19px;line-height:1.62;color:var(--lw-text-slight);
+  max-width:36em;margin-bottom:8px;
+}
+.lw-intro a{text-decoration:underline;text-underline-offset:2px}
+
+.lw-meta{
+  font-family:var(--lw-sans);font-size:13px;
+  color:var(--lw-text-dim2);margin-top:14px;
+}
+
+.lw-section{margin-top:46px}
+.lw-section-head{
+  font-family:var(--lw-sans);
+  font-size:13px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--lw-grey600);
+  padding-bottom:7px;margin-bottom:2px;
+  border-bottom:1px solid var(--lw-border-faint);
+}
+
+/* Dense post list — the wikitags list idiom: one row per item, hairline
+   separators, count/status right-aligned. */
+.lw-list{list-style:none}
+.lw-item{
+  display:grid;
+  grid-template-columns:2.1rem 1fr auto;
+  gap:0 14px;align-items:baseline;
+  padding:13px 10px 13px 4px;
+  margin:0 -10px 0 -4px;
+  border-bottom:2px solid var(--lw-sep);
+}
+.lw-item:last-child{border-bottom:none}
+.lw-item:hover{background:var(--lw-hover)}
+.lw-item--soon:hover{background:none}
+
+.lw-num{
+  font-family:var(--lw-sans);font-size:13px;
+  color:var(--lw-grey500);font-variant-numeric:tabular-nums;
+}
+.lw-item-title{
+  font-family:var(--lw-serif);font-size:20px;line-height:1.3;
+  color:var(--lw-link);
+}
+.lw-item:hover .lw-item-title{text-decoration:underline;text-underline-offset:2px}
+.lw-item--soon .lw-item-title{color:var(--lw-grey600)}
+.lw-item--soon:hover .lw-item-title{text-decoration:none}
+.lw-item-sub{
+  font-family:var(--lw-sans);font-size:14px;line-height:1.45;
+  color:var(--lw-text-dim);margin-top:3px;
+}
+.lw-status{
+  font-family:var(--lw-sans);font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--lw-grey500);white-space:nowrap;
+}
+.lw-status--live{color:var(--lw-primary)}
+
+/* Whole-row link without breaking the grid */
+a.lw-row{display:contents;color:inherit;text-decoration:none}
+a.lw-row:visited{color:inherit}
+
+.lw-note{
+  font-family:var(--lw-sans);font-size:14px;line-height:1.6;
+  color:var(--lw-text-dim);margin-top:18px;
+}
+.lw-note a{color:var(--lw-link)}
+
+.lw-prose{margin-top:14px}
+.lw-prose p{margin-bottom:14px;color:var(--lw-text-slight);max-width:36em}
+
+.lw-deflist{list-style:none;margin-top:10px}
+.lw-deflist li{
+  padding:11px 0;border-bottom:2px solid var(--lw-sep);
+  max-width:40em;
+}
+.lw-deflist li:last-child{border-bottom:none}
+.lw-deflist b{
+  font-family:var(--lw-serif);font-weight:600;
+  font-size:18px;color:var(--lw-text);
+}
+.lw-deflist span{
+  display:block;font-family:var(--lw-sans);font-size:14px;
+  line-height:1.5;color:var(--lw-text-dim);margin-top:2px;
+}
+
+/* Buttons — LW keeps these as plain bordered text, not filled pills. */
+.btn{
+  display:inline-block;
+  font-family:var(--lw-sans);font-size:14px;
+  padding:8px 16px;border-radius:3px;
+  border:1px solid var(--lw-border-faint);
+  color:var(--lw-link);background:transparent;
+  text-decoration:none;cursor:pointer;
+}
+.btn:visited{color:var(--lw-link)}
+.btn:hover{background:var(--lw-hover);text-decoration:none}
+.btn--primary{border-color:var(--lw-primary);color:var(--lw-primary)}
+.btn--outline{border-color:var(--lw-border-faint)}
+
+
+/* ==========================================================================
+   Post pages — override layer
+   The posts ship their own inline <style>; this file loads after it, so
+   matching selectors win without !important.
+   ========================================================================== */
+
+/* Dark hero blocks become plain page headers. */
+.hero{background:transparent;padding:26px 0 4px;margin-bottom:26px;overflow:visible}
+.hero::after{display:none}
+.hero .container,.post-content .post-header{position:static}
+.hero-series,.post-content .series-tag{
+  font-family:var(--lw-sans);font-size:13px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--lw-grey600);margin-bottom:10px;
+}
+.hero h1,.post-content h1{
+  font-family:var(--lw-serif);font-style:normal;font-weight:400;
+  font-size:39px;line-height:1.18;
+  color:var(--lw-grey800);margin-bottom:12px;letter-spacing:-.01em;
+}
+.hero h1 strong,.hero h1 em,
+.post-content h1 strong,.post-content h1 em{
+  font-style:normal;font-weight:600;color:var(--lw-grey900);
+}
+.hero-sub,.post-content .subtitle{
+  font-family:var(--lw-serif);font-style:normal;
+  font-size:19px;line-height:1.6;color:var(--lw-text-dim);
+  max-width:36em;
+}
+.hero-sub strong,.post-content .subtitle strong{color:var(--lw-text-slight);font-weight:600}
+.post-content .byline{
+  font-family:var(--lw-sans);font-size:14px;color:var(--lw-text-dim);
+  margin-top:14px;
+}
+
+/* Body copy */
+.post-content{
+  font-family:var(--lw-serif);font-size:19px;line-height:1.68;
+  color:var(--lw-text);max-width:800px;margin:0 auto;padding:0 24px 40px;
+}
+article,.hero + .container,body > .container{color:var(--lw-text)}
+
+h2,.post-content h2{
+  font-family:var(--lw-serif);font-style:normal;font-weight:600;
+  font-size:26px;line-height:1.25;color:var(--lw-grey800);
+  margin:46px 0 14px;
+}
+h3,.post-content h3{
+  font-family:var(--lw-serif);font-style:normal;font-weight:600;
+  font-size:21px;line-height:1.3;color:var(--lw-grey800);
+  margin:32px 0 10px;
+}
+h4,.post-content h4{
+  font-family:var(--lw-sans);font-weight:600;font-size:17px;
+  color:var(--lw-grey800);margin:24px 0 8px;
+}
+
+p{margin-bottom:16px}
+strong{font-weight:600;color:var(--lw-text)}
+ul,ol{margin:0 0 16px 1.4em}
+li{margin-bottom:7px}
+
+.post-content a,article a,.hero a{
+  color:var(--lw-link);
+  text-decoration:underline;
+  text-decoration-color:rgba(50,126,9,.35);
+  text-underline-offset:2px;
+}
+.post-content a:visited,article a:visited{color:var(--lw-visited)}
+.post-content a:hover,article a:hover{
+  color:var(--lw-link);text-decoration-color:var(--lw-link);
+}
+
+code{
+  font-family:var(--lw-mono);font-size:.86em;
+  background:rgba(0,0,0,.04);padding:1px 5px;border-radius:3px;
+  color:var(--lw-text);
+}
+pre{
+  font-family:var(--lw-mono);font-size:13.5px;line-height:1.55;
+  background:var(--lw-grey50);border:1px solid var(--lw-sep);
+  border-radius:3px;padding:14px 16px;margin:20px 0;overflow-x:auto;
+}
+pre code{background:none;padding:0}
+
+/* LessWrong quotes: a plain grey rule, no fill, no rounding. */
+blockquote{
+  background:none;border:none;border-left:3px solid var(--lw-grey300);
+  border-radius:0;padding:2px 0 2px 20px;margin:20px 0;
+  font-size:18px;color:var(--lw-text-slight);line-height:1.6;
+}
+
+/* Callouts and cards flatten to hairline-bordered panels. */
+.key-detail{
+  background:none;border:none;border-top:1px solid var(--lw-border-faint);
+  border-bottom:1px solid var(--lw-border-faint);border-radius:0;
+  padding:18px 0;margin:28px 0;text-align:left;
+}
+.key-detail-text{
+  font-family:var(--lw-serif);font-style:italic;font-weight:400;
+  font-size:20px;line-height:1.45;color:var(--lw-grey800);
+}
+
+.visual,.comparison-columns,.cta-box,.next-up,.receipt{
+  background:var(--lw-panel);border:1px solid var(--lw-sep);
+  border-radius:3px;box-shadow:none;
+}
+.visual-header,.receipt-footer{
+  background:var(--lw-grey50);border-color:var(--lw-sep);
+}
+.visual-label,.comparison-col-subtitle{
+  font-family:var(--lw-sans);color:var(--lw-text-dim);
+}
+
+.sign-off,.post-content .signoff{
+  border-top:1px solid var(--lw-sep);margin-top:44px;padding-top:20px;
+  font-family:var(--lw-sans);font-size:14px;color:var(--lw-text-dim);
+}
+.sign-off .disclaimer,.post-content .signoff-disc{
+  font-style:italic;color:var(--lw-text-dim2);
+}
+
+@media (max-width:700px){
+  body{font-size:18px}
+  .lw-title,.hero h1,.post-content h1{font-size:31px}
+  .lw-item{grid-template-columns:1.8rem 1fr;gap:0 10px}
+  .lw-status{grid-column:2;margin-top:4px}
+}
+
+/* ==========================================================================
+   404
+   ========================================================================== */
+.htpt-404{max-width:760px;margin:0 auto;padding:80px 24px 120px}
+.htpt-404 .code{
+  font-family:var(--lw-sans);font-size:13px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--lw-grey600);margin-bottom:12px;
+}
+.htpt-404 h1{
+  font-family:var(--lw-serif);font-weight:400;font-size:39px;
+  line-height:1.18;color:var(--lw-grey800);margin-bottom:14px;
+}
+.htpt-404 p{
+  font-size:19px;line-height:1.62;color:var(--lw-text-slight);
+  max-width:36em;margin-bottom:26px;
+}
+
+/* Remaining Fraunces (display serif) usages fall back to the LW serif stack. */
+.section-heading,.vb-title,.visual-style,.visual-card-style,
+.comparison-col-header,.flow-start,.flow-end,.agent-example-learns,
+.post-content .tldr-head,.post-content .signoff-name,
+.post-content .nw-wrap .bp-takeaway h4,.post-content blockquote{
+  font-family:var(--lw-serif);
+}
+.section-heading,.vb-title,.comparison-col-header,
+.post-content .tldr-head,.post-content .signoff-name{
+  font-style:normal;font-weight:600;
+}
+
+/* Filled pills read as branding; LW labels are plain uppercase text. */
+.visual-label{
+  font-family:var(--lw-sans);font-size:11px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;
+  color:var(--lw-grey600);background:none;padding:0;border-radius:0;
+}
+
+/* Match the definition rows to the post-list rows above them. */
+.lw-deflist li{max-width:none}
