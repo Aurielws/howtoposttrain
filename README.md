@@ -1,6 +1,6 @@
 # howtoposttrain.com
 
-Standalone static site for **How to Post-Train** — Auriel's RL Pet Peeves series.
+Standalone static site for **How to Post-Train**, the RL Fundamentals Mini-Series.
 
 Split out of [`aurielws.github.io`](https://github.com/Aurielws/aurielws.github.io), which
 stays as the personal site (about / coaching / advising / community / contact).

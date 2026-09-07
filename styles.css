@@ -33,6 +33,10 @@
   --lw-border-faint:rgba(0,0,0,.15);
   --lw-sep:rgba(0,0,0,.05);    /* border.itemSeparatorBottom */
 
+  /* The one deliberate departure from LessWrong: page and post titles use
+     Auriel's Heirloom rose. Everything else stays on the LW palette. */
+  --title:#A8485A;
+
   --lw-grey50:#fafafa;  --lw-grey100:#f5f5f5; --lw-grey200:#eeeeee;
   --lw-grey300:#e0e0e0; --lw-grey400:#bdbdbd; --lw-grey500:#9e9e9e;
   --lw-grey600:#757575; --lw-grey700:#616161; --lw-grey800:#424242;
@@ -133,7 +137,7 @@ img{max-width:100%;height:auto}
 .lw-title{
   font-family:var(--lw-serif);
   font-size:39px;font-weight:400;line-height:1.15;
-  color:var(--lw-grey800);
+  color:var(--title);
   margin-bottom:14px;
 }
 .lw-intro{
@@ -252,11 +256,11 @@ a.lw-row:visited{color:inherit}
 .hero h1,.post-content h1{
   font-family:var(--lw-serif);font-style:normal;font-weight:400;
   font-size:39px;line-height:1.18;
-  color:var(--lw-grey800);margin-bottom:12px;letter-spacing:-.01em;
+  color:var(--title);margin-bottom:12px;letter-spacing:-.01em;
 }
 .hero h1 strong,.hero h1 em,
 .post-content h1 strong,.post-content h1 em{
-  font-style:normal;font-weight:600;color:var(--lw-grey900);
+  font-style:normal;font-weight:600;color:inherit;
 }
 .hero-sub,.post-content .subtitle{
   font-family:var(--lw-serif);font-style:normal;
