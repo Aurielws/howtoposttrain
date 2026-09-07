@@ -41,9 +41,10 @@ eyeballed:
 | row hover | `#f0ebe6` | `background.hover` |
 | body text | `rgba(0,0,0,.87)` | `text.normal` |
 | secondary text | `rgba(0,0,0,.54)` | `text.secondary` |
-| link | `#327E09` | `link.color` |
-| visited link | `#798754` | `link.visited` |
-| primary / accent | `#5f9b65` | `primary.main` |
+| link | `#A8485A` | `link.color`, replaced by Auriel's Heirloom rose |
+| visited link | `#8a5a63` | `link.visited`, muted rose |
+| primary / accent | `#A8485A` | `primary.main`, Heirloom rose |
+| titles | `#A8485A` | not a LessWrong token; `--title` |
 | border | `rgba(0,0,0,.2)` | `border.normal` |
 | row separator | `2px rgba(0,0,0,.05)` | `border.itemSeparatorBottom` |
 

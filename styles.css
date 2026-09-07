@@ -3,8 +3,9 @@
    --------------------------------------------------------------------------
    Design tokens taken from LessWrong's own theme source (ForumMagnum,
    packages/lesswrong/themes/defaultPalette.ts + createThemeDefaults.ts):
-   font stacks, the #f8f4ee page ground, rgba-alpha text shades, the #327E09
-   link green and #5f9b65 primary.
+   font stacks, the #f8f4ee page ground, rgba-alpha text shades. The one
+   departure: LessWrong's link green and primary are replaced by Auriel's
+   Heirloom rose (#A8485A), used for links, titles and the Live status.
 
    This file is linked LAST in <head> on every page, so it also remaps the
    legacy Heirloom custom properties the post pages declare in their own
@@ -26,9 +27,9 @@
   --lw-text-slight:rgba(0,0,0,.8);
   --lw-text-dim:rgba(0,0,0,.54);
   --lw-text-dim2:rgba(0,0,0,.5);
-  --lw-link:#327E09;           /* link.color */
-  --lw-visited:#798754;        /* link.visited */
-  --lw-primary:#5f9b65;        /* primary.main */
+  --lw-link:#A8485A;           /* link.color -> Heirloom rose */
+  --lw-visited:#8a5a63;        /* link.visited -> muted rose */
+  --lw-primary:#A8485A;        /* primary.main -> Heirloom rose */
   --lw-border:rgba(0,0,0,.2);  /* border.normal */
   --lw-border-faint:rgba(0,0,0,.15);
   --lw-sep:rgba(0,0,0,.05);    /* border.itemSeparatorBottom */
@@ -54,10 +55,10 @@
   --border:var(--lw-border-faint);
   --mono:var(--lw-mono);
 
-  --rose:#5f9b65;   --coral:#788e6a;  --apricot:#9caa8f;
+  --rose:#A8485A;   --coral:#788e6a;  --apricot:#9caa8f;
   --gold:#b4b49a;   --sage:#8A9A7A;   --navy:#616161;
   /* --s2 warns, --s4 approves; the comparison columns rely on the contrast. */
-  --s1:#5f9b65; --s2:#8a6410; --s3:#2f4d7a; --s4:#327E09;
+  --s1:#A8485A; --s2:#8a6410; --s3:#2f4d7a; --s4:#327E09;
 
   --red:#8a2020;    --red-bg:#f7efee;
   --green:#327E09;  --green-bg:#eef3ea;
@@ -303,7 +304,7 @@ li{margin-bottom:7px}
 .post-content a,article a,.hero a{
   color:var(--lw-link);
   text-decoration:underline;
-  text-decoration-color:rgba(50,126,9,.35);
+  text-decoration-color:rgba(168,72,90,.35);
   text-underline-offset:2px;
 }
 .post-content a:visited,article a:visited{color:var(--lw-visited)}
