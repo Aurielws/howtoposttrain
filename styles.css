@@ -135,7 +135,10 @@ img{max-width:100%;height:auto}
 
 .lw-page{max-width:760px;margin:0 auto;padding:20px 24px 0}
 
-.header-photo{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--border);margin-bottom:28px}
+.header-strip{
+  height:200px;border-radius:8px;border:1px solid var(--border);margin-bottom:28px;
+  background-image:url('/header-bg.png');background-size:cover;background-position:center;
+}
 
 .lw-title{
   font-family:var(--lw-serif);
