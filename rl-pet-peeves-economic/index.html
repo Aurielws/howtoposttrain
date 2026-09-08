@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PM POV on Post Training: Your Tasks Are Not Grounded in Economic Reality - How to Post-Train</title>
+<meta name="description" content="Ground your task design in what actually moves the needle for your product space. With a task-value worksheet you can fill in from public BLS data and a 20-point checklist.">
 <style>
 /* ======================================================================
    BRAND SYSTEM - Auriel · Heirloom Palette
@@ -16,6 +17,12 @@
   --s1:#C85080;--s2:#E89040;--s3:#6080C8;--s4:#40A870;
   --red:#9B2020;--red-bg:#FFF0F0;--green:#1E7A40;--green-bg:#EAF7EF;
   --mono:"DM Mono",monospace;
+  --bg:var(--cream);--panel:#fff;--panel2:var(--paper);--sep:var(--lw-sep);
+  --dim:var(--muted);--text:var(--ink);--text2:var(--ink2);
+  --serif:"Fraunces",serif;--sans:var(--lw-sans);--link:var(--accent);
+  --good:var(--green);--good-bg:var(--green-bg);--bad:var(--red);--bad-bg:var(--red-bg);
+  --warn:#9a6020;--warn-bg:rgba(232,144,64,.1);--info:#3a5a8a;--info-bg:rgba(96,128,200,.1);
+  --hover:var(--paper);--accent-bg:rgba(168,72,90,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -74,70 +81,77 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 
 
 /* ======================================================================
-   TASK VALUE TIER DIAGRAM
+   INTERACTIVE PANELS (ported from redo-drafts/source/shared.css)
    ====================================================================== */
-.tier{border-radius:10px;padding:20px 24px;margin-bottom:16px}
-.tier:last-of-type{margin-bottom:0}
+.panel{background:var(--panel);border:1px solid var(--sep);border-radius:3px;margin:26px 0}
+.panel-h{padding:10px 16px;border-bottom:1px solid var(--sep);background:var(--panel2);font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+.panel-h span{color:var(--text);text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;margin-left:8px}
+.panel-b{padding:16px}
+.panel-f{padding:10px 16px;border-top:1px solid var(--sep);background:var(--panel2);font-family:var(--sans);font-size:14px;color:var(--text2)}
+.tool{font-family:var(--sans)}
+.tool .hint,.check .hint{font-size:14px;color:var(--dim);margin:0 0 12px}
+.btn{font-family:var(--sans);font-size:14px;padding:7px 14px;border:1px solid var(--border);border-radius:3px;background:transparent;color:var(--link);cursor:pointer}
+.btn:hover{background:var(--hover)}
+.btn:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.pill{display:inline-block;font-family:var(--sans);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--dim)}
+.pill.good{color:var(--good);background:var(--good-bg);border-color:transparent}
+.pill.bad{color:var(--bad);background:var(--bad-bg);border-color:transparent}
+.pill.warn{color:var(--warn);background:var(--warn-bg);border-color:transparent}
+.pill.info{color:var(--info);background:var(--info-bg);border-color:transparent}
+.check{font-family:var(--sans)}
+.check-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.check-h .score{font-variant-numeric:tabular-nums;color:var(--text2);font-size:14px}
+.bar{height:6px;background:var(--sep);border-radius:3px;overflow:hidden;margin:0 0 18px}
+.bar i{display:block;height:100%;background:var(--link);width:0;transition:width .2s}
+.grp{margin:0 0 18px}
+.grp h4{font-family:var(--sans);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:0 0 4px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.item{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--sep);font-size:15px;line-height:1.45;align-items:start}
+.item input{margin:4px 0 0;width:16px;height:16px;accent-color:#A8485A}
+.item .src{display:block;font-size:12.5px;color:var(--dim);margin-top:2px}
+.item.done{color:var(--dim)}
+.refs{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--text2)}
+.refs ol{padding-left:26px;margin:0}
+.refs li{margin:0 0 9px;padding-left:4px}
+.refs li:target{background:var(--accent-bg)}
+sup.c{font-family:var(--sans);font-size:12px;line-height:0;margin-left:1px}
+sup.c a{text-decoration:none;color:var(--link)}
 
-.tier-high{
-  border:2px solid var(--s4);
-  background:rgba(64,168,112,.04);
-}
-.tier-low{
-  border:2px solid var(--s2);
-  background:rgba(232,144,64,.04);
-}
+/* -- page-specific: recipe list, tiers, worksheet, 2x2 -- */
+.chain{font-family:var(--sans);font-size:14.5px;line-height:1.5}
+.chain ol{margin:0;padding-left:22px}
+.chain li{margin-bottom:6px}
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.tiers{grid-template-columns:1fr}}
+.tier{border:1px solid var(--sep);border-radius:3px;padding:12px 14px;background:var(--bg)}
+.tier h4{margin:0;font-family:var(--sans);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.tier .num{font-family:var(--serif);font-size:30px;line-height:1.1;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.tier .num small{font-size:14px;color:var(--dim);font-family:var(--sans)}
+.tier .desc{font-family:var(--sans);font-size:14px;color:var(--text2);margin:6px 0 8px}
+.tier ul{margin:0;padding:0;list-style:none;font-family:var(--sans);font-size:14.5px}
+.tier li{padding:4px 0;border-top:1px solid var(--sep)}
+.tier li:first-child{border-top:none}
+.ws{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+@media (max-width:640px){.ws{grid-template-columns:1fr}}
+.f{display:flex;flex-direction:column;gap:4px;font-size:14px}
+.f label{color:var(--text2)}
+.f .src{font-size:12px;color:var(--dim)}
+.f input[type=number],.f input[type=text],.f select{font:inherit;font-size:15px;padding:7px 9px;border:1px solid var(--border);border-radius:3px;background:var(--panel);color:var(--text);width:100%}
+.f .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.f .row label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px}
+.f input[type=checkbox],.f input[type=radio]{accent-color:#A8485A}
+.span2{grid-column:1 / -1}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media (max-width:640px){.out{grid-template-columns:1fr}}
+.stat{border:1px solid var(--sep);border-radius:3px;padding:10px 14px;background:var(--bg)}
+.stat .l{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.stat .v{font-family:var(--serif);font-size:26px;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat .v small{font-size:13px;color:var(--dim);font-family:var(--sans)}
+.quad{margin-top:16px;display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:16px;align-items:start}
+@media (max-width:640px){.quad{grid-template-columns:1fr}}
+.quad svg{width:100%;height:auto;display:block}
+.verdict{font-size:15px;line-height:1.5}
+.verdict .pill{margin-bottom:8px}
 
-.tier-label{
-  font-family:var(--mono);
-  font-size:13px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:1.5px;
-  margin-bottom:4px;
-}
-.tier-label-high{color:var(--s4)}
-.tier-label-low{color:var(--s2)}
-
-.tier-subtitle{
-  font-size:13.5px;
-  color:var(--muted);
-  line-height:1.5;
-  margin-bottom:14px;
-}
-
-.tier-pills{display:flex;flex-wrap:wrap;gap:8px}
-
-.tier-pill{
-  font-family:var(--mono);
-  font-size:10px;
-  padding:5px 12px;
-  border-radius:999px;
-  display:inline-flex;
-  align-items:center;
-  font-weight:500;
-  line-height:1.3;
-}
-.tier-pill-high{
-  background:rgba(64,168,112,.1);
-  color:#2a7a4a;
-  border:1px solid rgba(64,168,112,.25);
-}
-.tier-pill-low{
-  background:rgba(232,144,64,.08);
-  color:#9a6020;
-  border:1px solid rgba(232,144,64,.25);
-}
-
-.tier-divider{
-  text-align:center;
-  padding:8px 0;
-  font-family:var(--mono);
-  font-size:18px;
-  color:var(--border);
-  letter-spacing:6px;
-  user-select:none;
-}
 
 /* -- SIGN-OFF / FOOTER -- */
 .sign-off{
@@ -161,11 +175,11 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="How to Post-Train">
 <meta property="og:title" content="PM POV on Post Training: Your Tasks Are Not Grounded in Economic Reality">
-<meta property="og:description" content="Why RL task design has to start from work someone would actually pay for, not from what is convenient to generate.">
+<meta property="og:description" content="Ground your task design in what actually moves the needle for your product space. With a task-value worksheet you can fill in from public BLS data and a 20-point checklist.">
 <meta property="og:url" content="https://howtoposttrain.com/rl-pet-peeves-economic/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PM POV on Post Training: Your Tasks Are Not Grounded in Economic Reality">
-<meta name="twitter:description" content="Why RL task design has to start from work someone would actually pay for, not from what is convenient to generate.">
+<meta name="twitter:description" content="Ground your task design in what actually moves the needle for your product space. With a task-value worksheet you can fill in from public BLS data and a 20-point checklist.">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -186,9 +200,9 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <!-- ========== HERO ========== -->
 <header class="hero">
 <div class="container">
-<div class="hero-series">RL Fundamentals Mini-Series</div>
-<h1>PM POV on Post Training: Your Tasks Are <strong>Not Grounded</strong> in Economic Reality</h1>
-<p class="hero-sub">If you can't explain why the domain matters economically, <strong>your task design is already off.</strong></p>
+<div class="hero-series">RL Fundamentals Mini-Series &middot; 04</div>
+<h1>PM POV on Post Training: Your Tasks Are Not Grounded in <strong>Economic Reality</strong></h1>
+<p class="hero-sub">Ground your task design in what actually moves the needle for your product space. With a task-value worksheet you can fill in from public BLS data and a 20-point checklist.</p>
 </div>
 </header>
 
@@ -196,71 +210,122 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <article>
 <div class="container">
 
-<p>You can have a solid RL environment and well-written rubrics and still end up training a model that nobody cares about. If the tasks you're training on don't map to work that real people actually do and pay for, you're optimizing for a universe that doesn't exist.</p>
+<p>You can have a solid RL environment and well-written rubrics and still end up training a model nobody cares about. If the tasks you're training on don't map to work that real people do and pay for, you're optimizing for a universe that doesn't exist. This is the product manager's half of post-training, and most teams skip it.</p>
 
-<!-- ========== KNOW THE DOMAIN ========== -->
-<h2>Know Why the Domain Matters</h2>
+<h2>Know why the domain matters</h2>
 
-<p>If you're building tasks for a domain, you should be able to articulate why that domain matters. How many people do this job? What does a day in their life actually look like? What are the high-value tasks that eat their time and that a model could realistically take on?</p>
+<p>If you're building tasks for a domain, you should be able to articulate why that domain matters. How many people do this job? What does a day in their life actually look like? Which high-value tasks eat their time and could realistically be handed to a model?</p>
 
-<p>Look at Bureau of Labor Statistics data. Ground your task design in the actual economic weight of the work. When you push for an environment for let's say digital copywriting, you should know what a digital copywriter actually does in a day, how much of the economy that represents, and which of those tasks your environment is targeting. That framing is what separates "we made some tasks" from "we've mapped the highest-value copywriting workflows and built evaluation surfaces for them." One of those is valuable. The other gets thrown away.</p>
+<p>OpenAI's GDPval is this paragraph turned into a benchmark, and the recipe is copyable at startup scale. They took the nine sectors that each contribute more than 5% of US GDP, picked the five occupations per sector that contribute most to total wages using O*NET and BLS wage data, kept only occupations where at least 60% of the O*NET tasks are digital, and then had professionals averaging 14 years of experience write the tasks. A task's dollar value is expert hours multiplied by the occupation's median hourly wage; the average task on their gold set is worth $398.46.<sup class="c"><a href="#r1">1</a></sup> Anthropic runs a version of the same arithmetic on live traffic and reports the average task value on Claude.ai in hourly-wage equivalents, $47.90 in the March 2026 report.<sup class="c"><a href="#r2">2</a></sup></p>
 
-<!-- ========== PRIORITIZATION ========== -->
-<h2>This Helps You Prioritize</h2>
+<p>The public data you need is free. The Occupational Employment and Wage Statistics tables give you employment and the median hourly wage for roughly 830 occupations.<sup class="c"><a href="#r3">3</a></sup> O*NET's task statements flag each task as Core (relevance at least 67% and importance at least 3.0) or Supplemental, and the task ratings file gives importance and frequency per task with error bars.<sup class="c"><a href="#r4">4</a></sup> When you push for an environment for, say, digital copywriting, you should know what a copywriter does in a day, how much of the economy that represents, and which of those tasks your environment targets. That framing separates "we made some tasks" from "we mapped the highest-value copywriting workflows and built evaluation surfaces for them." One of those is valuable. The other gets thrown away.</p>
 
-<p>This also helps you prioritize. Not all tasks within a domain are equally valuable to train on. A model that can reliably do the $200/hour part of a Marketing Persona's job is a lot more interesting than one that does the $15/hour part. Ground the task selection in what actually moves the needle economically.</p>
-
-
-<!-- ══════════ VISUAL: TASK VALUE TIER DIAGRAM ══════════ -->
-<div class="visual">
-<div class="visual-header">
-<span class="visual-label">Task Value</span>
-<span class="visual-style">$200/hr vs $15/hr</span>
-</div>
-<div class="visual-body">
-
-<!-- High-Value Tier -->
-<div class="tier tier-high">
-<div class="tier-label tier-label-high">$200/hr Work</div>
-<div class="tier-subtitle">Domain judgment, strategic decisions, downstream consequences</div>
-<div class="tier-pills">
-<span class="tier-pill tier-pill-high">Contract negotiation strategy</span>
-<span class="tier-pill tier-pill-high">Architectural trade-off analysis</span>
-<span class="tier-pill tier-pill-high">Marketing campaign positioning</span>
-<span class="tier-pill tier-pill-high">Compliance risk assessment</span>
-</div>
+<div class="panel chain">
+<div class="panel-h">Recipe <span>From occupation to task to dollars, the GDPval way</span></div>
+<div class="panel-b"><ol>
+<li><strong>OEWS</strong>: occupation employment and median hourly wage.<sup class="c"><a href="#r3">3</a></sup></li>
+<li><strong>O*NET task statements</strong>: the occupation's Core tasks.<sup class="c"><a href="#r4">4</a></sup></li>
+<li><strong>O*NET task ratings</strong>: importance and frequency, to rank inside the occupation.<sup class="c"><a href="#r4">4</a></sup></li>
+<li><strong>Expert hours per instance</strong>: ask the people who do it. GDPval tasks average about 7 hours.<sup class="c"><a href="#r1">1</a></sup></li>
+<li><strong>Value per instance</strong> = expert hours x median hourly wage.</li>
+<li><strong>Annual pool</strong> = value per instance x instances per worker per year x workers.</li>
+</ol></div>
+<div class="panel-f">Compare the result against what a task costs to build. Epoch AI's interviews put individual RL tasks at $200 to $2,000 each, a website replica near $20k, and buyers want at least a 2 to 3% pass rate so the task produces gradient at all.<sup class="c"><a href="#r5">5</a></sup></div>
 </div>
 
-<div class="tier-divider">- - - - - -</div>
+<h2>This helps you prioritize</h2>
 
-<!-- Low-Value Tier -->
-<div class="tier tier-low">
-<div class="tier-label tier-label-low">$15/hr Work</div>
-<div class="tier-subtitle">Template-solvable, commodity, format-checking</div>
-<div class="tier-pills">
-<span class="tier-pill tier-pill-low">Fill in template fields</span>
-<span class="tier-pill tier-pill-low">Reformat document</span>
-<span class="tier-pill tier-pill-low">Copy-paste with substitution</span>
-<span class="tier-pill tier-pill-low">Basic data entry</span>
-</div>
-</div>
+<p>Not all tasks within a domain are equally valuable to train on. A model that can reliably do the judgment part of a marketing lead's job is a lot more interesting than one that does the reformatting part. Ground the task selection in what moves the needle economically.</p>
 
-</div>
-<div class="visual-footer">If your task set lives in the bottom tier, <strong>your model plateaus there too.</strong></div>
+<div class="panel">
+<div class="panel-h">Task value <span>Judgment work vs. template work, with real numbers</span></div>
+<div class="panel-b"><div class="tiers">
+<div class="tier"><h4>Judgment tier</h4><div class="num">$65 to $80<small>/hr median wage</small></div><div class="num" style="font-size:22px">$349<small>/hr billed (lawyers)</small></div><div class="desc">Tacit knowledge, strategic decisions, downstream consequences</div><ul><li>Contract negotiation strategy</li><li>Architectural trade-off analysis</li><li>Marketing campaign positioning</li><li>Compliance risk assessment</li></ul></div>
+<div class="tier"><h4>Template tier</h4><div class="num">$21 to $30<small>/hr median wage</small></div><div class="num" style="font-size:22px">$187<small>/hr billed (paralegals)</small></div><div class="desc">Codified, template-solvable, format-checking</div><ul><li>Fill in template fields</li><li>Reformat document</li><li>Copy-paste with substitution</li><li>Basic data entry</li></ul></div>
+</div></div>
+<div class="panel-f">Wages: BLS OEWS May 2025 via the Occupational Outlook Handbook (software developers $64.44, lawyers $76.76, marketing managers $79.70, paralegals $30.24, bookkeeping clerks $24.36, customer service reps $21.53).<sup class="c"><a href="#r6">6</a></sup> Billed rates: Clio Legal Trends, 2025 data.<sup class="c"><a href="#r7">7</a></sup> If your task set lives in the bottom tier, your model plateaus there too.</div>
 </div>
 
+<p>The cleaner version of that split is not the wage, it is the kind of knowledge. Stanford's payroll-data study of AI's employment effects finds that declines concentrate where AI substitutes for codified knowledge and stay flat or positive where the work is tacit; workers aged 22 to 25 in exposed roles sit about 19% below their expected employment as of mid-2026.<sup class="c"><a href="#r8">8</a></sup> Codified work is where the labor market is already moving. Tacit work is where a post-trained model earns its keep.</p>
 
-<!-- ========== STARTUPS: CHECK YOUR PRODUCT FIRST ========== -->
-<h2>Startups: Check Your Own Product First</h2>
+<p>Picking the wrong task does not just fail to help. In the BCG field experiment, consultants using AI on tasks inside the model's frontier finished 12.2% more tasks 25.1% faster at higher quality; on the one task outside the frontier, AI users were 19% less likely to be correct than the control group.<sup class="c"><a href="#r9">9</a></sup> If your task set contains that outside-frontier task and your product ships it, you made your users worse.</p>
 
-<p>If you're a startup and you are trying to set your own product up as an RL environment to automate workflows in your product by making custom post-trained models, ask yourself before you begin doing all this work: is my own product actually even stable enough / doing well enough for me to justify starting to do post-training on? This is basically another way of applying this principle. If you don't have stable product metrics or any indicator that you have product-market fit (unless literally building a post-trained model is part of your differentiation in terms of product I guess?), you should be really, really careful before you start trying to post-train custom sub-agent models without justification that the process you are trying to automate out using RL is actually viable.</p>
+<h2>The counterargument, and where it wins</h2>
 
-<p>Furthermore, it's going to be really hard to build a rubric if your product metrics and user experience are not stable. My fav tool in this space btw is <a href="https://hud.ai" target="_blank">hud.ai</a>.</p>
+<p>The strongest objection is Jason Wei's verifier's law: how well AI learns a task tracks how verifiable it is, and a task is easy to verify when it has objective truth, is fast and scalable to check, is low noise, and gives a continuous reward.<sup class="c"><a href="#r10">10</a></sup> On that view, economic value is a distraction early on; verifiability is the whole game. HUD's verifier guidance says the same thing from the builder's side: write the end-state assertion before any reward formula, and if you cannot write it, the task is not ready.<sup class="c"><a href="#r11">11</a></sup></p>
 
+<p>Volume cuts the same way. GDPval selected occupations by total wages, which is employment times wage, not wage alone.<sup class="c"><a href="#r1">1</a></sup> Run the BLS numbers and 2.67 million customer service reps at $21.53 is a bigger annual wage pool than 864 thousand lawyers at $76.76.<sup class="c"><a href="#r6">6</a></sup> And Tulu 3's verifiable-rewards recipe on math and instruction following improved benchmarks it never trained on.<sup class="c"><a href="#r12">12</a></sup> Boring, cheap, verifiable tasks are not laziness. They are gradient.</p>
 
-<!-- ========== KEY DETAIL ========== -->
+<p>Here is where the objection loses. Danish payroll data across 25,000 workers and 11 occupations found generative AI saved 2.8% of work hours on average and produced precisely estimated zero effects on earnings; only 3 to 7% of reported productivity gains passed through to pay.<sup class="c"><a href="#r13">13</a></sup> Automating the verifiable slice does not by itself create value anyone pays for. So the synthesis I actually use: <strong>economic value picks the workflow, verifiability picks the first task inside it.</strong> Start where the assertion is easy to write, but only inside a workflow whose annual pool you have already sized.</p>
+
+<h2>Startups: check your own product first</h2>
+
+<p>If you're a startup trying to set up your own product as an RL environment, to automate workflows with custom post-trained sub-agents, ask yourself before you begin: is my product stable enough and doing well enough to justify post-training on it at all? If you don't have stable product metrics or any indicator of product-market fit (unless building a post-trained model is itself your differentiation), be really, really careful before you start post-training custom models without evidence that the process you're automating is viable.</p>
+
+<p>Make that concrete. Rahul Vohra's version of the Sean Ellis test: survey people who used the product at least twice in the last two weeks, ask how they'd feel if they could no longer use it, and look for 40% or more saying "very disappointed." Superhuman went from 22% to 58% by naming its high-expectation customer and building for that cohort.<sup class="c"><a href="#r14">14</a></sup> If you cannot name your high-expectation customer, you cannot write a rubric for what "good" means to them. Hamel Husain puts A/B testing with real users at level three of his eval hierarchy, appropriate only for mature products, which is another way of saying the outer loop that makes a rubric trustworthy does not exist yet at an unstable company.<sup class="c"><a href="#r15">15</a></sup> Michael Hammer called the general failure "paving the cow paths" in 1990: using technology to speed up a process that was broken to begin with.<sup class="c"><a href="#r16">16</a></sup></p>
+
+<p>It's also going to be really hard to build a rubric if your product metrics and user experience are not stable. My favorite tool in this space is still <a href="https://www.hud.ai/">hud.ai</a>: an SDK for defining environments, tasksets and graders that runs any agent against them, plus trace QA that audits rollouts for false positives, false negatives, reward hacking and prompt-grader misalignment.<sup class="c"><a href="#r17">17</a></sup> The trace QA is the part that matters for this post. It is where you find out that your economically valuable task has a broken grader.</p>
+
 <div class="key-detail">
-<div class="key-detail-text">Ground the task selection in what actually moves the needle economically.</div>
+<div class="key-detail-text">Economic value picks the workflow. Verifiability picks the first task inside it. Product stability decides whether you should be doing any of this yet.</div>
+</div>
+
+<h2>Interactive guide: the task-value worksheet</h2>
+
+<div class="panel tool">
+<div class="panel-h">Task-value worksheet <span>Two scores, one 2x2</span></div>
+<div class="panel-b">
+<p class="hint">Pick an occupation preset (BLS OEWS May 2025 numbers prefilled) or type your own. Fill in the fields a practitioner would give you. The worksheet computes a Value score (is the work worth anything) and a Buildability score (can you actually train on it) and places the task on the 2x2. Example values are loaded so you can see it work.</p>
+<div class="ws">
+  <div class="f"><label for="occ">Occupation</label><select id="occ"></select><span class="src">Source: BLS Occupational Outlook Handbook, May 2025 medians</span></div>
+  <div class="f"><label for="task">Task (one line)</label><input type="text" id="task" value="Redline a vendor MSA against our playbook"><span class="src">Should be an O*NET Core task for the occupation</span></div>
+  <div class="f"><label for="workers">Workers in occupation (US)</label><input type="number" id="workers" min="0" step="1000"><span class="src">OEWS employment</span></div>
+  <div class="f"><label for="wage">Hourly rate ($)</label><input type="number" id="wage" min="0" step="0.5"><div class="row"><label><input type="radio" name="basis" value="wage" checked> median wage</label><label><input type="radio" name="basis" value="billed"> billed rate</label></div><span class="src">OEWS median, or what the customer is billed (Clio for legal)</span></div>
+  <div class="f"><label for="hours">Expert hours per instance</label><input type="number" id="hours" min="0" step="0.25" value="3"><span class="src">Ask a practitioner; GDPval average is about 7</span></div>
+  <div class="f"><label for="inst">Instances per worker per year</label><input type="number" id="inst" min="0" step="1" value="40"><span class="src">No public source; go talk to a customer</span></div>
+  <div class="f"><label for="share">Share of workers whose job includes this task (%)</label><input type="number" id="share" min="0" max="100" step="5" value="30"><span class="src">O*NET relevance rating is a proxy</span></div>
+  <div class="f"><label for="cost">Estimated build cost per task ($)</label><input type="number" id="cost" min="0" step="100" value="1500"><span class="src">Epoch AI: $200 to $2,000 typical</span></div>
+  <div class="f span2"><label>Verifiability (Wei's five properties)</label><div class="row" id="ver"><label><input type="checkbox" value="1" checked> objective truth</label><label><input type="checkbox" value="1"> fast to verify</label><label><input type="checkbox" value="1" checked> scalable to verify</label><label><input type="checkbox" value="1"> low noise</label><label><input type="checkbox" value="1"> continuous reward</label></div></div>
+  <div class="f"><label>Knowledge type</label><div class="row" id="tier"><label><input type="radio" name="tier" value="1"> codified</label><label><input type="radio" name="tier" value="3" checked> mixed</label><label><input type="radio" name="tier" value="5"> tacit</label></div><span class="src">Canaries in the Coal Mine; ORS cognitive requirements</span></div>
+  <div class="f"><label>Frontier position</label><div class="row" id="frontier"><label><input type="radio" name="fr" value="5"> inside</label><label><input type="radio" name="fr" value="3" checked> edge</label><label><input type="radio" name="fr" value="1"> outside</label></div><span class="src">Dell'Acqua et al.: outside-frontier tasks made humans 19% less correct</span></div>
+  <div class="f span2"><label>Product gates</label><div class="row" id="gates"><label><input type="checkbox" value="1" checked> 40%+ "very disappointed" or a named high-expectation customer</label><label><input type="checkbox" value="1"> core metrics stable for 8+ weeks</label><label><input type="checkbox" value="1" checked> real software available to build against</label></div></div>
+</div>
+<div class="out">
+  <div class="stat"><div class="l">Value per instance</div><div class="v" id="vInst">$0</div></div>
+  <div class="stat"><div class="l">Annual addressable pool</div><div class="v" id="vPool">$0</div></div>
+  <div class="stat"><div class="l">Value to build-cost ratio</div><div class="v" id="vRatio">0<small> x</small></div></div>
+  <div class="stat"><div class="l">Scores</div><div class="v"><span id="vVal">0</span><small> value</small> &nbsp; <span id="vBuild">0</span><small> buildability</small></div></div>
+</div>
+<div class="quad">
+  <svg viewBox="0 0 300 300" role="img" aria-label="Value versus buildability 2 by 2">
+    <rect x="40" y="10" width="125" height="125" fill="var(--warn-bg)"/><rect x="165" y="10" width="125" height="125" fill="var(--good-bg)"/>
+    <rect x="40" y="135" width="125" height="125" fill="var(--bad-bg)"/><rect x="165" y="135" width="125" height="125" fill="var(--info-bg)"/>
+    <line x1="40" y1="260" x2="290" y2="260" stroke="var(--border)"/><line x1="40" y1="10" x2="40" y2="260" stroke="var(--border)"/>
+    <text x="102" y="28" text-anchor="middle" font-family="Calibri,Arial,sans-serif" font-size="10" fill="var(--warn)">Write the assertion first</text>
+    <text x="227" y="28" text-anchor="middle" font-family="Calibri,Arial,sans-serif" font-size="10" fill="var(--good)">Build it</text>
+    <text x="102" y="252" text-anchor="middle" font-family="Calibri,Arial,sans-serif" font-size="10" fill="var(--bad)">Throw it away</text>
+    <text x="227" y="252" text-anchor="middle" font-family="Calibri,Arial,sans-serif" font-size="10" fill="var(--info)">Stepping stone</text>
+    <text x="165" y="282" text-anchor="middle" font-family="Calibri,Arial,sans-serif" font-size="11" fill="var(--dim)">Buildability</text>
+    <text x="14" y="135" text-anchor="middle" font-family="Calibri,Arial,sans-serif" font-size="11" fill="var(--dim)" transform="rotate(-90 14 135)">Value</text>
+    <circle id="dot" cx="165" cy="135" r="7" fill="var(--link)" stroke="var(--panel)" stroke-width="2"/>
+  </svg>
+  <div class="verdict" id="verdict"></div>
+</div>
+</div>
+<div class="panel-f">Scoring: Value = per-instance dollars, annual pool, and knowledge type, each on a 5-point band. Buildability = verifiability (0 to 5), frontier position, product gates, and value-to-cost ratio. Bands are mine; the inputs are the cited sources'. The point is the arithmetic, not the decimals.</div>
+</div>
+
+<h2>Checklist: is this task worth an environment?</h2>
+
+<div class="panel check">
+<div class="panel-h">Task selection audit <span>20 questions, answer with a number where you can</span></div>
+<div class="panel-b">
+<div class="check-h"><span class="hint" style="margin:0">Tick what you can answer yes to today. Progress saves in this browser.</span><span class="score" id="ckScore">0 / 20</span></div>
+<div class="bar"><i id="ckBar"></i></div>
+<div id="checklist"></div>
+<div style="margin-top:10px"><button class="btn" id="ckReset">Clear checklist</button></div>
+</div>
+<div class="panel-f">If the "Is the work real and sized?" group is empty, stop and do that first. It costs an afternoon with free data and it is the afternoon most teams skip.</div>
 </div>
 
 
@@ -269,6 +334,35 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <p>This is part of the <strong>RL Fundamentals Mini-Series</strong>. Read the rest of the series at <a href="/">howtoposttrain.com</a>.</p>
 <p class="disclaimer">These opinions are my own and don't represent the views of any of my affiliations or employer.</p>
 </div>
+
+<h2>References</h2>
+<div class="refs"><ol>
+<li id="r1">Patwardhan et al. (OpenAI), <a href="https://arxiv.org/abs/2510.04374">GDPval: Evaluating AI Model Performance on Real-World Economically Valuable Tasks</a>, arXiv 2510.04374, October 2025; public write-up at <a href="https://openai.com/index/gdpval/">openai.com/index/gdpval</a>; dataset at <a href="https://huggingface.co/datasets/openai/gdpval">huggingface.co/datasets/openai/gdpval</a>.</li>
+<li id="r2">Anthropic, <a href="https://www.anthropic.com/research/economic-index-march-2026-report">Anthropic Economic Index: Learning curves</a>, March 2026, and <a href="https://www.anthropic.com/research/economic-index-primitives">New building blocks for understanding AI use</a>, January 2026.</li>
+<li id="r3">US Bureau of Labor Statistics, <a href="https://www.bls.gov/oes/">Occupational Employment and Wage Statistics</a>, May 2025 release. Caveats: no hours data, excludes the self-employed and benefits (<a href="https://www.bls.gov/oes/oes_ques.htm">FAQ</a>).</li>
+<li id="r4">O*NET Resource Center, database 29.0, <a href="https://www.onetcenter.org/dictionary/29.0/excel/task_statements.html">Task Statements</a> and <a href="https://www.onetcenter.org/dictionary/29.0/excel/task_ratings.html">Task Ratings</a>.</li>
+<li id="r5">Denain and Barber (Epoch AI), <a href="https://epoch.ai/gradient-updates/state-of-rl-envs">An FAQ on Reinforcement Learning Environments</a>, January 2026.</li>
+<li id="r6">BLS Occupational Outlook Handbook, May 2025 medians: <a href="https://www.bls.gov/ooh/legal/lawyers.htm">lawyers</a>, <a href="https://www.bls.gov/ooh/legal/paralegals-and-legal-assistants.htm">paralegals</a>, <a href="https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm">software developers</a>, <a href="https://www.bls.gov/ooh/management/advertising-promotions-and-marketing-managers.htm">marketing managers</a>, <a href="https://www.bls.gov/ooh/business-and-financial/management-analysts.htm">management analysts</a>, <a href="https://www.bls.gov/ooh/office-and-administrative-support/customer-service-representatives.htm">customer service representatives</a>, <a href="https://www.bls.gov/ooh/office-and-administrative-support/bookkeeping-accounting-and-auditing-clerks.htm">bookkeeping clerks</a>.</li>
+<li id="r7">Clio, <a href="https://www.clio.com/resources/legal-trends/compare-lawyer-rates/">Legal Trends Report: lawyer hourly rates</a>, 2025 data.</li>
+<li id="r8">Brynjolfsson, Chandar, Chen (Stanford Digital Economy Lab), <a href="https://digitaleconomy.stanford.edu/news/canariesaug26/">Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence</a>, August 2026 revision.</li>
+<li id="r9">Dell'Acqua et al., <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321">Navigating the Jagged Technological Frontier</a>, HBS working paper 24-013, 2023; Organization Science, 2025.</li>
+<li id="r10">Wei, <a href="https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law">Asymmetry of verification and verifier's law</a>, July 2025.</li>
+<li id="r11">HUD, <a href="https://www.hud.ai/resources/verifier-reward-design-rl-environments">Verifier and Reward Design for RL Environments</a>, March 2026.</li>
+<li id="r12">Lambert et al. (Ai2), <a href="https://allenai.org/blog/tulu-3-technical">Tulu 3: Reinforcement Learning with Verifiable Rewards</a>, November 2024.</li>
+<li id="r13">Humlum and Vestergaard, <a href="https://bfi.uchicago.edu/wp-content/uploads/2025/04/BFI_WP_2025-56-1.pdf">Large Language Models, Small Labor Market Effects</a>, NBER w33777, April 2025.</li>
+<li id="r14">Vohra, <a href="https://review.firstround.com/how-superhuman-built-an-engine-to-find-product-market-fit/">How Superhuman Built an Engine to Find Product/Market Fit</a>, First Round Review, 2018.</li>
+<li id="r15">Husain, <a href="https://hamel.dev/blog/posts/evals/">Your AI Product Needs Evals</a>, 2024.</li>
+<li id="r16">Hammer, <a href="https://hbr.org/1990/07/reengineering-work-dont-automate-obliterate">Reengineering Work: Don't Automate, Obliterate</a>, Harvard Business Review, 1990.</li>
+<li id="r17">HUD, <a href="https://www.hud.ai/">hud.ai</a> and <a href="https://docs.hud.ai/">docs.hud.ai</a>, accessed September 2026.</li>
+<li id="r18">Eloundou, Manning, Mishkin, Rock, <a href="https://www.science.org/doi/10.1126/science.adj0998">GPTs are GPTs</a>, Science, 2024.</li>
+<li id="r19">Tomlinson et al. (Microsoft Research), <a href="https://arxiv.org/html/2507.07935v6">Working with AI: Measuring the Applicability of Generative AI to Occupations</a>, arXiv 2507.07935, 2025. Wage-applicability correlation r = 0.13.</li>
+<li id="r20">Kwa et al. (METR), <a href="https://arxiv.org/pdf/2503.14499">Measuring AI Ability to Complete Long Software Tasks</a>, March 2025, including the 16 messiness factors.</li>
+<li id="r21">Zhu et al., <a href="https://arxiv.org/abs/2507.02825">Establishing Best Practices for Building Rigorous Agentic Benchmarks</a>, arXiv 2507.02825, 2025.</li>
+<li id="r22">Merrill et al., <a href="https://arxiv.org/html/2601.11868v1">Terminal-Bench</a>, arXiv 2601.11868, January 2026. Adversarial exploit agent over contributed tasks.</li>
+<li id="r23">Yao, Shinn, Razavi, Narasimhan (Sierra), <a href="https://arxiv.org/pdf/2406.12045">tau-bench</a>, 2024. pass^k.</li>
+<li id="r24">Jimenez et al., <a href="https://arxiv.org/abs/2310.06770">SWE-bench: Can Language Models Resolve Real-World GitHub Issues?</a>, ICLR 2024.</li>
+<li id="r25">Challapally, Pease, Raskar, Chari (MIT NANDA), <a href="https://mlq.ai/media/quarterly_decks/v0.1_State_of_AI_in_Business_2025_Report.pdf">The GenAI Divide: State of AI in Business 2025</a>, July 2025. Self-reported; authors flag the figures as directional.</li>
+</ol></div>
 
 </div><!-- /.container -->
 </article>
@@ -284,5 +378,104 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
     </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var occs=[
+    {n:'Lawyers',w:863700,r:76.76,b:349},
+    {n:'Paralegals and legal assistants',w:404900,r:30.24,b:187},
+    {n:'Software developers',w:1717800,r:64.44,b:0},
+    {n:'Marketing managers (adv., promo., marketing)',w:454800,r:79.70,b:0},
+    {n:'Management analysts (consultants)',w:1077100,r:48.97,b:0},
+    {n:'Customer service representatives',w:2666000,r:21.53,b:0},
+    {n:'Bookkeeping, accounting and auditing clerks',w:1532400,r:24.36,b:0},
+    {n:'Custom (type your own)',w:100000,r:40,b:0}
+  ];
+  var occ=document.getElementById('occ');
+  occs.forEach(function(o,i){var op=document.createElement('option');op.value=i;op.textContent=o.n;occ.appendChild(op)});
+  var $=function(id){return document.getElementById(id)};
+  function basis(){return document.querySelector('input[name=basis]:checked').value}
+  function applyOcc(){var o=occs[occ.value];$('workers').value=o.w;$('wage').value=(basis()==='billed'&&o.b)?o.b:o.r;calc()}
+  occ.addEventListener('change',applyOcc);
+  document.querySelectorAll('input[name=basis]').forEach(function(r){r.addEventListener('change',applyOcc)});
+  function band(x,cuts){var s=1;cuts.forEach(function(c){if(x>=c)s++});return Math.min(s,5)}
+  function fmt(x){if(x>=1e9)return '$'+(x/1e9).toFixed(1)+'B';if(x>=1e6)return '$'+(x/1e6).toFixed(1)+'M';if(x>=1e3)return '$'+(x/1e3).toFixed(0)+'k';return '$'+x.toFixed(0)}
+  function calc(){
+    var workers=+$('workers').value||0,wage=+$('wage').value||0,hours=+$('hours').value||0,inst=+$('inst').value||0,share=(+$('share').value||0)/100,cost=+$('cost').value||1;
+    var vi=hours*wage, pool=vi*inst*workers*share, ratio=vi/cost;
+    var ver=0;document.querySelectorAll('#ver input:checked').forEach(function(){ver++});
+    var tier=+document.querySelector('input[name=tier]:checked').value, fr=+document.querySelector('input[name=fr]:checked').value;
+    var gates=0;document.querySelectorAll('#gates input:checked').forEach(function(){gates++});
+    var vScore=Math.round(100*(band(vi,[50,200,1000,5000])+band(pool,[1e7,1e8,1e9,1e10])+tier)/15);
+    var bScore=Math.round(100*(ver+fr+gates*5/3+band(ratio,[0.1,0.5,1,3]))/20);
+    $('vInst').textContent=fmt(vi);$('vPool').textContent=fmt(pool);$('vRatio').innerHTML=ratio.toFixed(1)+'<small> x</small>';
+    $('vVal').textContent=vScore;$('vBuild').textContent=bScore;
+    var dot=$('dot');dot.setAttribute('cx',40+250*bScore/100);dot.setAttribute('cy',260-250*vScore/100);
+    var hv=vScore>=50,hb=bScore>=50,msg,cls,head;
+    if(hv&&hb){cls='good';head='Build it';msg='The work is worth money and you can verify it. Write the end-state assertion, seed a few impossible variants to measure your hack rate, and check the pass rate lands above 2 to 3% so the task produces gradient.'}
+    else if(hv&&!hb){cls='warn';head='Write the assertion first';msg='Valuable but not yet trainable. The cheapest fix is usually a narrower task inside the same workflow whose end state you can assert programmatically. Do not start with a rubric; start with the assertion.'}
+    else if(!hv&&hb){cls='info';head='Stepping stone';msg='Easy to verify, low economic weight. Fine as an early task if it is cheap and sits inside a workflow you have already sized. Tulu 3 shows verifiable tasks can transfer. Just do not mistake the pass rate here for product value.'}
+    else{cls='bad';head='Throw it away';msg='Neither valuable nor buildable. This is the "we made some tasks" quadrant. Spend the afternoon on OEWS and O*NET before building anything.'}
+    $('verdict').innerHTML='<span class="pill '+cls+'">'+head+'</span><div>'+msg+'</div>'+(ratio<1?'<div style="margin-top:8px;color:var(--dim)">Note: one instance of this task is worth less than it costs to build. That is fine only if the pool is large and the task is reused across many rollouts.</div>':'');
+  }
+  document.querySelectorAll('.ws input').forEach(function(i){i.addEventListener('input',calc);i.addEventListener('change',calc)});
+  applyOcc();
+
+  var groups=[
+    {h:'Is the work real and sized?',items:[
+      ['Can you name the O*NET-SOC occupation code and confirm the task is Core (relevance 67%+, importance 3.0+)?','O*NET Task Statements'],
+      ['Do you know US employment and the OEWS median hourly wage for the occupation?','OEWS May 2025'],
+      ['Did a practitioner, not you, estimate expert hours per instance?','GDPval'],
+      ['Does one instance clear roughly $200, the low end of what a task costs to build?','GDPval $398 average; Epoch AI'],
+      ['Have you stated whether the dollar figure is the worker’s wage or the customer’s billed rate?','OEWS caveats; Clio'],
+      ['Is the annual pool (workers x instances x value) big enough that a 10% improvement shows up in someone’s budget?','GDPval, occupations by total wages']
+    ]},
+    {h:'Is it the judgment part or the template part?',items:[
+      ['Is the task tacit (learned by doing) rather than codified (teachable from a manual)?','Canaries in the Coal Mine'],
+      ['Is the task not already saturated in general usage (generic writing, summarization, boilerplate)?','Noy and Zhang; Anthropic Economic Index'],
+      ['Do you know whether the task sits inside, at the edge of, or outside the current frontier?','Dell’Acqua et al.'],
+      ['Do you know whether novices or experts do this task today, since gains concentrate on novices?','Brynjolfsson, Li and Raymond'],
+      ['Have you checked that high wage actually means high AI applicability for this occupation? The correlation is weak.','Tomlinson et al., r = 0.13']
+    ]},
+    {h:'Is it verifiable?',items:[
+      ['Can you write the end-state assertion (“table X contains a row where…”) before any reward formula?','HUD, Verifier and Reward Design'],
+      ['Have you scored the task on Wei’s five properties: objective truth, fast, scalable, low noise, continuous?','Wei, verifier’s law'],
+      ['Has someone tried to pass the task without doing the work, before you shipped it?','Terminal-Bench exploit agent; Epoch AI'],
+      ['Would an agent that returns nothing, or lists every option, score zero?','Zhu et al., Agentic Benchmark Checklist'],
+      ['Is the current pass rate between 2% and 90%, and do you know pass^k, not just pass^1?','Epoch AI; tau-bench']
+    ]},
+    {h:'Is the surrounding product ready?',items:[
+      ['Would 40%+ of engaged users be very disappointed without the product, or can you name the high-expectation customer?','Sean Ellis test via Superhuman'],
+      ['Have core metrics been stable long enough that “good output” means the same thing this month as last month?','Husain; MIT NANDA'],
+      ['Are you building against the real software rather than a simulation of it?','HUD; WebArena; OSWorld'],
+      ['Is there an existing trace of the work (tickets, PRs, filings) you can mine for tasks, the way SWE-bench mined GitHub?','SWE-bench provenance']
+    ]}
+  ];
+  var total=0;groups.forEach(function(g){total+=g.items.length});
+  var KEY='htpt-04';
+  var saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){saved={}}
+  var cl=document.getElementById('checklist'),idx=0;
+  groups.forEach(function(g){
+    var d=document.createElement('div');d.className='grp';
+    var h=document.createElement('h4');h.textContent=g.h;d.appendChild(h);
+    g.items.forEach(function(it){
+      var id='ck'+(idx++);
+      var l=document.createElement('label');l.className='item'+(saved[id]?' done':'');
+      l.innerHTML='<input type="checkbox" id="'+id+'"'+(saved[id]?' checked':'')+'><span>'+it[0]+'<span class="src">Source: '+it[1]+'</span></span>';
+      d.appendChild(l);
+    });
+    cl.appendChild(d);
+  });
+  function score(){
+    var boxes=cl.querySelectorAll('input'),n=0;
+    boxes.forEach(function(b){if(b.checked)n++;b.closest('.item').classList.toggle('done',b.checked);saved[b.id]=b.checked});
+    $('ckScore').textContent=n+' / '+total;$('ckBar').style.width=(100*n/total)+'%';
+    try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}
+  }
+  cl.addEventListener('change',score);
+  $('ckReset').addEventListener('click',function(){cl.querySelectorAll('input').forEach(function(b){b.checked=false});score()});
+  score();
+})();
+</script>
 </body>
 </html>

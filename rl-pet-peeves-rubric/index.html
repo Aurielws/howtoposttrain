@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rubric Quality pt1: Your Rubric Was Written by Someone Who Has Never Done the Job - How to Post-Train</title>
+<meta name="description" content="Check that your evals are measuring the right thing. A no-BS guide for startups post-training their own models, with an interactive criterion sorter and a 21-point rubric audit.">
 <style>
 /* ======================================================================
    BRAND SYSTEM - Auriel · Heirloom Palette
@@ -16,6 +17,11 @@
   --s1:#C85080;--s2:#E89040;--s3:#6080C8;--s4:#40A870;
   --red:#9B2020;--red-bg:#FFF0F0;--green:#1E7A40;--green-bg:#EAF7EF;
   --mono:"DM Mono",monospace;
+  --bg:var(--cream);--panel:#fff;--panel2:var(--paper);--sep:var(--lw-sep);
+  --dim:var(--muted);--text:var(--ink);--text2:var(--ink2);
+  --serif:"Fraunces",serif;--sans:var(--lw-sans);--link:var(--accent);
+  --good:var(--green);--good-bg:var(--green-bg);--bad:var(--red);--bad-bg:var(--red-bg);
+  --hover:var(--paper);--accent-bg:rgba(168,72,90,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -172,6 +178,63 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 
 
 /* ======================================================================
+   INTERACTIVE PANELS (ported from redo-drafts/source/shared.css)
+   ====================================================================== */
+.panel{background:var(--panel);border:1px solid var(--sep);border-radius:3px;margin:26px 0}
+.panel-h{padding:10px 16px;border-bottom:1px solid var(--sep);background:var(--panel2);font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+.panel-h span{color:var(--text);text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;margin-left:8px}
+.panel-b{padding:16px}
+.panel-f{padding:10px 16px;border-top:1px solid var(--sep);background:var(--panel2);font-family:var(--sans);font-size:14px;color:var(--text2)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.cols{grid-template-columns:1fr}}
+.col{border:1px solid var(--sep);border-radius:3px;padding:12px 14px;background:var(--bg)}
+.col h4{margin:0 0 2px;font-family:var(--serif);font-size:17px;font-weight:600}
+.col .who{font-family:var(--sans);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.col ul{list-style:none;margin:0;padding:0;font-family:var(--sans);font-size:14.5px;line-height:1.45}
+.col li{padding:5px 0;border-top:1px solid var(--sep);display:flex;gap:8px}
+.col li:first-child{border-top:none}
+.col li::before{content:"\2713";color:var(--dim);font-weight:600}
+.col.good li::before{color:var(--good)}
+.col.bad li::before{color:var(--bad)}
+.tool{font-family:var(--sans)}
+.tool .hint,.check .hint{font-size:14px;color:var(--dim);margin:0 0 12px}
+.btn{font-family:var(--sans);font-size:14px;padding:7px 14px;border:1px solid var(--border);border-radius:3px;background:transparent;color:var(--link);cursor:pointer}
+.btn:hover{background:var(--hover)}
+.btn:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.btn.on{background:var(--link);color:#fff;border-color:var(--link)}
+.check{font-family:var(--sans)}
+.check-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.check-h .score{font-variant-numeric:tabular-nums;color:var(--text2);font-size:14px}
+.bar{height:6px;background:var(--sep);border-radius:3px;overflow:hidden;margin:0 0 18px}
+.bar i{display:block;height:100%;background:var(--link);width:0;transition:width .2s}
+.grp{margin:0 0 18px}
+.grp h4{font-family:var(--sans);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:0 0 4px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.item{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--sep);font-size:15px;line-height:1.45;align-items:start}
+.item input{margin:4px 0 0;width:16px;height:16px;accent-color:#A8485A}
+.item .src{display:block;font-size:12.5px;color:var(--dim);margin-top:2px}
+.item.done{color:var(--dim)}
+.refs{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--text2)}
+.refs ol{padding-left:26px;margin:0}
+.refs li{margin:0 0 9px;padding-left:4px}
+.refs li:target{background:var(--accent-bg)}
+sup.c{font-family:var(--sans);font-size:12px;line-height:0;margin-left:1px}
+sup.c a{text-decoration:none;color:var(--link)}
+
+/* -- page-specific: criterion sorter -- */
+.sorter{display:grid;grid-template-columns:1fr;gap:10px}
+.card{border:1px solid var(--border);border-radius:3px;padding:12px 14px;background:var(--bg);display:grid;grid-template-columns:1fr auto;gap:10px 14px;align-items:center}
+.card .dom{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.card .crit{font-family:var(--serif);font-size:17px;line-height:1.4;color:var(--text)}
+.card .acts{display:flex;gap:6px;flex-wrap:wrap}
+.card .why{grid-column:1 / -1;font-size:14px;color:var(--text2);border-top:1px solid var(--sep);padding-top:8px;display:none}
+.card.reveal .why{display:block}
+.card.right{border-color:var(--good)}
+.card.wrong{border-color:var(--bad)}
+.tally{margin-top:12px;font-size:14px;color:var(--text2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+@media (max-width:560px){.card{grid-template-columns:1fr}}
+
+
+/* ======================================================================
    SIGN-OFF / FOOTER
    ====================================================================== */
 .sign-off{
@@ -198,11 +261,11 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="How to Post-Train">
 <meta property="og:title" content="Rubric Quality pt1: Your Rubric Was Written by Someone Who Has Never Done the Job">
-<meta property="og:description" content="Your verifier was built by someone who Googled the domain for an afternoon. Here&#x27;s why that&#x27;s ruining your model.">
+<meta property="og:description" content="Check that your evals are measuring the right thing. A no-BS guide for startups post-training their own models, with an interactive criterion sorter and a 21-point rubric audit.">
 <meta property="og:url" content="https://howtoposttrain.com/rl-pet-peeves-rubric/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rubric Quality pt1: Your Rubric Was Written by Someone Who Has Never Done the Job">
-<meta name="twitter:description" content="Your verifier was built by someone who Googled the domain for an afternoon. Here&#x27;s why that&#x27;s ruining your model.">
+<meta name="twitter:description" content="Check that your evals are measuring the right thing. A no-BS guide for startups post-training their own models, with an interactive criterion sorter and a 21-point rubric audit.">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -223,9 +286,9 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <!-- ========== HERO ========== -->
 <header class="hero">
 <div class="container">
-<div class="hero-series">RL Fundamentals Mini-Series</div>
-<h1>Rubric Quality pt1: Your <strong>Rubric</strong> Was Written by Someone Who Has Never Done the Job</h1>
-<p class="hero-sub">Your verifier was built by someone who Googled the domain for an afternoon. Here's why that's <strong>ruining your model.</strong></p>
+<div class="hero-series">RL Fundamentals Mini-Series &middot; 03</div>
+<h1>Rubric Quality pt1: Your Rubric Was Written by Someone Who Has <strong>Never Done the Job</strong></h1>
+<p class="hero-sub">Check that your evals are measuring the right thing. A no-BS guide for startups post-training their own models, with an interactive criterion sorter and a 21-point rubric audit.</p>
 </div>
 </header>
 
@@ -233,99 +296,88 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <article>
 <div class="container">
 
-<p>If you're doing RL post-training and wondering why your model produces outputs that look right on paper but embarrass anyone who actually works in the domain, the problem might not be the model. It might be the rubric. This is one of the most common failures I see in both closed and open source labs.</p>
+<p>If you're doing RL post-training and wondering why your model produces outputs that look right on paper but embarrass anyone who actually works in the domain, the problem might not be the model. It might be the rubric. I see this in closed labs and open source labs alike, and in 2026 it is no longer just my opinion. The papers have caught up.</p>
 
 <hr>
 
-<h2>The Problem with Googled Rubrics</h2>
+<h2>The afternoon-of-Googling rubric</h2>
 
-<p>This is painfully common in closed source and open source labs. An ML engineer or data contractor Googles a domain for an afternoon, writes a rubric, and now that rubric is supposedly the standard for what "good" looks like in finance, or law, or insurance, or whatever the domain is. The problem is that they have no idea what actually matters to a practitioner. They'll check for surface-level things - did the model produce an output? does it have the right number of items? is it formatted correctly? - while completely missing the qualitative judgment calls that a real professional would make in two seconds.</p>
+<p>Here is the pattern. An ML engineer or a data contractor Googles a domain for an afternoon, writes a rubric, and that rubric becomes the standard for what "good" looks like in finance, or law, or insurance. They check for surface-level things: did the model produce an output, does it have the right number of items, is it formatted correctly. They miss the qualitative judgment calls a real professional makes in two seconds.</p>
 
-<p>If you're building a rubric for helping a chatbot write better legal contracts, does it just check that the contract exists and has the expected sections? Or does it verify that the indemnification clause actually limits liability in a way a lawyer would consider enforceable, that the governing law is appropriate for the jurisdiction, that the payment terms don't create ambiguity a counterparty would immediately flag? A first-year associate and a senior partner would score the same output very differently, and the senior partner's reasoning is what you actually want encoded in your rubric.</p>
+<p>How big is the gap between an expert and a smart person who Googled it? GPQA measured it. Domain PhDs scored 65% on questions written by their peers. Highly skilled non-experts scored 34%, after averaging more than 30 minutes per question with unrestricted web access.<sup class="c"><a href="#r1">1</a></sup> That is the title of this post as a number. If your rubric author is the non-expert, your rubric is wrong about a third of the time before the model ever sees it.</p>
 
+<p>Educational measurement figured this out years before ML did. Susan Brookhart's 2018 paper on rubric criteria attacks exactly the countable-surface-feature rubric: "has three sources" instead of "uses a variety of relevant, credible sources." Her point is that when criteria are countable, the student "need not pay attention to the quality" of the work.<sup class="c"><a href="#r2">2</a></sup> Swap "student" for "policy" and you have this post.</p>
 
-<!-- ══════════ VISUAL: Comparison Card ══════════ -->
-<div class="visual">
-<div class="visual-header">
-<span class="visual-label">Comparison</span>
-<span class="visual-style">Surface-Level vs. Practitioner-Informed</span>
-</div>
-<div class="visual-body">
-<div class="comparison-columns">
+<p>If you're building a rubric to help a chatbot write better legal contracts, does it check that the contract exists and has the expected sections? Or does it check that the indemnification clause actually limits liability in a way a lawyer would consider enforceable, that the governing law matches the jurisdiction, that the payment terms don't create an ambiguity a counterparty would flag on the first read? A first-year associate and a senior partner score the same output very differently, and the senior partner's reasoning is what you want encoded.</p>
 
-<!-- Left Column: Surface-Level -->
-<div class="comparison-col comparison-col-surface">
-<div class="comparison-col-header">Surface-Level Rubric</div>
-<div class="comparison-col-subtitle">Written by: ML Engineer after an afternoon of Googling</div>
-<ul class="comparison-items">
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Contract exists?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Has expected sections?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Formatted correctly?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Output is non-empty?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Word count in range?</span>
-</li>
-</ul>
+<div class="panel">
+<div class="panel-h">Comparison <span>Surface-level vs. practitioner-informed</span></div>
+<div class="panel-b"><div class="cols">
+<div class="col bad"><h4>Surface-level rubric</h4><div class="who">Written by: ML engineer after an afternoon of Googling</div><ul><li>Contract exists?</li><li>Has expected sections?</li><li>Formatted correctly?</li><li>Output is non-empty?</li><li>Word count in range?</li></ul></div>
+<div class="col good"><h4>Practitioner-informed rubric</h4><div class="who">Written by: senior partner with 15 years in contracts</div><ul><li>Indemnification clause limits liability appropriately?</li><li>Governing law matches jurisdiction?</li><li>Payment terms free of counterparty ambiguity?</li><li>Force majeure covers realistic scenarios?</li><li>Non-compete scope enforceable in target state?</li></ul></div>
+</div></div>
+<div class="panel-f">Mercor's APEX benchmark had 76 senior bankers, consultants, lawyers and physicians write pass/fail criteria they describe as "analogous to unit tests." That is what the right column looks like at scale.<sup class="c"><a href="#r3">3</a></sup></div>
 </div>
 
-<!-- Right Column: Practitioner-Informed -->
-<div class="comparison-col comparison-col-practitioner">
-<div class="comparison-col-header">Practitioner-Informed Rubric</div>
-<div class="comparison-col-subtitle">Written by: Senior Partner with 15 years in contracts</div>
-<ul class="comparison-items">
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Indemnification clause limits liability appropriately?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Governing law matches jurisdiction?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Payment terms free of counterparty ambiguity?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Force majeure clause covers realistic scenarios?</span>
-</li>
-<li class="comparison-item">
-<span class="comparison-check">&#x2713;</span>
-<span>Non-compete scope is enforceable in target state?</span>
-</li>
-</ul>
-</div>
+<h2>The model will optimize for exactly what you reward</h2>
 
-</div><!-- /comparison-columns -->
-</div><!-- /visual-body -->
-<div class="visual-footer">The model optimizes for whatever the rubric rewards. If the rubric rewards <strong>surface-level correctness</strong>, that's what you get.</div>
-</div>
+<p>This is the part people nod along to and then ignore. If the verifier is informed by surface-level knowledge that nobody in the domain would consider a marker of quality, the model learns to optimize for the wrong things. It produces outputs that look right to someone who doesn't know the domain and embarrassing to someone who does.</p>
 
+<p>A May 2026 paper from the Rubrics-as-Rewards group put a number on it. They name three concrete rubric hacks: partially satisfying a compound criterion, treating implicit content as explicit, and imprecise topical matching. Their headline finding is the one to tattoo on the wall: <strong>stronger verification does not prevent reward hacking when the rubric leaves important failure modes unspecified.</strong> Rubric-based verifiers preferred the hacked checkpoint while rubric-free judges rated it worse.<sup class="c"><a href="#r4">4</a></sup> A better judge cannot rescue a rubric that never mentioned the thing that matters.</p>
 
-<h2>The Model Will Optimize for Exactly What You Reward</h2>
+<p>The original Rubrics-as-Rewards ablation makes the provenance point directly. Rubrics generated with expert reference answers scored 35.9 on HealthBench. The same pipeline without expert grounding scored 32.0. The authors' own conclusion: "rubric quality is crucial."<sup class="c"><a href="#r5">5</a></sup></p>
 
-<p>If the verifier is informed by surface-level knowledge that a real person in that domain would never consider a marker of quality, the model will learn to optimize for the wrong things. It'll produce outputs that look right to someone who doesn't know the domain and look embarrassing to someone who does.</p>
+<p>And a frozen rubric is not neutral, it is harmful. Rubric Dropout trained Qwen3-8B with GRPO against a fixed rubric and watched the training reward climb while a stronger gold judge dropped 3 points on HealthBench-Hard and 22 points on ResearchQA. Randomly dropping 30 to 50% of criteria each step, so the policy never optimizes the same rubric twice, recovered most of the loss.<sup class="c"><a href="#r6">6</a></sup> That is the empirical version of what I said in the original post: rubrics and reward functions are evolving artifacts, and the whole post-training team owns them.</p>
 
-<h2>Elo Scores, POV Rubrics, and Evolving Artifacts</h2>
+<h2>Your judge has its own problems</h2>
 
-<p>This is why I personally like getting both Elo scores and people's POV based rubrics because it gives a post-training team more things to reason about when analyzing trends across task outcomes. Reward functions and rubrics are ever-evolving artifacts that the whole post-training team needs to work on together. But the starting point has to be directionally correct, and "directionally correct" can only come from people who have actually lived in that domain. Give the rubric, then explain how the rubric was created. That's the difference between a checklist and a useful artifact.</p>
+<p>Even a practitioner-written rubric gets scored by something, and that something has biases before it reads your first criterion. Swap the order of two responses and the verdict can flip: with ChatGPT as the evaluator, Vicuna-13B beat ChatGPT on 66 of 80 queries purely by reordering.<sup class="c"><a href="#r7">7</a></sup> Reorder the criteria inside a rubric prompt and the scores move too.<sup class="c"><a href="#r8">8</a></sup> Judges from the same model family as the policy prefer their own outputs, and the effect scales with how well the judge recognizes its own writing.<sup class="c"><a href="#r9">9</a></sup></p>
 
+<p>The most useful 2026 finding is that a consistent judge is not a correct judge. Across 21 judge models, raw agreement with humans overstated chance-corrected agreement by 34 to 41 points: an 85% match rate is roughly a 0.48 kappa. Two production judges had test-retest reliability above 0.95 while carrying severe position bias.<sup class="c"><a href="#r10">10</a></sup> If you report "our judge agrees with experts 85% of the time," report the kappa next to it or nobody should believe you.</p>
+
+<h2>"Just use tests" is not a free pass either</h2>
+
+<p>The standard escape hatch is "we don't need a rubric, we have unit tests." OpenAI audited 138 SWE-bench Verified problems in February 2026 and found 59.4% had flawed tests that reject functionally correct submissions: 35.5% enforced unstated implementation details (one required a function named <code>get_annotation</code> that the problem never mentioned) and 18.8% checked functionality beyond the stated problem.<sup class="c"><a href="#r11">11</a></sup> This is the benchmark that 93 developers had already filtered by hand, throwing out 68.3% of the original set.<sup class="c"><a href="#r12">12</a></sup> A test is a rubric written in Python. It inherits every authorship problem above.</p>
+
+<h2>Elo scores, POV rubrics, and evolving artifacts</h2>
+
+<p>This is why I like getting both Elo scores and practitioner point-of-view rubrics. They fail in different directions. Under distractor features that a judge happens to like, pairwise preferences flipped about 35% of the time versus 9% for absolute rubric scores.<sup class="c"><a href="#r13">13</a></sup> Meanwhile pure Elo silently rewards formatting: once LMSYS controlled for style, length was the dominant factor and GPT-4o-mini fell from rank 6 to 11.<sup class="c"><a href="#r14">14</a></sup> Run both, and treat the disagreements as the interesting data. The pair gives a post-training team more things to reason about when analyzing trends across task outcomes.</p>
+
+<p>The starting point still has to be directionally correct, and directionally correct only comes from people who have lived in the domain. Then the rubric has to keep moving. Shankar and colleagues call it criteria drift: you need criteria to grade outputs, but grading outputs is how you discover your criteria.<sup class="c"><a href="#r15">15</a></sup> Some criteria only exist once you have seen a specific failure.</p>
+
+<h2>Give the rubric, then explain how the rubric was created</h2>
+
+<p>That is the difference between a checklist and a useful artifact. The best published process I know is HealthBench Professional: physicians author the criteria, other physicians peer review them, then an adjudication pass removes ambiguity, explicitly so that low scores are attributable to the model rather than to annotation noise.<sup class="c"><a href="#r16">16</a></sup> PaperBench co-developed every rubric with the authors of the paper being replicated and validated the automated judge as its own artifact.<sup class="c"><a href="#r17">17</a></sup> Even the original HealthBench, 262 physicians and 48,562 criteria, has a validated tier of 34 consensus criteria and a much larger tier written by one unreviewed physician each.<sup class="c"><a href="#r18">18</a></sup> Ask which tier yours is.</p>
+
+<p>Anthropic's agent-eval guidance gives the one-line acceptance test: a good task is one where two domain experts would independently reach the same pass/fail verdict.<sup class="c"><a href="#r19">19</a></sup> Run that on 20 items before you run it on 20,000.</p>
 
 <div class="key-detail">
 <div class="key-detail-text">Give the rubric, then explain how the rubric was created. That's the difference between a checklist and a useful artifact.</div>
+</div>
+
+<h2>Interactive guide: sort the criterion</h2>
+
+<div class="panel tool">
+<div class="panel-h">Criterion sorter <span>Surface feature or practitioner judgment?</span></div>
+<div class="panel-b">
+<p class="hint">Twelve real-shaped criteria across three domains. Tag each one. A surface criterion is countable and checkable without doing the job; a judgment criterion is one a senior practitioner checks in two seconds and a non-practitioner would never think to check. Brookhart's test: does it describe the quality of the work, or restate the task instructions?</p>
+<div class="sorter" id="sorter"></div>
+<div class="tally"><span id="tally">0 of 12 tagged</span><span><button class="btn" id="revealAll">Reveal all</button> <button class="btn" id="resetSort">Reset</button></span></div>
+</div>
+<div class="panel-f">Rule of thumb from the sorter: if you cannot name at least one judgment criterion per task, the rubric encodes no domain knowledge and the model will learn none.</div>
+</div>
+
+<h2>Checklist: audit your rubric, critic, or verifier</h2>
+
+<div class="panel check">
+<div class="panel-h">Rubric audit <span>21 yes/no questions, each traceable to a source</span></div>
+<div class="panel-b">
+<div class="check-h"><span class="hint" style="margin:0">Tick what you can answer yes to today. Progress saves in this browser.</span><span class="score" id="ckScore">0 / 20</span></div>
+<div class="bar"><i id="ckBar"></i></div>
+<div id="checklist"></div>
+<div style="margin-top:10px"><button class="btn" id="ckReset">Clear checklist</button></div>
+</div>
+<div class="panel-f">Scoring guide: under 8, your rubric is a task description. 8 to 14, it encodes some judgment but nobody has validated the judge. 15 or above, you are in HealthBench Professional territory and should write up how you got there.</div>
 </div>
 
 
@@ -335,6 +387,35 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <p class="disclaimer">These opinions are my own and don't represent the views of any of my affiliations or employer.</p>
 </div>
 
+<h2>References</h2>
+<div class="refs"><ol>
+<li id="r1">Rein et al., <a href="https://arxiv.org/abs/2311.12022">GPQA: A Graduate-Level Google-Proof Q&amp;A Benchmark</a>, arXiv 2311.12022, 2023. Experts 65%, skilled non-experts 34% with 30+ minutes of web access.</li>
+<li id="r2">Brookhart, <a href="https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2018.00022/pdf">Appropriate Criteria: Key to Effective Rubrics</a>, Frontiers in Education, 2018.</li>
+<li id="r3">Vidgen et al. (Mercor), <a href="https://arxiv.org/html/2509.25721v1">The AI Productivity Index (APEX)</a>, arXiv 2509.25721, 2025. 76 experts averaging 7.25 years; 89% judge-to-expert agreement.</li>
+<li id="r4">Mahmoud, Rezaei, Wang, Gunjal, Liu, He, <a href="https://arxiv.org/abs/2605.12474">Reward Hacking in Rubric-Based Reinforcement Learning</a>, arXiv 2605.12474, May 2026.</li>
+<li id="r5">Gunjal et al. (Scale AI), <a href="https://arxiv.org/abs/2507.17746">Rubrics as Rewards: Reinforcement Learning Beyond Verifiable Domains</a>, arXiv 2507.17746, 2025. Expert-grounded rubrics 35.9 vs 32.0 on HealthBench.</li>
+<li id="r6">Yang et al., <a href="https://arxiv.org/abs/2608.11669">Rubric Dropout: A Simple Way to Mitigate Reward Hacking in Rubric-as-Reward RL</a>, arXiv 2608.11669, August 2026.</li>
+<li id="r7">Wang et al., <a href="https://arxiv.org/abs/2305.17926">Large Language Models are not Fair Evaluators</a>, arXiv 2305.17926, ACL 2024.</li>
+<li id="r8">Xu, Hirasawa, Kozuno, Ushiku, <a href="https://arxiv.org/abs/2602.02219">Am I More Pointwise or Pairwise? Revealing Position Bias in Rubric-Based LLM-as-a-Judge</a>, arXiv 2602.02219, 2026.</li>
+<li id="r9">Panickssery, Bowman, Feng, <a href="https://arxiv.org/abs/2404.13076">LLM Evaluators Recognize and Favor Their Own Generations</a>, NeurIPS 2024.</li>
+<li id="r10">Norman, Rivera, Hughes (UC Berkeley), <a href="https://arxiv.org/html/2606.19544v1">Reliability without Validity: A Systematic, Large-Scale Evaluation of LLM-as-a-Judge Models</a>, arXiv 2606.19544, June 2026.</li>
+<li id="r11">OpenAI, <a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/">Why SWE-bench Verified no longer measures frontier coding capabilities</a>, February 2026.</li>
+<li id="r12">OpenAI, <a href="https://openai.com/index/introducing-swe-bench-verified/">Introducing SWE-bench Verified</a>, August 2024.</li>
+<li id="r13">Tripathi, Wadhwa, Durrett, Niekum, <a href="https://arxiv.org/abs/2504.14716">Pairwise or Pointwise? Evaluating Feedback Protocols for Bias in LLM-Based Evaluation</a>, arXiv 2504.14716, 2025.</li>
+<li id="r14">Li, Angelopoulos, Chiang (LMSYS), <a href="https://www.lmsys.org/blog/2024-08-28-style-control/">Does style matter? Disentangling style and substance in Chatbot Arena</a>, August 2024.</li>
+<li id="r15">Shankar, Zamfirescu-Pereira, Hartmann, Parameswaran, Arawjo, <a href="https://arxiv.org/abs/2404.12272">Who Validates the Validators?</a>, UIST 2024.</li>
+<li id="r16">OpenAI, <a href="https://arxiv.org/html/2604.27470v1">HealthBench Professional: Evaluating Large Language Models on Real Clinician Chats</a>, arXiv 2604.27470, April 2026.</li>
+<li id="r17">Starace et al. (OpenAI), <a href="https://openai.com/index/paperbench/">PaperBench: Evaluating AI's Ability to Replicate AI Research</a>, ICML 2025.</li>
+<li id="r18">OpenAI, <a href="https://openai.com/index/healthbench/">HealthBench</a>, May 2025. 262 physicians, 48,562 criteria, 34 consensus criteria.</li>
+<li id="r19">Grace, Hadfield, Olivares, De Jonghe (Anthropic Engineering), <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a>, January 2026.</li>
+<li id="r20">Gao, Schulman, Hilton (OpenAI), <a href="https://arxiv.org/abs/2210.10760">Scaling Laws for Reward Model Overoptimization</a>, ICML 2023.</li>
+<li id="r21">Singhal, Goyal, Xu, Durrett, <a href="https://arxiv.org/abs/2310.03716">A Long Way to Go: Investigating Length Correlations in RLHF</a>, 2023.</li>
+<li id="r22">Hosking, Blunsom, Bartolo (Cohere), <a href="https://arxiv.org/abs/2309.16349">Human Feedback is not Gold Standard</a>, ICLR 2024.</li>
+<li id="r23">Baker et al. (OpenAI), <a href="https://openai.com/index/chain-of-thought-monitoring/">Detecting misbehavior in frontier reasoning models</a>, March 2025.</li>
+<li id="r24">Husain, <a href="https://hamel.dev/blog/posts/evals/">Your AI Product Needs Evals</a>, 2024, and <a href="https://hamel.dev/blog/posts/field-guide/">A Field Guide to Rapidly Improving AI Products</a>, 2025.</li>
+<li id="r25">Wei, <a href="https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law">Asymmetry of verification and verifier's law</a>, July 2025.</li>
+<li id="r26">Jonsson and Svingby, <a href="https://eric.ed.gov/?id=EJ796733">The use of scoring rubrics: Reliability, validity and educational consequences</a>, Educational Research Review, 2007.</li>
+</ol></div>
 
 </div><!-- /.container -->
 </article>
@@ -350,5 +431,102 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
     </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var crits=[
+    {d:'Legal',t:'The contract includes an indemnification section.',a:'S',w:'Presence of a section is countable. A lawyer checks whether the indemnity is capped, mutual, and carved out for gross negligence.'},
+    {d:'Legal',t:'The limitation-of-liability cap is consistent with the fee amount and the governing-law clause is enforceable in the named jurisdiction.',a:'J',w:'A senior partner checks this in seconds; a contractor would not know a cap can be void under some state laws.'},
+    {d:'Legal',t:'The response is between 800 and 1,500 words.',a:'S',w:'Length is the classic surface proxy. Singhal et al. show a length-only reward reproduces most apparent RLHF gains.'},
+    {d:'SRE',t:'The runbook lists the commands to run.',a:'S',w:'Countable. Any runbook has commands. The question is whether they are safe to run in the stated blast radius.'},
+    {d:'SRE',t:'The remediation avoids restarting the primary database during the failover window described in the incident.',a:'J',w:'Only someone who has been paged at 3am checks the ordering constraint. This is the kind of criterion that comes from error analysis on real incidents.'},
+    {d:'SRE',t:'The output uses correct YAML syntax.',a:'S',w:'Necessary but not quality. A linter can check it; it says nothing about whether the config is right.'},
+    {d:'Copywriting',t:'The copy mentions the product name at least twice.',a:'S',w:'Countable. Real brand guidelines usually say the opposite: do not over-repeat the name.'},
+    {d:'Copywriting',t:'The headline makes a claim the brand can substantiate without a footnote, and the CTA matches the funnel stage of the landing page.',a:'J',w:'A performance marketer checks substantiation and funnel fit reflexively. Neither is visible from the text alone without domain context.'},
+    {d:'Copywriting',t:'The response has a headline, body, and call to action.',a:'S',w:'This restates the task instructions. Brookhart: a task descriptor, not a criterion.'},
+    {d:'Legal',t:'Defined terms are used consistently between the body and the exhibits.',a:'J',w:'Looks countable, but catching Services versus Professional Services across a 40-page MSA is exactly the two-second partner check that non-lawyers miss.'},
+    {d:'SRE',t:'The postmortem identifies a contributing cause that the on-call engineer could not have known from the alert alone.',a:'J',w:'This criterion only exists because someone read real postmortems and noticed shallow ones stop at the alert. Criteria drift in action.'},
+    {d:'Copywriting',t:'No spelling errors.',a:'S',w:'A spell-checker criterion. Fine to include as a gate, but if it carries weight the model learns that correctness of spelling matters more than the claim.'}
+  ];
+  var sorter=document.getElementById('sorter'), tally=document.getElementById('tally');
+  var state={};
+  function render(){
+    sorter.innerHTML='';
+    crits.forEach(function(c,i){
+      var el=document.createElement('div');el.className='card';
+      var pick=state[i];
+      if(pick){el.classList.add('reveal');el.classList.add(pick===c.a?'right':'wrong')}
+      el.innerHTML='<div><div class="dom">'+c.d+'</div><div class="crit">'+c.t+'</div></div>'+
+        '<div class="acts"><button class="btn'+(pick==='S'?' on':'')+'" data-i="'+i+'" data-a="S">Surface</button><button class="btn'+(pick==='J'?' on':'')+'" data-i="'+i+'" data-a="J">Judgment</button></div>'+
+        '<div class="why"><strong>'+(pick? (pick===c.a?'Right. ':'Not quite. '):'')+(c.a==='S'?'Surface.':'Practitioner judgment.')+'</strong> '+c.w+'</div>';
+      sorter.appendChild(el);
+    });
+    var n=Object.keys(state).length, r=crits.filter(function(c,i){return state[i]===c.a}).length;
+    tally.textContent=n+' of '+crits.length+' tagged'+(n?', '+r+' match the key':'');
+  }
+  sorter.addEventListener('click',function(e){var b=e.target.closest('button[data-i]');if(!b)return;state[b.dataset.i]=b.dataset.a;render()});
+  document.getElementById('revealAll').addEventListener('click',function(){crits.forEach(function(c,i){if(!state[i])state[i]=c.a});render()});
+  document.getElementById('resetSort').addEventListener('click',function(){state={};render()});
+  render();
+
+  var groups=[
+    {h:'Provenance',items:[
+      ['Can you name who wrote each criterion and how many years they spent doing this job?','GPQA; APEX'],
+      ['Was each criterion peer reviewed by a second practitioner and then adjudicated for ambiguity?','HealthBench Professional'],
+      ['Is the rubric published with a written account of how it was created and what was rejected?','PaperBench; HealthBench Professional'],
+      ['If the rubric was model-generated, was it conditioned on expert reference answers?','Rubrics as Rewards, 35.9 vs 32.0'],
+      ['Do you know which of your criteria are validated by consensus and which were written once by one person?','HealthBench, 34 consensus criteria']
+    ]},
+    {h:'Criterion content',items:[
+      ['Have you counted the criteria that are countable surface features (sections present, word count, formatting) and capped their total weight?','Brookhart 2018'],
+      ['Can you name at least one criterion a senior practitioner checks in two seconds and a non-practitioner would never think of?','Brookhart 2018; GPQA'],
+      ['Are compound criteria (does X and Y and Z) split apart so partial satisfaction cannot score as satisfaction?','Reward Hacking in Rubric-Based RL 2026'],
+      ['Is each criterion self-contained and gradable in isolation, with an importance weight?','Rubrics as Rewards desiderata'],
+      ['Does the rubric grade the artifact produced rather than the path taken, unless the path is the deliverable?','Anthropic, Demystifying evals'],
+      ['Does every criterion pass the low-noise test: would two graders reading the same output agree?','Wei, verifier’s law; Anthropic']
+    ]},
+    {h:'Judge and grader validity',items:[
+      ['On 20 items, would two independent domain experts reach the same pass/fail verdict? Have you measured the disagreement rate?','Anthropic, Demystifying evals'],
+      ['Have you reported judge-to-expert agreement as Cohen’s kappa, not raw percent agreement?','Reliability without Validity 2026; Judging the Judges'],
+      ['Have you measured precision and recall separately, since pass/fail classes are usually imbalanced?','Husain 2024; HealthBench Macro F1'],
+      ['If you swap the order of two responses, or reorder the criteria in the prompt, do the scores hold?','Wang et al. 2023; Xu et al. 2026'],
+      ['If the judge shares a model family with the policy, have you quantified self-preference?','Panickssery et al. 2024'],
+      ['Have you personally read raw transcripts and grades from many trials, not just the aggregate?','Anthropic, Demystifying evals']
+    ]},
+    {h:'Hacking and drift',items:[
+      ['Do you track a held-out gold judge or rubric-free judge and watch for divergence from the training reward during the run?','Rubric Dropout 2026; Gao et al. 2022'],
+      ['Have you regressed reward against length and markdown density and confirmed length is not the dominant variable?','Singhal et al. 2023; LMSYS style control'],
+      ['For test-based verifiers, have you sampled tests for narrow (unstated implementation details) and wide (beyond the stated problem) failures?','OpenAI, SWE-bench Verified audit, 59.4%'],
+      ['Is the rubric versioned with an owner, a changelog and a scheduled review, and does it name failure modes seen in real traces?','Shankar et al. criteria drift; Reward Hacking in Rubric-Based RL 2026']
+    ]}
+  ];
+  var total=0;groups.forEach(function(g){total+=g.items.length});
+  var KEY='htpt-03';
+  var saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){saved={}}
+  var cl=document.getElementById('checklist');
+  var idx=0;
+  groups.forEach(function(g){
+    var d=document.createElement('div');d.className='grp';
+    var h=document.createElement('h4');h.textContent=g.h;d.appendChild(h);
+    g.items.forEach(function(it){
+      var id='ck'+(idx++);
+      var l=document.createElement('label');l.className='item'+(saved[id]?' done':'');
+      l.innerHTML='<input type="checkbox" id="'+id+'"'+(saved[id]?' checked':'')+'><span>'+it[0]+'<span class="src">Source: '+it[1]+'</span></span>';
+      d.appendChild(l);
+    });
+    cl.appendChild(d);
+  });
+  function score(){
+    var boxes=cl.querySelectorAll('input'),n=0;
+    boxes.forEach(function(b){if(b.checked)n++;b.closest('.item').classList.toggle('done',b.checked);saved[b.id]=b.checked});
+    document.getElementById('ckScore').textContent=n+' / '+total;
+    document.getElementById('ckBar').style.width=(100*n/total)+'%';
+    try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}
+  }
+  cl.addEventListener('change',score);
+  document.getElementById('ckReset').addEventListener('click',function(){cl.querySelectorAll('input').forEach(function(b){b.checked=false});score()});
+  score();
+})();
+</script>
 </body>
 </html>

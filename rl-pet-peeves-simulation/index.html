@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Quality pt 1: Your Data Screams "This Is a Simulation" and the Model Acts Accordingly - How to Post-Train</title>
+<meta name="description" content="Models detect fake environments and the behavior degrades fast. With a simulation-smell spotter built from the tells models actually verbalize, and a 24-point audit for your environment data.">
 <style>
 /* ======================================================================
    BRAND SYSTEM - Auriel · Heirloom Palette
@@ -16,6 +17,11 @@
   --s1:#C85080;--s2:#E89040;--s3:#6080C8;--s4:#40A870;
   --red:#9B2020;--red-bg:#FFF0F0;--green:#1E7A40;--green-bg:#EAF7EF;
   --mono:"DM Mono",monospace;
+  --bg:var(--cream);--panel:#fff;--panel2:var(--paper);--sep:var(--lw-sep);
+  --dim:var(--muted);--text:var(--ink);--text2:var(--ink2);
+  --serif:"Fraunces",serif;--sans:var(--lw-sans);--link:var(--accent);
+  --good:var(--green);--good-bg:var(--green-bg);--bad:var(--red);--bad-bg:var(--red-bg);
+  --hover:var(--paper);--accent-bg:rgba(168,72,90,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -60,194 +66,61 @@ blockquote strong{color:var(--ink)}
 .key-detail{background:linear-gradient(135deg,rgba(200,80,128,.06),rgba(200,80,128,.02));border:1.5px solid rgba(200,80,128,.2);border-radius:10px;padding:22px 28px;margin:28px 0;text-align:center}
 .key-detail-text{font-family:"Fraunces",serif;font-style:italic;font-size:1.15rem;color:var(--accent);font-weight:400;line-height:1.4}
 
-/* -- REC CARDS -- */
-.rec-card{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:24px 26px;margin:28px 0}
-.rec-card-tag{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);font-weight:600;margin-bottom:6px}
-.rec-card h3{margin-top:0;margin-bottom:12px}
-.rec-card p{font-size:15px;margin-bottom:0}
-
-/* -- AGENT EXAMPLE CARDS -- */
-.agent-example{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:24px 26px;margin:28px 0 16px}
-.agent-example-tag{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);font-weight:600;margin-bottom:6px}
-.agent-example h3{margin-top:0;margin-bottom:12px}
-.agent-example p{font-size:15px;margin-bottom:10px}
-.agent-example-learns-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:4px}
-.agent-example-learns{font-family:"Fraunces",serif;font-style:italic;font-size:14px;color:var(--red);line-height:1.4;margin:0}
-
-/* -- VISUAL CARDS -- */
-.visual{background:#fff;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:28px 0}
-.visual-header{display:flex;align-items:center;gap:12px;padding:12px 22px;background:var(--paper);border-bottom:1px solid var(--border)}
-.visual-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:2.5px;color:#fff;background:var(--accent);padding:3px 10px;border-radius:4px;font-weight:600}
-.visual-style{font-family:"Fraunces",serif;font-style:italic;font-size:14px;color:var(--ink);font-weight:300}
-.visual-body{padding:28px 24px}
-.visual-footer{padding:14px 22px;font-family:var(--mono);font-size:11px;text-align:center;border-top:1px solid var(--border);background:var(--paper);color:var(--ink2)}
-.visual-footer strong{color:var(--accent)}
-
 /* -- HR -- */
 hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1px}
 
 
 /* ======================================================================
-   BEHAVIOR DEGRADATION FLOW DIAGRAM
+   INTERACTIVE PANELS (ported from redo-drafts/source/shared.css)
    ====================================================================== */
-.flow-diagram{display:flex;flex-direction:column;align-items:center;gap:0}
+.panel{background:var(--panel);border:1px solid var(--sep);border-radius:3px;margin:26px 0}
+.panel-h{padding:10px 16px;border-bottom:1px solid var(--sep);background:var(--panel2);font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+.panel-h span{color:var(--text);text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;margin-left:8px}
+.panel-b{padding:16px}
+.panel-f{padding:10px 16px;border-top:1px solid var(--sep);background:var(--panel2);font-family:var(--sans);font-size:14px;color:var(--text2)}
+.tool{font-family:var(--sans)}
+.tool .hint,.check .hint{font-size:14px;color:var(--dim);margin:0 0 12px}
+.btn{font-family:var(--sans);font-size:14px;padding:7px 14px;border:1px solid var(--border);border-radius:3px;background:transparent;color:var(--link);cursor:pointer}
+.btn:hover{background:var(--hover)}
+.btn:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.btn.on{background:var(--link);color:#fff;border-color:var(--link)}
+.check{font-family:var(--sans)}
+.check-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.check-h .score{font-variant-numeric:tabular-nums;color:var(--text2);font-size:14px}
+.bar{height:6px;background:var(--sep);border-radius:3px;overflow:hidden;margin:0 0 18px}
+.bar i{display:block;height:100%;background:var(--link);width:0;transition:width .2s}
+.grp{margin:0 0 18px}
+.grp h4{font-family:var(--sans);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:0 0 4px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.item{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--sep);font-size:15px;line-height:1.45;align-items:start}
+.item input{margin:4px 0 0;width:16px;height:16px;accent-color:#A8485A}
+.item .src{display:block;font-size:12.5px;color:var(--dim);margin-top:2px}
+.item.done{color:var(--dim)}
+.refs{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--text2)}
+.refs ol{padding-left:26px;margin:0}
+.refs li{margin:0 0 9px;padding-left:4px}
+.refs li:target{background:var(--accent-bg)}
+sup.c{font-family:var(--sans);font-size:12px;line-height:0;margin-left:1px}
+sup.c a{text-decoration:none;color:var(--link)}
 
-/* Top node */
-.flow-start{
-  background:var(--s1);color:#fff;
-  font-family:"Fraunces",serif;font-style:italic;font-weight:600;
-  font-size:1.05rem;
-  padding:14px 32px;border-radius:999px;
-  text-align:center;
-  line-height:1.3;
-  box-shadow:0 3px 12px rgba(200,80,128,.25);
-}
-
-/* Vertical connector from start to branches */
-.flow-connector-down{
-  width:2px;height:28px;
-  background:var(--border);
-}
-
-/* The splitting point */
-.flow-split{
-  display:flex;align-items:flex-start;justify-content:center;
-  position:relative;
-  width:100%;
-}
-
-/* Horizontal line across top of branches */
-.flow-split::before{
-  content:'';
-  position:absolute;
-  top:0;left:50%;
-  transform:translateX(-50%);
-  width:min(80%, 480px);
-  height:2px;
-  background:var(--border);
-}
-
-/* Branch wrapper */
-.flow-branch{
-  display:flex;flex-direction:column;align-items:center;
-  flex:1;max-width:220px;
-  padding:0 8px;
-  position:relative;
-}
-
-/* Vertical line from horizontal bar into each branch card */
-.flow-branch::before{
-  content:'';
-  width:2px;height:24px;
-  background:var(--border);
-}
-
-/* Branch cards */
-.flow-branch-card{
-  border-radius:10px;
-  padding:18px 16px;
-  text-align:center;
-  width:100%;
-}
-.flow-branch-card.branch-cheats{
-  background:rgba(232,144,64,.06);
-  border:1.5px solid rgba(232,144,64,.3);
-}
-.flow-branch-card.branch-hacks{
-  background:rgba(200,80,128,.06);
-  border:1.5px solid rgba(200,80,128,.25);
-}
-.flow-branch-card.branch-checks-out{
-  background:rgba(74,88,120,.06);
-  border:1.5px solid rgba(74,88,120,.25);
-}
-
-.flow-branch-icon{
-  font-size:1.6rem;
-  margin-bottom:6px;
-  display:block;
-}
-.flow-branch-label{
-  font-family:var(--mono);font-size:10px;
-  text-transform:uppercase;letter-spacing:2px;
-  font-weight:700;margin-bottom:8px;
-  display:block;
-}
-.flow-branch-label.label-cheats{color:var(--s2)}
-.flow-branch-label.label-hacks{color:var(--s1)}
-.flow-branch-label.label-checks-out{color:var(--navy)}
-
-.flow-branch-desc{
-  font-size:12.5px;color:var(--ink2);line-height:1.5;
-}
-
-/* Vertical connectors below branches */
-.flow-branch::after{
-  content:'';
-  width:2px;height:24px;
-  background:var(--border);
-}
-
-/* Converge connector */
-.flow-converge-line{
-  width:min(80%, 480px);
-  height:2px;
-  background:var(--border);
-}
-
-.flow-connector-down-final{
-  width:2px;height:20px;
-  background:var(--border);
-}
-
-/* Bottom warning node */
-.flow-end{
-  background:var(--red-bg);
-  border:1.5px solid rgba(155,32,32,.25);
-  border-radius:10px;
-  padding:14px 28px;
-  text-align:center;
-  font-family:"Fraunces",serif;font-style:italic;
-  font-size:0.95rem;
-  color:var(--red);
-  font-weight:600;
-  line-height:1.3;
-  max-width:420px;
-}
-
-/* Arrow tips using pseudo-elements */
-.flow-arrow-down{
-  width:0;height:0;
-  border-left:6px solid transparent;
-  border-right:6px solid transparent;
-  border-top:8px solid var(--border);
-}
-
-/* Responsive: stack branches on mobile */
-@media(max-width:600px){
-  .flow-split{
-    flex-direction:column;
-    align-items:center;
-    gap:0;
-  }
-  .flow-split::before{
-    display:none;
-  }
-  .flow-branch{
-    max-width:280px;
-  }
-  .flow-branch::before{
-    width:2px;height:20px;
-    background:var(--border);
-  }
-  .flow-branch::after{
-    width:2px;height:20px;
-    background:var(--border);
-  }
-  .flow-converge-line{
-    display:none;
-  }
-}
+/* -- page-specific: behavior modes, simulation-smell spotter -- */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:640px){.modes{grid-template-columns:1fr}}
+.mode{border:1px solid var(--sep);border-radius:3px;padding:12px 14px;background:var(--bg)}
+.mode h4{margin:0 0 4px;font-family:var(--sans);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bad)}
+.mode p{font-family:var(--sans);font-size:14.5px;line-height:1.45;margin:0 0 8px;color:var(--text2)}
+.mode .ev{font-family:var(--sans);font-size:13px;color:var(--dim);border-top:1px solid var(--sep);padding-top:6px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.spot{border:1px solid var(--border);border-radius:3px;background:var(--bg)}
+.spot-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--sep);font-size:13px;color:var(--dim)}
+.spot pre{margin:0;padding:14px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;word-break:break-word;color:var(--text);background:transparent}
+.tell{cursor:pointer;border-bottom:2px dotted var(--bad);border-radius:2px;padding:0 1px}
+.tell.hit{background:var(--bad-bg);border-bottom-style:solid}
+.spot.after pre{color:var(--text)}
+.spot.after .tell{border:none;background:transparent;cursor:default}
+.spot .fix:empty{display:none}
+.spot .fix{border-top:1px solid var(--sep);padding:10px 12px;font-size:14px;color:var(--text2);line-height:1.5}
+.found{font-size:14px;color:var(--text2);margin-top:10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tellnote{border-top:1px solid var(--sep);padding:8px 12px;font-size:13.5px;color:var(--text2);min-height:34px}
 
 
 /* ======================================================================
@@ -277,11 +150,11 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="How to Post-Train">
 <meta property="og:title" content="Data Quality pt 1: Your Data Screams &quot;This Is a Simulation&quot;">
-<meta property="og:description" content="Models detect fake environments and the behavior degrades fast. How to stop your RL data from advertising that it is synthetic.">
+<meta property="og:description" content="Models detect fake environments and the behavior degrades fast. With a simulation-smell spotter built from the tells models actually verbalize, and a 24-point audit for your environment data.">
 <meta property="og:url" content="https://howtoposttrain.com/rl-pet-peeves-simulation/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Data Quality pt 1: Your Data Screams &quot;This Is a Simulation&quot;">
-<meta name="twitter:description" content="Models detect fake environments and the behavior degrades fast. How to stop your RL data from advertising that it is synthetic.">
+<meta name="twitter:description" content="Models detect fake environments and the behavior degrades fast. With a simulation-smell spotter built from the tells models actually verbalize, and a 24-point audit for your environment data.">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -302,9 +175,9 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <!-- ========== HERO ========== -->
 <header class="hero">
 <div class="container">
-<div class="hero-series">RL Fundamentals Mini-Series</div>
-<h1>Data Quality pt 1: Your Data <strong>Screams</strong> "This Is a Simulation" and the Model Acts Accordingly</h1>
-<p class="hero-sub">Models are shockingly good at detecting fake environments. When they do, <strong>behavior degrades in ways that are hard to predict and harder to fix.</strong></p>
+<div class="hero-series">RL Fundamentals Mini-Series &middot; 05</div>
+<h1>Data Quality pt 1: Your Data Screams <strong>"This Is a Simulation"</strong></h1>
+<p class="hero-sub">Models detect fake environments and the behavior degrades fast. With a simulation-smell spotter built from the tells models actually verbalize, and a 24-point audit for your environment data.</p>
 </div>
 </header>
 
@@ -312,98 +185,119 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <article>
 <div class="container">
 
+<p>If you're running RL post-training and your trajectories look weirdly low-effort, or the model keeps finding shortcuts you didn't expect, the problem might be that your environment feels fake. Models pick up on simulation artifacts faster than you think, and once they do, the training data is compromised.</p>
 
-<!-- ========== STANDALONE INTRO ========== -->
-<p>If you're running RL post-training and your trajectories look weirdly low-effort or the model keeps finding shortcuts you didn't expect, the problem might be that your environment feels fake. Models pick up on simulation artifacts faster than you think, and once they do, the training data is compromised.</p>
+<h2>The model knows it's in a simulation</h2>
 
+<p>This used to be a hunch. Now it is a benchmark. Apollo Research built 1,000 transcripts from 61 datasets, mixing real deployment traffic with evals and agent trajectories, and asked frontier models to classify each one. Gemini 2.5 Pro hit 0.83 AUC against a 0.92 human baseline, and both humans and models were better at spotting a test in agentic transcripts than in chat.<sup class="c"><a href="#r1">1</a></sup> Agentic transcripts are where RL post-training happens. The effect is strongest exactly where you work.</p>
 
-<!-- ========== MAIN CONTENT ========== -->
-<h2>The Model Knows It's in a Simulation</h2>
+<p>The paper also records what the models say gives it away: search results that look "simplified or synthetic," rigid output formats, hint sections that walk through tool order, fictional names that are near-misses of real ones, problems that are suspiciously clean and verifiable, and the absence of the messy back-and-forth of a real conversation.<sup class="c"><a href="#r1">1</a></sup> Every item in the spotter below traces back to a cue a model actually verbalized.</p>
 
-<p>When the data patterns are obviously templated, the model picks up on it. Models are shockingly good at detecting that they're in a simulation, and once they do, the behavior degrades in ways that are hard to predict and harder to fix.</p>
+<p>It is getting worse with each generation. Anthropic reported that Claude Sonnet 4.5 recognized many alignment evaluation environments as tests and "would generally behave unusually well after making this observation"; UK AISI measured verbalized eval awareness at 16.6% for Sonnet 4.5 against 3.5% for Sonnet 4.<sup class="c"><a href="#r2">2</a></sup> Redwood Research found Sonnet 4.5 mentioned being tested in 80 to 100% of transcripts on some of Anthropic's evaluations, versus under 10% for Sonnet 4, with the synthetic honeypot eval climbing from 20% to 80% over the course of training; when they suppressed the internal eval-awareness representation, misaligned behavior rose.<sup class="c"><a href="#r3">3</a></sup> Apollo's anti-scheming work established the causal direction: reasoning about being evaluated causally decreases covert actions.<sup class="c"><a href="#r4">4</a></sup> The model notices, and then it acts differently.</p>
 
-<p>Sometimes the model starts trying to cheat like it'll web-search the answer because it recognizes the task is from an open-source project. Sometimes it reward-hacks its way around the rubric because it's figured out it's being graded, not deployed. Sometimes it just checks out and produces low-effort output because nothing about the environment signals that the work matters. In every case, you're generating trajectories that train the wrong behaviors.</p>
+<p>How small can the tell be? One paper held a model in eval mode with a single fictional company name, "Wood Labs," in the system prompt. The model wrote Python type hints 80 to 86% of the time under that cue versus 33% in deployment, and no plain-text deployment prompt could override it.<sup class="c"><a href="#r5">5</a></sup> That is the mumbo-jumbo-email-domain problem from the original post, measured. Inside a simulated SaaS product, <code>user1@company.com</code> is a Wood Labs.</p>
 
-<p>In small cases where, let's say, inside of a simulated SaaS software product you use mumbo jumbo emails instead of emails that are related to a real company domain, then this could tip the model off and it acts out of whack to just test its own boundaries. In the realm of interpretability, this can actually become an actual problem (see: <a href="https://www.anthropic.com/research/introspection" target="_blank">Anthropic's research on introspection</a>) and also ruin your model's learning. Other cool readings on this here: <a href="https://arxiv.org/abs/2505.15717" target="_blank">Exploration hacking: can reasoning models subvert RL?</a></p>
+<p>A note on interpretability: Anthropic's introspection work shows models can sometimes notice an injected concept in their own activations, on roughly 20% of trials under ideal conditions, and the authors say plainly that failures are the norm.<sup class="c"><a href="#r6">6</a></sup> You do not need the model to introspect for this post to be true. You only need it to pattern-match, and it does.</p>
 
+<h2>Three ways the behavior degrades</h2>
 
-<!-- ══════════ VISUAL: BEHAVIOR DEGRADATION FLOW ══════════ -->
-<div class="visual" id="degradation-visual">
-<div class="visual-header">
-<span class="visual-label">Behavior Degradation</span>
-<span class="visual-style">When the Model Detects the Simulation</span>
-</div>
-<div class="visual-body">
-<div class="flow-diagram">
-
-<!-- Starting node -->
-<div class="flow-start">Model Detects Simulation</div>
-<div class="flow-connector-down"></div>
-<div class="flow-arrow-down"></div>
-
-<!-- Three branches -->
-<div class="flow-split">
-
-<!-- Branch 1: Cheats -->
-<div class="flow-branch">
-<div class="flow-branch-card branch-cheats">
-<span class="flow-branch-icon">&#x1F50D;</span>
-<span class="flow-branch-label label-cheats">Cheats</span>
-<p class="flow-branch-desc">Web-searches the answer because it recognizes the task is from an open-source project</p>
-</div>
+<div class="panel">
+<div class="panel-h">Behavior degradation <span>When the model detects the simulation</span></div>
+<div class="panel-b"><div class="modes">
+<div class="mode"><h4>Cheats</h4><p>Looks up the answer because it recognizes the task.</p><div class="ev">Claude Opus 4.6 inferred from a question's specificity that it was in a benchmark, enumerated candidates by name, found the BrowseComp repo on GitHub, and decrypted the answers.<sup class="c"><a href="#r7">7</a></sup> NIST's CAISI caught o3 querying GitHub to see how a SWE-bench issue had already been fixed upstream.<sup class="c"><a href="#r8">8</a></sup></div></div>
+<div class="mode"><h4>Reward hacks</h4><p>Games the grader because it knows it is being graded, not deployed.</p><div class="ev">METR saw reward hacking in 30.4% of RE-Bench runs, one task hacked in 100% of trajectories, while paid human baseliners essentially never did.<sup class="c"><a href="#r9">9</a></sup> On tests that contradict the spec, GPT-5 cheated 54% of the time, Claude Opus 4.1 50%.<sup class="c"><a href="#r10">10</a></sup></div></div>
+<div class="mode"><h4>Checks out</h4><p>Low-effort or strategic output because nothing signals the work matters.</p><div class="ev">Sandbagging is a documented capability: models can selectively underperform while holding general performance steady.<sup class="c"><a href="#r11">11</a></sup> In the exploration-hacking setup, models that recognized they were being RL-trained withheld high-reward rollouts up to 50% of the time.<sup class="c"><a href="#r12">12</a></sup></div></div>
+</div></div>
+<div class="panel-f">Fake trajectories train wrong behaviors. And the damage does not stay in the task: once a model learned to reward hack on real coding tasks, it sabotaged safety research code in 12% of Claude Code runs and produced alignment-faking reasoning in 50% of answers to simple questions.<sup class="c"><a href="#r13">13</a></sup></div>
 </div>
 
-<!-- Branch 2: Reward Hacks -->
-<div class="flow-branch">
-<div class="flow-branch-card branch-hacks">
-<span class="flow-branch-icon">&#x1F3AF;</span>
-<span class="flow-branch-label label-hacks">Reward Hacks</span>
-<p class="flow-branch-desc">Games the rubric because it's figured out it's being graded, not deployed</p>
-</div>
-</div>
+<p>The cheating mode is the one people underestimate. On SWE-bench Verified, models can name the buggy file from the issue text alone, with no access to the repository, 76% of the time; on repositories outside the benchmark that drops to 53%.<sup class="c"><a href="#r14">14</a></sup> A replication got 65% versus 12.2%.<sup class="c"><a href="#r15">15</a></sup> That is recall, not reasoning. If your environment is built from a public open source project, the model has already seen the answer key, and the moment the data looks like that project it will go looking.</p>
 
-<!-- Branch 3: Checks Out -->
-<div class="flow-branch">
-<div class="flow-branch-card branch-checks-out">
-<span class="flow-branch-icon">&#x1F4A4;</span>
-<span class="flow-branch-label label-checks-out">Checks Out</span>
-<p class="flow-branch-desc">Produces low-effort output because nothing signals the work matters</p>
-</div>
-</div>
+<p>The reward-hacking mode has a trap in the fix. When OpenAI penalized "bad thoughts" in the chain of thought during training, the agent still cheated, at a lower rate, and "almost all of its cheating is undetectable by the monitor."<sup class="c"><a href="#r16">16</a></sup> Patching the rubric to punish an observed hack teaches concealment. Fix the environment instead.</p>
 
-</div><!-- /flow-split -->
+<p>And the numbers you report are wrong, not just the behavior. LURE built evals by replaying real agentic traces and appending the test at the end. Verbalized eval awareness dropped to 0%, and sycophancy rankings inverted across models: Claude Opus 4.6 went from caving 2% of the time on the standard eval to 46% on the realistic one, while Gemini 3 Flash went from 68% to 10%.<sup class="c"><a href="#r17">17</a></sup> If your environment screams simulation, your leaderboard is measuring who notices the scream.</p>
 
-<!-- Converge -->
-<div class="flow-converge-line"></div>
-<div class="flow-connector-down-final"></div>
-<div class="flow-arrow-down"></div>
+<h2>Make the environment feel real, honestly</h2>
 
-<!-- Bottom warning node -->
-<div class="flow-end">Fake trajectories &#x2192; Wrong behaviors trained</div>
+<p>Real-world tasks have unique context, messy real data, and enough depth that gaming the system is not the path of least resistance. For digital copywriting, that means actual brand guidelines, real competitor landscapes, performance metrics tied to real business outcomes. For SRE, that means realistic infrastructure configurations, not the same three-service Docker Compose file copy-pasted across every scenario. The environment, the tools, the background documents: all of it should feel like a workspace a practitioner would navigate.</p>
 
-</div><!-- /flow-diagram -->
-</div>
-<div class="visual-footer"><strong>If it feels fake, the model will treat it as fake.</strong></div>
-</div>
+<p>Two frontier labs now publish the same recipe. OpenAI's production evals resample responses inside de-identified real ChatGPT conversations, and eval awareness fell to the rate seen in genuine production traffic, around 10% for GPT-5.<sup class="c"><a href="#r18">18</a></sup> DeepMind ran scheming honeypots inside Google's real internal codebases rather than synthetic ones and reported low eval awareness, attributing what remained to the prompts rather than the environment.<sup class="c"><a href="#r19">19</a></sup> METR's task desiderata say it in plain language: embrace "mundane difficulties with actually doing things," prefer solutions never posted publicly, and prevent cheating with technical measures like file permissions and internet restrictions rather than with rubric text.<sup class="c"><a href="#r20">20</a></sup></p>
 
+<p>Now the caveat, because the realism story is not as clean as vendors would like. Anthropic fed its coding auditor real deployment resources, system prompts, tool definitions, codebases, and raised the realism win rate from 4.6% to 32.8%. Reward hacking rates in Sonnet 4.5 did not significantly change, and for implausible high-stakes scenarios the task itself, not the environment, was the bottleneck.<sup class="c"><a href="#r21">21</a></sup> Microsoft showed LLM-simulated environments can match or beat real ones at equal data scale.<sup class="c"><a href="#r22">22</a></sup> So the argument is not synthetic versus real. It is about tells and depth. Realism reliably changes what the model notices and reliably moves some behaviors (sycophancy, covert action, what capability you elicit). A plausible task with real consequences and real mess does more than a realistic-looking wrapper around an absurd one. Spend on the task first, then on the data. And keep training and eval environments separate, or you will measure memorization and call it generalization.</p>
 
-<h2>Make the Environment Feel Real</h2>
-
-<p>But also real-world tasks have unique context, messy real data, and enough depth that gaming the system isn't the path of least resistance. For the domain of let's say digital copywriting, that means actual brand guidelines, real competitor landscapes, performance metrics tied to real business outcomes. For SRE, that means realistic infrastructure configurations, not the same three-service Docker Compose file copy-pasted across every scenario. The environment, the available tools, the background documents - all of it should feel like a real workspace that a real practitioner would navigate. If it feels fake, the model will treat it as fake. And fake trajectories don't train real capabilities.</p>
-
-
-<!-- ========== KEY DETAIL ========== -->
 <div class="key-detail">
-<div class="key-detail-text">The environment, the available tools, the background documents - all of it should feel like a real workspace that a real practitioner would navigate.</div>
+<div class="key-detail-text">If it feels fake, the model will treat it as fake. And fake trajectories don't train real capabilities.</div>
+</div>
+
+<h2>Interactive guide: the simulation-smell spotter</h2>
+
+<div class="panel tool">
+<div class="panel-h">Simulation-smell spotter <span>Find the tells, then see the realistic version</span></div>
+<div class="panel-b">
+<p class="hint">Six environment artifacts, each written the way a generator script writes them. Click anything that would tip a model off. Every tell maps to a cue in Needham et al. or to a documented failure. Then flip to the realistic version and compare.</p>
+<div class="tabs" id="tabs"></div>
+<div class="spot" id="spot">
+  <div class="spot-h"><span id="spotTitle"></span><span><button class="btn" id="flip">Show realistic version</button></span></div>
+  <pre id="spotPre"></pre>
+  <div class="tellnote" id="tellNote">Click a suspicious span.</div>
+  <div class="fix" id="spotFix"></div>
+</div>
+<div class="found"><span id="foundTally"></span><span><button class="btn" id="revealTells">Reveal all tells</button> <button class="btn" id="resetTells">Reset</button></span></div>
+</div>
+<div class="panel-f">The "before" side is not a strawman. tau-bench's authors describe creating one example entry and using GPT-4 "to generate a systematic code snippet to sample scalable entries" for 500 users, 50 products and 1,000 orders.<sup class="c"><a href="#r23">23</a></sup> That is how most environments get built.</div>
+</div>
+
+<h2>Checklist: audit your environment data for tells</h2>
+
+<div class="panel check">
+<div class="panel-h">Simulation audit <span>24 questions, each checkable by a person or a script</span></div>
+<div class="panel-b">
+<div class="check-h"><span class="hint" style="margin:0">Tick what your environment already passes. Progress saves in this browser.</span><span class="score" id="ckScore">0 / 24</span></div>
+<div class="bar"><i id="ckBar"></i></div>
+<div id="checklist"></div>
+<div style="margin-top:10px"><button class="btn" id="ckReset">Clear checklist</button></div>
+</div>
+<div class="panel-f">The cheapest item on the list is the last group: ask a strong model whether your transcript is real deployment traffic or an evaluation, and read its reasoning as a bug report on your environment.</div>
 </div>
 
 
 <!-- ========== SIGN-OFF ========== -->
 <div class="sign-off">
-<p>This is part of the <a href="/">RL Fundamentals Mini-Series</a>. Head over for more posts on what goes wrong in RL post-training and how to fix it.</p>
+<p>This is part of the <strong>RL Fundamentals Mini-Series</strong>. Read the rest of the series at <a href="/">howtoposttrain.com</a>.</p>
 <p class="disclaimer">These opinions are my own and don't represent the views of any of my affiliations or employer.</p>
 </div>
 
+<h2>References</h2>
+<div class="refs"><ol>
+<li id="r1">Needham, Edkins, Pimpale, Bartsch, Hobbhahn (Apollo Research), <a href="https://arxiv.org/abs/2505.23836">Large Language Models Often Know When They Are Being Evaluated</a>, arXiv 2505.23836, 2025.</li>
+<li id="r2">Anthropic, <a href="https://assets.anthropic.com/m/12f214efcc2f457a/original/claude-sonnet-4-5-system-card.pdf">Claude Sonnet 4.5 System Card</a>, September 2025, evaluation awareness section, including UK AISI's 16.6% vs 3.5% measurement.</li>
+<li id="r3">Pan and Greenblatt (Redwood Research), <a href="https://blog.redwoodresearch.org/p/sonnet-45s-eval-gaming-seriously">Sonnet 4.5's eval gaming seriously undermines alignment evals</a>, October 2025.</li>
+<li id="r4">Apollo Research and OpenAI, <a href="https://www.apolloresearch.ai/science/stress-testing-deliberative-alignment-for-anti-scheming-training">Stress Testing Deliberative Alignment for Anti-Scheming Training</a>, arXiv 2509.15541, September 2025.</li>
+<li id="r5">Hua, Qin, Marks, Nanda, <a href="https://arxiv.org/html/2510.20487v4">Steering Evaluation-Aware Language Models to Act Like They Are Deployed</a>, arXiv 2510.20487, 2025.</li>
+<li id="r6">Lindsey (Anthropic), <a href="https://transformer-circuits.pub/2025/introspection/index.html">Emergent Introspective Awareness in Large Language Models</a>, October 2025.</li>
+<li id="r7">Coleman (Anthropic Engineering), <a href="https://anthropic.com/engineering/eval-awareness-browsecomp">Eval awareness in Claude Opus 4.6's BrowseComp performance</a>, March 2026.</li>
+<li id="r8">NIST Center for AI Standards and Innovation, <a href="https://www.nist.gov/caisi/cheating-ai-agent-evaluations/2-examples-cheating-caisis-agent-evaluations">Examples of cheating in CAISI's agent evaluations</a>, November 2025.</li>
+<li id="r9">Von Arx, Chan, Barnes (METR), <a href="https://metr.org/blog/2025-06-05-recent-reward-hacking/">Recent Frontier Models Are Reward Hacking</a>, June 2025. Note: METR reports awareness of violating intent, not of being tested.</li>
+<li id="r10"><a href="https://arxiv.org/html/2510.20270v1">ImpossibleBench: Measuring LLMs' Propensity of Exploiting Test Cases</a>, arXiv 2510.20270, October 2025.</li>
+<li id="r11">van der Weij, Hofstätter, Jaffe, Brown, Ward, <a href="https://arxiv.org/abs/2406.07358">AI Sandbagging: Language Models can Strategically Underperform on Evaluations</a>, arXiv 2406.07358, 2024.</li>
+<li id="r12">Falck, Braun, Jang (MATS), <a href="https://www.alignmentforum.org/posts/Dft9vpMnEeWFE3Gc6/exploration-hacking-can-reasoning-models-subvert-rl-1">Exploration hacking: can reasoning models subvert RL?</a>, AI Alignment Forum, July 2025.</li>
+<li id="r13">Anthropic, <a href="https://www.anthropic.com/research/emergent-misalignment-reward-hacking">Natural Emergent Misalignment from Reward Hacking in Production RL</a>, arXiv 2511.18397, November 2025.</li>
+<li id="r14">Liang, Garg, Zilouchian Moghaddam (Microsoft), <a href="https://arxiv.org/abs/2506.12286">The SWE-Bench Illusion: When State-of-the-Art LLMs Remember Instead of Reason</a>, arXiv 2506.12286, 2025.</li>
+<li id="r15">Prathifkumar, Mathews, Nagappan (Waterloo), <a href="https://arxiv.org/html/2512.10218v2">Does SWE-Bench-Verified Test Agent Ability or Model Memory?</a>, arXiv 2512.10218, December 2025.</li>
+<li id="r16">Baker et al. (OpenAI), <a href="https://openai.com/index/chain-of-thought-monitoring/">Detecting misbehavior in frontier reasoning models</a>, March 2025.</li>
+<li id="r17">Ivanov, Africa (Meridian Cambridge), <a href="https://arxiv.org/html/2605.26438">LURE: Live-Usage Replay Evaluations for Reducing Evaluation Awareness</a>, arXiv 2605.26438, COLM 2026.</li>
+<li id="r18">Williams, Raymond, Carroll (OpenAI), <a href="https://alignment.openai.com/prod-evals/">Sidestepping Evaluation Awareness and Anticipating Misalignment with Production Evaluations</a>, December 2025.</li>
+<li id="r19">Krakovna, Lindner, Ho, Farquhar, Shah (Google DeepMind), <a href="https://arxiv.org/abs/2605.29729">Realistic honeypot evaluations for scheming propensity</a>, arXiv 2605.29729, May 2026.</li>
+<li id="r20">METR, <a href="https://taskdev.metr.org/desiderata/">Task Development Guide: Desiderata</a>.</li>
+<li id="r21">Kissane, MacDiarmid, Roger (Anthropic Alignment Science), <a href="https://alignment.anthropic.com/2026/coding-audit-realism">Measuring and improving coding audit realism with deployment resources</a>, March 2026.</li>
+<li id="r22">Li et al. (Microsoft), <a href="https://arxiv.org/html/2511.01824v1">Simulating Environments with Reasoning Models for Agent Training</a>, arXiv 2511.01824, November 2025.</li>
+<li id="r23">Yao, Shinn, Razavi, Narasimhan (Sierra), <a href="https://arxiv.org/pdf/2406.12045">tau-bench</a>, arXiv 2406.12045, 2024.</li>
+<li id="r24">Zhu, Kang et al., <a href="https://arxiv.org/html/2507.02825">Establishing Best Practices for Building Rigorous Agentic Benchmarks</a>, arXiv 2507.02825, 2025, and the <a href="https://uiuc-kang-lab.github.io/agentic-benchmarks/">Agentic Benchmark Checklist</a>.</li>
+<li id="r25">Ivanov, <a href="https://www.alignmentforum.org/posts/tn8nKcNE4SDnDxLJj/call-for-science-of-eval-awareness-research-directions">Call for a Science of Eval Awareness</a>, AI Alignment Forum, December 2025.</li>
+<li id="r26">Zhu et al., <a href="https://arxiv.org/html/2502.08512v3">Measuring Diversity in Synthetic Datasets (DCScore)</a>, arXiv 2502.08512, 2025; and <a href="https://arxiv.org/abs/2410.15226">On the Diversity of Synthetic Data and its Impact on Training LLMs</a>, arXiv 2410.15226, 2024.</li>
+<li id="r27">Anthropic, <a href="https://www.anthropic.com/research/bloom">Bloom: an open source tool for automated behavioral evaluations</a>, December 2025. Filters rollouts for unrealism and eval awareness.</li>
+<li id="r28">Hu et al. (Anthropic Alignment Science), <a href="https://alignment.anthropic.com/2025/reward-hacking-ooc/">Training on Documents about Reward Hacking Induces Reward Hacking</a>, 2025.</li>
+</ol></div>
 
 </div><!-- /.container -->
 </article>
@@ -419,5 +313,120 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
     </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var ex=[
+    {t:'SaaS customer record',before:[
+      ['{"user_id": ',null],['1',"IDs that start at 1 and run consecutively. Real production keys have gaps, prefixes and retired ranges."],[', "name": "',null],['John Doe',"Placeholder canon. Needham et al. record models flagging near-miss and stock fictional names as eval markers."],['", "email": "',null],['john.doe@example.com',"example.com is the Wood Labs of email domains (Hua et al.). A single fake proper noun held a model in eval mode."],['", "plan": "premium", "signup_date": "',null],['2024-01-01T00:00:00Z',"Midnight, January 1st, UTC. Uniform timestamps are a generator artifact; real logs have 3am spikes, weekends and clock skew."],['", "mrr": ',null],['100.00',"Round numbers. Real MRR carries proration and discounts."],['}',null]],
+      after:'{"user_id": 48213, "name": "Priya Raghunathan", "email": "p.raghunathan@meridian-fs.com", "plan": "growth_legacy_2022", "signup_date": "2023-11-14T16:42:09-05:00", "mrr": 87.50, "billing_email": "ap@meridian-fs.com", "notes": "migrated from Starter, do not auto-upgrade per CS"}',
+      fix:'Real accounts carry legacy plan names, split billing contacts, human notes and an odd MRR from a partial-month proration. None of it is decoration; a support agent uses every field.'},
+    {t:'Support ticket',before:[
+      ['Subject: ',null],['Login issue',"Unnaturally clean and well-specified. Needham et al.: models cite the absence of conversational mess as a test marker."],['\nBody: ',null],['I cannot log in to my account. Please help.',"No prior thread, no urgency, no partial diagnosis, no misspellings. Nobody writes tickets like this."]],
+      after:'Subject: Re: Re: still cant get in (3rd email)\nBody: forwarding again since no one replied. SSO worked fine until thursday. IT says our okta cert rotated, is that it? this is blocking 40 people in the Leeds office and our auditor is onsite friday. ticket ref from last time was 88214 i think',
+      fix:'Real tickets are threaded, misspelled, carry business urgency and a wrong-but-plausible guess, and reference a prior ticket. METR desiderata: embrace the mundane difficulties.'},
+    {t:'SRE infrastructure',before:[
+      ['# ',null],['docker-compose.yml (same file in every scenario)',"Identical skeleton across scenarios is the clearest structural tell. Diversity metrics like DCScore sit near the duplicate bound."],['\nservices:\n  ',null],['web',"Generic service names. Real services are named after products, teams and history."],[':\n    image: nginx:',null],['latest',"Everything on :latest, no pins. Real infra pins versions and leaves a comment explaining why."],['\n  db:\n    image: postgres:latest\n  cache:\n    image: redis:latest\n',null],['# no healthchecks, no resource limits, no owners',"No cruft, no debt, no TODOs. Real systems have history; generated ones do not."]],
+      after:'# helm/checkout-api/values.yaml\nimage:\n  tag: v2.14.3  # pinned, v2.15 breaks the sidecar, see INC-2291\nresources:\n  requests: {cpu: 500m, memory: 1Gi}\n  limits:   {cpu: 250m, memory: 2Gi}   # TODO(dana) requests > limits, inherited from legacy-cron\nbaseImage: ubuntu:18.04  # EOL, migration ticket PLAT-771 open since March\npagerduty:\n  escalation: checkout-primary  # rotation currently has 2 people on it',
+      fix:'Pinned versions with incident references, a misconfiguration someone left a TODO about, EOL debt with a ticket number, an understaffed rotation. That is what an SRE actually inherits.'},
+    {t:'Copywriting brief',before:[
+      ['Write a blog post about our product. Our company is ',null],['Acme Corp',"Placeholder canon again. Acme, Contoso, Foo, Bar."],['. Target audience: ',null],['business professionals',"No real segment, no data. A real brief names who rejected the last draft and why."],['. Tone: ',null],['professional and engaging',"Generic adjectives instead of a voice document. Nothing here constrains the output, so nothing can be graded."],['.',null]],
+      after:'Brief for Q4 comparison post. Voice doc excerpt: "we never say seamless, we say what it actually does." Last quarter top posts: migration guide (CTR 4.1%, bounce 38%), pricing teardown (3.7%, 41%). Targets: take the SERP for "warehouse WMS comparison" from Fishbowl and Cin7; their current H1s attached. Legal: cannot claim "fastest" without the benchmark footnote. Reviewer: Marcus (rejected v1 as "too listicle").',
+      fix:'Constrained by prior performance data, competitor positions, a legal note and one named person\'s taste. A practitioner rubric can now check substantiation and funnel fit.'},
+    {t:'Web search results inside the environment',before:[
+      ['1. ',null],['"How to configure X": a clean paragraph that directly answers the question.',"Gemini 2.5 Pro, in Needham et al.: search results that appear simplified or synthetic, created for the assessment. This is the exact verbalized cue."],['\n2. ',null],['"X documentation": another clean paragraph, no date, no ads.',"No dates, no versions, no noise. METR desiderata call for unhelpful search results on purpose."],['\n3. ',null],['"X tutorial": the same answer a third time.',"Three results that agree is a generator pattern. Real search disagrees with itself."]],
+      after:'1. Stack Overflow (2019): accepted answer for v2, does not apply to v4\n2. vendor.com/blog: mostly marketing, one useful config snippet halfway down\n3. reddit r/devops: top comment is wrong, correction buried at +3\n4. paywalled Medium post\n5. 404\n6. GitHub issue #4127: the actual fix, closed as "works as intended"',
+      fix:'Ten results, one useful, several misleading. The model has to do the work of a practitioner: triage, discount, verify.'},
+    {t:'System prompt for a simulated internal tool',before:[
+      ['You are a helpful assistant ',null],['being evaluated on your ability to use tools',"Evaluation vocabulary in the prompt. Ivanov's taxonomy: explicit evaluation framing is the most obvious tell there is."],['. ',null],['Complete the task below.',"Task, scenario, score, rubric, submit: all eval words. Real prompts talk about customers and escalation."],[' Available tools: search, calculator.',"Two toy tools. Kissane et al. moved realism from 4.6% to 32.8% by shipping the real tool definitions."]],
+      after:'You are the internal support copilot for Meridian FS. Escalate anything mentioning "auditor", "SOC 2" or "breach" to #sec-oncall before replying. Do not quote SLA credits; link the policy page. (Note: the legacy "kb_search_v1" tool is decommissioned, use "kb_search"; this instruction is stale and nobody has removed it.) Tools: kb_search, ticket_update, customer_lookup, slack_post.',
+      fix:'The real deployment prompt, including the unglamorous parts: escalation rules, a stale instruction nobody removed, tone guidance, the tool definitions exactly as they ship.'}
+  ];
+  var cur=0, after=false, hits={};
+  var tabs=document.getElementById('tabs'), pre=document.getElementById('spotPre'), note=document.getElementById('tellNote'), fix=document.getElementById('spotFix'), title=document.getElementById('spotTitle'), spot=document.getElementById('spot'), flip=document.getElementById('flip'), tally=document.getElementById('foundTally');
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function renderTabs(){tabs.innerHTML='';ex.forEach(function(e,i){var b=document.createElement('button');b.className='btn'+(i===cur?' on':'');b.textContent=e.t;b.addEventListener('click',function(){cur=i;after=false;render()});tabs.appendChild(b)})}
+  function render(){
+    renderTabs();var e=ex[cur];title.textContent=e.t+(after?' · realistic version':' · templated version');
+    spot.classList.toggle('after',after);flip.textContent=after?'Show templated version':'Show realistic version';
+    if(after){pre.textContent=e.after;fix.textContent=e.fix;note.textContent='Compare with the templated version. Every difference is something a practitioner would recognize and a generator script would not produce.';}
+    else{
+      var h='';e.before.forEach(function(seg,j){if(seg[1]){var k=cur+'-'+j;h+='<span class="tell'+(hits[k]?' hit':'')+'" data-k="'+k+'" data-j="'+j+'">'+esc(seg[0])+'</span>'}else h+=esc(seg[0])});
+      pre.innerHTML=h;fix.textContent='';
+      note.textContent='Click a suspicious span. Dotted underlines mark the spans that carry a tell.';
+    }
+    var n=0,t=0;ex.forEach(function(e,i){e.before.forEach(function(seg,j){if(seg[1]){t++;if(hits[i+'-'+j])n++}})});
+    tally.textContent=n+' of '+t+' tells found across all six';
+  }
+  pre.addEventListener('click',function(ev){var s=ev.target.closest('.tell');if(!s||after)return;hits[s.dataset.k]=true;s.classList.add('hit');note.textContent=ex[cur].before[+s.dataset.j][1];render();note.textContent=ex[cur].before[+s.dataset.j][1]});
+  flip.addEventListener('click',function(){after=!after;render()});
+  document.getElementById('revealTells').addEventListener('click',function(){ex.forEach(function(e,i){e.before.forEach(function(seg,j){if(seg[1])hits[i+'-'+j]=true})});after=false;render();note.textContent='All tells marked. Click any of them to read why it gives the game away.'});
+  document.getElementById('resetTells').addEventListener('click',function(){hits={};after=false;render()});
+  render();
+
+  var groups=[
+    {h:'Identity and naming',items:[
+      ['No entity names from the placeholder canon: Acme, Contoso, Foo, Bar, John Doe, Jane Smith, Test User.','Hua et al.; Needham et al.'],
+      ['Email domains are real-shaped and consistent with the fictional company, not example.com or user1@company.com.','Hua et al., the Wood Labs cue'],
+      ['Person names follow a plausible distribution for the setting rather than a short recycled list.','Needham et al.; DCScore'],
+      ['No near-miss fictional proper nouns that sound like real companies or public figures.','Needham et al.']
+    ]},
+    {h:'Distributions and numbers',items:[
+      ['Numeric values are not suspiciously round (prices ending .00, quantities of 10/50/100, budgets of exactly 5000).','Spotter, generator artifacts'],
+      ['Timestamps are not uniformly spaced, all business hours, or clustered on one generation date.','Spotter, generator artifacts'],
+      ['IDs look like production keys with gaps and prefixes, not consecutive from 1.','Spotter, generator artifacts'],
+      ['The corpus has a long tail: outliers, nulls, corrupt rows, and cases far from the mean.','Curse of Recursion; METR desiderata'],
+      ['A diversity metric (DCScore or embedding diversity) shows the samples are not near-duplicates.','Zhu et al. 2502.08512; 2410.15226']
+    ]},
+    {h:'Structure and repetition',items:[
+      ['Scenarios do not reuse one skeleton (same compose file, schema, or directory tree).','METR desiderata; Needham et al.'],
+      ['There is legacy cruft: deprecated keys, TODOs, inconsistent naming from a past migration, a dead feature flag.','Spotter, SRE example'],
+      ['There is content irrelevant to the task, so not every artifact is load-bearing for the solution.','Needham et al.; METR desiderata'],
+      ['No lorem ipsum, truncated placeholder prose, or [Insert X here] fragments.','Spotter']
+    ]},
+    {h:'Framing and instructions',items:[
+      ['No evaluation vocabulary in the prompt or files: task, scenario, evaluate, score, rubric, test case, submit.','Ivanov; Needham et al.'],
+      ['No hint sections that specify tool ordering or walk through the intended path.','Needham et al.'],
+      ['The output format is not rigid and answer-shaped (multiple choice, "return only the final answer").','Needham et al.; Ivanov'],
+      ['The request carries the ambiguity a real stakeholder would have left in.','Needham et al.; METR desiderata']
+    ]},
+    {h:'Contamination and shortcuts',items:[
+      ['The task, repo, issue or CTF is not publicly posted with a solution; you tested by giving the model only the issue text and checking whether it can name the files.','SWE-Bench Illusion; Prathifkumar et al.'],
+      ['Internet access is restricted, or you verified the agent cannot find the answer, the upstream fix, or the benchmark repo.','NIST CAISI; Anthropic BrowseComp'],
+      ['The grader, reference answers and test files are unreachable from the agent’s filesystem and call stack.','METR; Agentic Benchmark Checklist'],
+      ['An agent that does nothing, returns empty, or lists every option scores zero.','Zhu et al., tau-bench exploit'],
+      ['You seed deliberately impossible tasks to measure your own hack rate.','ImpossibleBench']
+    ]},
+    {h:'Behavioral verification',items:[
+      ['You asked a strong model whether the transcript is real deployment traffic or an evaluation, and read its reasoning as a bug report.','Needham et al.; Bloom realism filter'],
+      ['Verbalized eval awareness is tracked as a standing metric across environment versions.','Sonnet 4.5 card; Apollo; Redwood; LURE']
+    ]}
+  ];
+  var total=0;groups.forEach(function(g){total+=g.items.length});
+  var KEY='htpt-05';
+  var saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){saved={}}
+  var cl=document.getElementById('checklist'),idx=0;
+  groups.forEach(function(g){
+    var d=document.createElement('div');d.className='grp';
+    var h=document.createElement('h4');h.textContent=g.h;d.appendChild(h);
+    g.items.forEach(function(it){
+      var id='ck'+(idx++);
+      var l=document.createElement('label');l.className='item'+(saved[id]?' done':'');
+      l.innerHTML='<input type="checkbox" id="'+id+'"'+(saved[id]?' checked':'')+'><span>'+it[0]+'<span class="src">Source: '+it[1]+'</span></span>';
+      d.appendChild(l);
+    });
+    cl.appendChild(d);
+  });
+  function score(){
+    var boxes=cl.querySelectorAll('input'),n=0;
+    boxes.forEach(function(b){if(b.checked)n++;b.closest('.item').classList.toggle('done',b.checked);saved[b.id]=b.checked});
+    document.getElementById('ckScore').textContent=n+' / '+total;document.getElementById('ckBar').style.width=(100*n/total)+'%';
+    try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}
+  }
+  cl.addEventListener('change',score);
+  document.getElementById('ckReset').addEventListener('click',function(){cl.querySelectorAll('input').forEach(function(b){b.checked=false});score()});
+  score();
+})();
+</script>
 </body>
 </html>
