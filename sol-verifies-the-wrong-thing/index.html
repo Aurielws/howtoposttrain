@@ -130,11 +130,11 @@
 
   <p class="iv-lede">I've been keeping up with the latest releases. Sol is making real progress against Opus 5. Terra also clears Sonnet 5 by most metrics.</p>
 
-  <p>The gap I think is ruining user trust at the model level. I would like to chat about an improvement we could slip in for the next training run: independent verification.</p>
+  <p>The gap I think is ruining user trust at the model level and would like to chat about improvements for the next training is Independent Verification, particularly watch for failures in instruction following cases<sup><a href="#source-1">[1]</a></sup></p>
 
   <h2>What I keep seeing in my own repos</h2>
 
-  <p>On subagent tasks, the model often skips the actual unit test already in my repo, writes its own sort of vibe test, gets that to pass, and says the work is done. The model did work. It seems the model tests its interpretation of my task, and does no work to really establish that the core requirements I have given it (ie: unit tests) are done and true. I see this most at subagent handback, when the parent accepts the report instead of re-reading the implementation and running the relevant test.</p>
+  <p>On subagent tasks, the model often skips the actual unit test already in my repo, writes its own sort of vibe test, gets that to pass, and says the work is done. The model did work. It seems the model tests its interpretation of my task, and does no work to really establish that the core requirements I have given it (ie: unit tests) are done. I see this most at subagent handback, when the parent accepts the report instead of re-reading the implementation and running the relevant test.</p>
 
   <h2>Benchmark Examples: Terminal-Bench 3.0 Trajectories</h2>
 
