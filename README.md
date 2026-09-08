@@ -16,10 +16,10 @@ styles.css                     the LessWrong-styled theme (see Theme below)
 robots.txt
 sitemap.xml
 rl-pet-peeves-part-1/          01 · You've Never Spent Real Time with Your Model  (+ images)
-rl-pet-peeves-rubric/          02 · Your Rubric Was Written by Someone Who Has Never Done the Job
-rl-pet-peeves-economic/        03 · Your Tasks Are Not Grounded in Economic Reality
-rl-pet-peeves-simulation/      04 · Your Data Screams "This Is a Simulation"
-rl-pet-peeves-harness/         05 · Stop Shipping Low-Quality Harnesses and Calling It an "Environment" #2
+rl-pet-peeves-harness/         02 · Stop Shipping Low-Quality Harnesses and Calling It an "Environment"
+rl-pet-peeves-rubric/          03 · Your Rubric Was Written by Someone Who Has Never Done the Job
+rl-pet-peeves-economic/        04 · Your Tasks Are Not Grounded in Economic Reality
+rl-pet-peeves-simulation/      05 · Your Data Screams "This Is a Simulation"
 glossary/                      RL glossary
 ```
 
