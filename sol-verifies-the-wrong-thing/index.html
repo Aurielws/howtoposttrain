@@ -35,6 +35,7 @@
 .iv-stat-label{line-height:1.35;letter-spacing:.05em;text-transform:none}
 .iv-claim{border-top:1px solid var(--lw-border-faint);border-bottom:1px solid var(--lw-border-faint);padding:19px 0;margin:29px 0;font-size:22px;line-height:1.48;color:var(--lw-grey800)}
 .iv-examples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:23px 0 12px}
+.iv-examples.iv-wide,.iv-paths.iv-wide{margin-left:50%}
 .iv-example{background:#fff;border:1px solid var(--lw-border-faint);padding:17px 16px;min-width:0}
 .iv-example-label{margin-bottom:9px;color:var(--lw-link)}
 .iv-example h3{font-size:19px;margin-bottom:12px}
@@ -85,7 +86,10 @@
 .iv-sources li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:13px 0;border-bottom:1px solid var(--lw-sep);margin:0;font-family:var(--lw-sans);font-size:14px;line-height:1.5;color:var(--lw-text-slight)}
 .iv-signoff{border-top:1px solid var(--lw-border-faint);padding-top:20px;margin-top:44px;font-family:var(--lw-sans);font-size:14px;color:var(--lw-text-dim)}
 .iv-signoff p{margin-bottom:8px}
-@media(max-width:860px){.iv-wide{width:auto;margin-left:0;transform:none}}
+@media(max-width:860px){
+  .iv-wide{width:auto;transform:none}
+  .iv-examples.iv-wide,.iv-paths.iv-wide{margin-left:0}
+}
 @media(max-width:760px){
   .iv-header h1{font-size:33px}
   .iv-stats{grid-template-columns:1fr 1fr}
