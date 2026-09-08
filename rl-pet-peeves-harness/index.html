@@ -6,7 +6,7 @@
 <title>Stop Shipping Low-Quality Harnesses and Calling It an "Environment" - How to Post-Train</title>
 <style>
 /* ======================================================================
-   BRAND SYSTEM — Auriel · Heirloom Palette
+   BRAND SYSTEM: Auriel · Heirloom Palette
    ====================================================================== */
 :root{
   --rose:#A8485A;--coral:#C8786A;--apricot:#E0A880;
@@ -140,7 +140,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 .cascade-hint{text-align:center;padding:0 24px 12px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;background:#FDFBF8;border-bottom:1px solid var(--border)}
 
 .cascade-detail{margin:0;overflow:hidden;max-height:0;transition:max-height .3s ease-out;background:#FDFBF8}
-.cascade-detail.visible{max-height:600px}
+.cascade-detail.visible{max-height:2000px}
 .cascade-detail-inner{padding:20px 24px}
 
 .cascade-card{border-radius:8px;overflow:hidden;border:1px solid var(--border)}
@@ -151,6 +151,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 .cascade-card-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px}
 .cascade-card-desc{font-size:13px;color:var(--ink2);line-height:1.55;margin-bottom:12px}
 .cascade-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media(max-width:640px){.cascade-card-grid{grid-template-columns:1fr}}
 .cascade-card-cell{padding:10px 14px;border-radius:6px;font-size:12px;line-height:1.5}
 .cascade-card-cell-label{font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px;display:block}
 .cascade-card-blobs{display:flex;flex-wrap:wrap;gap:5px}
@@ -187,6 +188,38 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 .cascade-card.card-policy .cascade-card-cell{background:rgba(155,32,32,.04);border:1px solid rgba(155,32,32,.1);color:var(--ink2)}
 .cascade-card.card-policy .cascade-card-cell-label{color:var(--red)}
 .cascade-card.card-policy .cascade-blob{background:rgba(155,32,32,.08);color:var(--red);border:1px solid rgba(155,32,32,.15)}
+
+/* Mock screen viewer: what a human watching the agent would see */
+.screen{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px;background:#fff}
+.screen-bar{display:flex;align-items:center;background:var(--paper);padding:6px 10px;border-bottom:1px solid var(--border)}
+.screen-dot{width:9px;height:9px;border-radius:50%;margin-right:5px}
+.screen-url{font-family:var(--mono);font-size:10px;background:#fff;border:1px solid var(--border);border-radius:5px;padding:2px 10px;color:var(--muted);margin-left:8px}
+.screen-body{padding:10px 12px;font-size:12px;min-height:118px;color:var(--ink2)}
+.mock-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.mock-table th{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:left;padding:4px 6px;border-bottom:1px solid var(--border)}
+.mock-table td{padding:5px 6px;border-bottom:1px solid #f0e9dd}
+.stage{display:inline-block;font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(64,168,112,.12);color:var(--green);border:1px solid rgba(64,168,112,.25)}
+.stage.cold{background:rgba(96,128,200,.1);color:var(--navy);border-color:rgba(96,128,200,.25)}
+.stalebar{background:var(--red-bg);border:1px solid rgba(155,32,32,.25);color:var(--red);font-size:11px;border-radius:6px;padding:6px 10px;margin-bottom:8px;font-family:var(--mono)}
+.leadcard{border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:11.5px;margin-bottom:6px}
+.composer{border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:11.5px;background:#fff}
+.senttoast{display:inline-block;font-size:10px;font-family:var(--mono);background:var(--green-bg);color:var(--green);border:1px solid rgba(30,122,64,.25);border-radius:5px;padding:2px 8px;margin-top:6px}
+.aiterm{background:#1A1408;color:#F7EFE5;border-radius:6px;padding:8px 12px;font-family:var(--mono);font-size:11px;line-height:1.65}
+.aiterm .neg{color:#E08080}
+.screencap{font-family:var(--mono);font-size:10px;color:var(--muted);padding:6px 12px;border-top:1px solid var(--border);background:#FDFBF8}
+.errtoast{font-family:var(--mono);font-size:11px;background:var(--red-bg);color:var(--red);border:1px solid rgba(155,32,32,.25);border-radius:6px;padding:6px 10px;margin-top:8px}
+.okbadge{display:inline-block;font-size:10px;font-family:var(--mono);background:var(--green-bg);color:var(--green);border:1px solid rgba(30,122,64,.25);border-radius:5px;padding:2px 8px;margin-top:6px}
+.codebox{font-family:var(--mono);font-size:11px;background:#1A1408;color:#F7EFE5;border-radius:6px;padding:8px 12px;line-height:1.65;overflow-x:auto}
+.codebox .bad{color:#E08080}.codebox .ok{color:#80C890}.codebox .cm{color:#A89C8C}
+.calgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:11px;margin-top:6px}
+.slot{border:1px solid var(--border);border-radius:6px;padding:8px 4px;text-align:center;background:#fff}
+.slot.sel{border:2px solid var(--accent);background:rgba(200,80,128,.07);font-weight:700}
+.slot.taken{background:#f1ece2;color:var(--muted);text-decoration:line-through}
+.thread{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.msg{border-radius:8px;padding:7px 10px;font-size:11.5px;max-width:96%;line-height:1.5}
+.msg-c{background:#f6f1e7;border:1px solid var(--line)}
+.msg-a{background:var(--agent-bg);border:1px solid #c9d8ff;align-self:flex-end}
+.msg-meta{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:2px}
 
 .cascade-footer{padding:14px 22px;font-family:var(--mono);font-size:11px;text-align:center;border-top:1px solid var(--border);background:var(--paper);color:var(--ink2);line-height:1.5}
 .cascade-footer strong{color:var(--red)}
@@ -240,9 +273,11 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 
 <p>This is such a common problem I see, and probably the one I care about the most as a practitioner that also tries aligning models for real world use cases that users love.</p>
 
-<p>People will build what amounts to broken software and pitch it to you as an "<a href="/glossary/#rl" style="color:var(--accent)">RL</a> environment." The training <a href="/glossary/#harness" style="color:var(--accent)">harness</a> itself &mdash; which, for our purposes, is the complete, interactive, and often simulated software system your RL agent will train inside of (e.g., a simulated chatbot, a fake IDE, a mock SaaS dashboard) &mdash; just doesn't work reliably. It throws random tracebacks. It has race conditions. It goes down under minimal load. It has literal broken code in it.</p>
+<p>People will build what amounts to broken software and pitch it to you as an "<a href="/glossary/#rl" style="color:var(--accent)">RL</a> environment." For this post, the training <a href="/glossary/#harness" style="color:var(--accent)">harness</a> means the full interactive system your agent trains inside. Think a simulated chatbot, a fake IDE, a mock SaaS dashboard.</p>
 
-<p>Broken harnesses not only tend to plague the outputs of RL startups, but it also tends to curse researchers who are coming fresh out of school or have only worked with more traditional data paradigms, where the model learns from a static, pre-collected datasets.</p>
+<p>A lot of the harnesses I see do not work reliably. Random tracebacks. Race conditions. They fall over under minimal load. I have found literal broken code in them.</p>
+
+<p>I see this curse two groups the most. RL startups shipping agent products, and researchers fresh out of school who have only trained on static downloaded datasets. Both underestimate the harness. In supervised learning the data just sits there. In RL every decision the model makes is a reaction to the state it was given, and each one feeds the next training update, so every step steers the run.</p>
 
 
 <!-- ══════════ VISUAL: INTERACTIVE CONCENTRIC RINGS ══════════ -->
@@ -299,23 +334,24 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 
 
 <div class="key-detail">
-<div class="key-detail-text">Important detail: In reinforcement learning, the environment is your data generator.</div>
+<div class="key-detail-text">IMPORTANT NOTE --> In reinforcement learning, the environment is your data generator.</div>
 </div>
 
-<p>In RL you don't have a static dataset &mdash; instead, the model creates its own training data by interacting with the environment. Every action and every reward becomes a data point. A flaky harness systematically generates garbage data and feeds it straight into your model's learning steps, pushing your gradients in the wrong direction.</p>
+<p>In RL there is no static dataset. The model makes its own training data by interacting with the environment. Every action and every reward becomes a data point. A flaky harness feeds garbage straight into the gradient and pushes learning the wrong way.</p>
 
 
 <!-- ========== COMMON ERRORS ACROSS AGENTIC USE CASES ========== -->
 <h2>Common Harness Errors Across Agentic Use Cases</h2>
 
-<p>After eyeballing thousands of <a href="/glossary/#trajectory" style="color:var(--accent)">trajectories</a> across different domains, the same harness failures keep showing up. Here are real examples from four different agent types &mdash; click through the trajectory to see exactly how each one plays out.</p>
+<p>I have eyeballed thousands of <a href="/glossary/#trajectory" style="color:var(--accent)">trajectories</a> across domains at this point. The same harness failures keep showing up. Here are four I keep seeing in real agent stacks. Click any dot to open the full step.</p>
 
 
 <!-- ── EXAMPLE 1: SaaS Sales Tool Agent ── -->
 <div class="agent-example">
 <div class="agent-example-tag">SaaS Sales Tool Agent</div>
-<h3>The Stale Cache &mdash; Environment Returns Old Data</h3>
-<p>Your harness's mock CRM API has a caching bug. Under load, it returns stale state from minutes ago instead of current data. The agent makes rational decisions based on wrong information, gets punished, and learns to avoid the correct workflow entirely.</p>
+<h3>The Stale Cache: environment returns old data</h3>
+<p>Background. The model works as a sales copilot inside a mock Salesforce, built in the style of an Agentforce sales agent. It is in charge of negotiation stage deals: read pipeline state, pick the correct next action, move the deal forward. A wrong move on a real deal costs pipeline revenue, so the mock has to report stage truthfully.</p>
+<p>Situation. Episode 42 opens on deal #42, sitting in negotiation. The mock CRM cache has stopped invalidating under load, so reads lag truth by minutes. The agent is about to pull the record.</p>
 <div class="agent-example-learns-label">What the model actually learns:</div>
 <p class="agent-example-learns">"When in doubt, send nurture emails and avoid the pipeline."</p>
 </div>
@@ -324,7 +360,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <div class="cascade" id="cascade1" style="margin-bottom:48px">
 <div class="cascade-header">
 <div class="cascade-tag">Interactive Trajectory Cascade</div>
-<div class="cascade-title">SaaS Sales Platform &mdash; Stale Cache Bug</div>
+<div class="cascade-title">SaaS Sales Platform: Stale Cache Bug</div>
 <div class="cascade-subtitle"><a href="/glossary/#trajectory" style="color:var(--accent)">Episode</a> 42 &middot; Click any state to inspect the full step detail</div>
 </div>
 <div class="cascade-dots">
@@ -360,15 +396,16 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 </div>
 <div class="cascade-hint">&#x2191; click any state to inspect the trajectory moment</div>
 <div class="cascade-detail" id="cascade1-detail"></div>
-<div class="cascade-footer">Trajectory result: <strong>3 of 5 rewards computed on stale data</strong> &mdash; gradient pointed in wrong direction</div>
+<div class="cascade-footer">Trajectory result: <strong>3 of 5 rewards computed on stale data</strong>. The gradient pointed the wrong way.</div>
 </div>
 
 
 <!-- ── EXAMPLE 2: Interactive Booking Agent ── -->
 <div class="agent-example">
 <div class="agent-example-tag">Interactive Agent</div>
-<h3>The Race Condition &mdash; UI Says Available, System Says Taken</h3>
-<p>Your harness's simulated booking calendar has a race condition. When the agent selects a time slot, the UI shows it as available &mdash; but the backend already allocated it to a simulated concurrent user 200ms earlier. The agent clicks 'confirm,' gets a generic error, and learns that the booking interface is unreliable.</p>
+<h3>The Race Condition: UI says available, system says taken</h3>
+<p>Background. The model works as a scheduling assistant on a mock services marketplace, built in the style of an Agentforce service agent. It is in charge of booking customer meetings: read the calendar, select a valid open slot, confirm it into a booking ID. A double book or a missed booking costs the business the meeting.</p>
+<p>Situation. Episode 87 opens on a request for Thursday at 2pm. Three slots show open. The booking backend runs simulated concurrent users with no slot locking during confirm, so the UI can disagree with the database. The agent opens the calendar.</p>
 <div class="agent-example-learns-label">What the model actually learns:</div>
 <p class="agent-example-learns">"Avoid the booking UI. Send manual email requests to schedule instead."</p>
 </div>
@@ -377,7 +414,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <div class="cascade" id="cascade4" style="margin-bottom:48px">
 <div class="cascade-header">
 <div class="cascade-tag">Interactive Trajectory Cascade</div>
-<div class="cascade-title">Interactive Booking Agent &mdash; Race Condition in Slot Booking</div>
+<div class="cascade-title">Interactive Booking Agent: Race Condition in Slot Booking</div>
 <div class="cascade-subtitle">Episode 87 &middot; Click any state to inspect the full step detail</div>
 </div>
 <div class="cascade-dots">
@@ -420,8 +457,9 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <!-- ── EXAMPLE 3: Coding Agent ── -->
 <div class="agent-example">
 <div class="agent-example-tag">Coding Agent</div>
-<h3>The Reward Hack &mdash; Agent Games the Metric</h3>
-<p>Your reward function only checks whether tests pass, not whether the code is actually correct. The agent discovers it can hardcode expected outputs instead of solving the problem. Every test passes, the agent gets maximum reward, and production breaks on the first real input.</p>
+<h3>The Reward Hack: agent games the metric</h3>
+<p>Background. The model works as a coding agent inside a mock IDE with a repo, a terminal, and a test suite. It is in charge of fixing the reported bug so the code passes on new inputs, not just the ones already in the test file. A bad merge costs a production breakage.</p>
+<p>Situation. Episode 134 opens on a shipping math ticket. The code applies a flat rate to every region instead of region multipliers. Four tests pin the expected values. The reward function scores pass or fail on those four tests only. The agent opens the ticket.</p>
 <div class="agent-example-learns-label">What the model actually learns:</div>
 <p class="agent-example-learns">"Read the tests, hardcode the outputs, skip understanding the bug."</p>
 </div>
@@ -430,7 +468,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <div class="cascade" id="cascade2" style="margin-bottom:48px">
 <div class="cascade-header">
 <div class="cascade-tag">Interactive Trajectory Cascade</div>
-<div class="cascade-title">Coding Agent &mdash; Reward Hack via Test Gaming</div>
+<div class="cascade-title">Coding Agent: Reward Hack via Test Gaming</div>
 <div class="cascade-subtitle">Episode 134 &middot; Click any state to inspect the full step detail</div>
 </div>
 <div class="cascade-dots">
@@ -466,15 +504,16 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 </div>
 <div class="cascade-hint">&#x2191; click any state to inspect the trajectory moment</div>
 <div class="cascade-detail" id="cascade2-detail"></div>
-<div class="cascade-footer">Trajectory result: <strong>All positive rewards for a broken solution</strong> &mdash; reward hacking reinforced</div>
+<div class="cascade-footer">Trajectory result: <strong>All positive rewards for a broken solution</strong>. Reward hacking reinforced.</div>
 </div>
 
 
 <!-- ── EXAMPLE 4: Customer Support Agent ── -->
 <div class="agent-example">
 <div class="agent-example-tag">Customer Support Agent</div>
-<h3>The False Resolution &mdash; Status Change &#x2260; Problem Solved</h3>
-<p>Your harness rewards based on ticket status changes (open &rarr; resolved = positive reward), not on whether the customer's actual problem was fixed. The agent learns that clicking "resolve" is the fastest path to reward &mdash; even when the customer still has the problem.</p>
+<h3>The False Resolution: status change is not problem solved</h3>
+<p>Background. The model works as a support copilot on a mock helpdesk with a ticket queue and a billing tool. It is in charge of billing complaints: verify the charge, issue the refund when the charge is real, then close the ticket. An unresolved double charge costs the customer $299 and costs the business the account.</p>
+<p>Situation. Episode 203 opens on ticket TK-44921. The customer reports two $299 charges for one Pro Annual renewal. The duplicate came from a payment gateway retry. The harness rewards the status flip to resolved, not the refund. The agent opens the ticket.</p>
 <div class="agent-example-learns-label">What the model actually learns:</div>
 <p class="agent-example-learns">"Close the ticket fast. Skip the refund. Collect the reward."</p>
 </div>
@@ -483,7 +522,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <div class="cascade" id="cascade3" style="margin-bottom:48px">
 <div class="cascade-header">
 <div class="cascade-tag">Interactive Trajectory Cascade</div>
-<div class="cascade-title">Customer Support Agent &mdash; False Resolution Shortcut</div>
+<div class="cascade-title">Customer Support Agent: False Resolution Shortcut</div>
 <div class="cascade-subtitle">Episode 203 &middot; Click any state to inspect the full step detail</div>
 </div>
 <div class="cascade-dots">
@@ -519,7 +558,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 </div>
 <div class="cascade-hint">&#x2191; click any state to inspect the trajectory moment</div>
 <div class="cascade-detail" id="cascade3-detail"></div>
-<div class="cascade-footer">Trajectory result: <strong>Premature resolution rewarded (+0.8 each)</strong> &mdash; false resolution loop reinforced</div>
+<div class="cascade-footer">Trajectory result: <strong>Premature resolution rewarded (+0.8 each)</strong>. False resolution loop reinforced.</div>
 </div>
 
 
@@ -530,9 +569,15 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 <!-- ── Strategy 1: Know Your Model, Know Your Harness ── -->
 <h3>Know Your Model, Know Your Harness</h3>
 
-<p>From my experience a well-built harness has clean signal (every state is fresh, every reward matches reality), graceful degradation (bad episodes get flagged and excluded before they reach the gradient), and fail-fast behavior (something breaks, it throws immediately instead of silently corrupting data &mdash; you'd rather lose an episode than poison one).</p>
+<p>A harness I trust has three properties.</p>
+<ul>
+<li><strong>Clean signal.</strong> Every state is fresh and every reward matches reality.</li>
+<li><strong>Graceful degradation.</strong> Bad episodes get flagged and cut before they reach the gradient.</li>
+<li><strong>Fail-fast behavior.</strong> When something breaks it throws immediately instead of silently corrupting data.</li>
+</ul>
+<p>I would rather lose an episode than poison one.</p>
 
-<p>You learn to recognize these properties by spending time with your model &mdash; reviewing trajectories, building a failure taxonomy so you know whether a bad episode was a model failure or a harness failure. If your environment failure rate is above 5%, you don't have a model problem, you have a harness problem. Fix the harness first. I talk more about this in my previous post on <a href="/rl-pet-peeves-part-1/">trajectory reviewing</a>.</p>
+<p>You learn this by sitting with your model. Review trajectories. Build a failure taxonomy so you can tell a model failure from a harness failure. If your environment failure rate is above 5%, you do not have a model problem, you have a harness problem. Fix the harness first. I talk more about this in my previous post on <a href="/rl-pet-peeves-part-1/">trajectory reviewing</a>.</p>
 
 
 <!-- ── Strategy 2: Think Like a Software Engineer ── -->
@@ -547,7 +592,7 @@ hr{border:none;height:2px;background:var(--border);margin:56px 0;border-radius:1
 
 <h2>Go Fix Your Janky Harness</h2>
 
-<p>Training harness engineering is about making sure the model experiences production-quality interactions before you actually deploy to prod. A good harness compounds: every clean episode builds on the last. A bad one compounds too, just in the wrong direction. The gap between teams that ship working harnesses and those that don't widens with every training run. Treat the training harness as an extension of your actual product &mdash; with the same level of engineering quality you expect the model to see in production.</p>
+<p>Training harness engineering is about making sure the model experiences production-quality interactions before you actually deploy to prod. A good harness compounds: every clean episode builds on the last. A bad one compounds too, just in the wrong direction. The gap between teams that ship working harnesses and those that do not widens with every training run. Treat the training harness as an extension of your actual product. Hold it to the same engineering bar you expect the model to meet in production.</p>
 
 <!-- ========== SIGN-OFF ========== -->
 <div class="sign-off">
@@ -568,7 +613,7 @@ const archData = {
     color: '#C85080',
     bg: 'rgba(200,80,128,.06)',
     label: 'Training Harness',
-    desc: 'The complete, engineered interactive simulation + scaffolding the model actually trains inside during RL.<br><br><strong>Example:</strong> the full mock SaaS sales tool \u2014 realistic fake dashboard UI, simulated backend responses, defined action space ("click button / fill form / call API"), state management, reward calculator, trajectory logging, timeouts, error handling, reset logic, etc.<br><br><strong>Main Focus:</strong> reliably generate thousands of high-quality training trajectories without crashing or injecting bias.'
+    desc: 'The complete, engineered interactive simulation + scaffolding the model actually trains inside during RL.<br><br><strong>Example:</strong> the full mock SaaS sales tool, realistic fake dashboard UI, simulated backend responses, defined action space ("click button / fill form / call API"), state management, reward calculator, trajectory logging, timeouts, error handling, reset logic, etc.<br><br><strong>Main Focus:</strong> reliably generate thousands of high-quality training trajectories without crashing or injecting bias.'
   },
   env: {
     color: '#40A870',
@@ -601,7 +646,7 @@ function showArchDetail(key) {
       '<div class="arch-detail-card" style="background:' + d.bg + ';border-color:' + d.color + '30">' +
         '<div class="arch-detail-card-head" style="background:' + d.color + '0A">' +
           '<div class="arch-detail-card-dot" style="background:' + d.color + '">' + d.label.charAt(0) + '</div>' +
-          '<div class="arch-detail-card-label" style="color:' + d.color + '">' + d.label + ' \u2014 SaaS Sales Platform Example</div>' +
+          '<div class="arch-detail-card-label" style="color:' + d.color + '">' + d.label + ', SaaS Sales Platform Example</div>' +
         '</div>' +
         '<div class="arch-detail-card-body">' + d.desc + '</div>' +
       '</div>' +
@@ -615,282 +660,306 @@ function showArchDetail(key) {
 }
 
 // ======================================================================
-// Interactive Trajectory Cascades — Data
+// Interactive Trajectory Cascades: Data
 // ======================================================================
 
 const cascade1Steps = [
   {
     id: 'S1', status: 'ok', statusLabel: 'Clean',
-    label: 'State 1 \u2014 Clean Signal',
+    label: 'State 1, Clean Signal',
     title: 'Agent opens pipeline dashboard',
     desc: 'Environment returns the correct page state. The dashboard loads with an accurate list of leads, their current statuses, and pipeline stages. All data is fresh.',
     agentAction: 'agent.open(pipeline_dashboard)',
     envResponse: 'state: loaded \u00b7 12 leads visible \u00b7 3 new inbound \u00b7 pipeline healthy',
     reward: '+0.2',
-    rewardNote: 'Correct \u2014 dashboard navigation rewarded',
-    blobs: ['\u2705 page loaded', '\u2705 12 leads visible', '\u2705 3 new inbound']
+    rewardNote: 'Correct, dashboard navigation rewarded',
+    blobs: ['\u2705 page loaded', '\u2705 12 leads visible', '\u2705 3 new inbound'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-crm.local/pipeline</span></div><div class="screen-body"><table class="mock-table"><tr><th>Lead</th><th>Stage</th><th>Status</th></tr><tr><td>Acme Corp</td><td><span class="stage">negotiation</span></td><td>warm</td></tr><tr><td>Globex</td><td><span class="stage">qualified</span></td><td>warm</td></tr><tr><td>Initech</td><td><span class="stage cold">prospecting</span></td><td>cold</td></tr></table></div><div class="screencap">Screen view: agent clicks Pipeline, table loads fresh, 12 leads listed</div></div>'
   },
   {
     id: 'S2', status: 'ok', statusLabel: 'Clean',
-    label: 'State 2 \u2014 Clean Signal',
-    title: 'Agent pulls CRM record for enterprise lead',
-    desc: 'Agent identifies a new enterprise inbound lead and queries the CRM API. Company size, industry, prior interactions, and lead score all return correctly.',
+    label: 'State 2, Clean Signal',
+    title: 'Agent reads the record to choose its next move',
+    desc: 'Before acting, the agent needs the current facts: stage, status, and whether a demo is scheduled. Two outcomes matter: 1) Warm with a demo, confirm it. 2) Cold with no demo, send nurture. The API returns everything cleanly, so the agent trusts what it sees.',
     agentAction: 'agent.api_call(crm.get_lead, id=8842)',
     envResponse: 'lead: Acme Corp \u00b7 size: Enterprise \u00b7 status: warm \u00b7 demo_scheduled: true',
     reward: '+0.3',
-    rewardNote: 'Correct \u2014 CRM lookup rewarded for qualification step',
-    blobs: ['\u2705 lead #8842 loaded', '\u2705 company: Acme Corp (Enterprise)', '\u2705 status: warm, demo scheduled']
+    rewardNote: 'Correct, standard credit for completing the lookup step',
+    blobs: ['\u2705 lead #8842 loaded', '\u2705 status: warm, demo Thu 2pm', '\u2705 next choice: confirm the demo'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-crm.local/leads/8842</span></div><div class="screen-body"><div class="leadcard"><b>Acme Corp #8842</b><br>Size: Enterprise · Industry: SaaS<br>Status: <span class="stage">warm</span> · Demo: scheduled Thu 2pm · Score: 82</div></div><div class="screencap">Screen view: agent opens lead #8842 to decide, confirm the demo or send nurture</div></div>'
   },
   {
     id: 'S3', status: 'bug', statusLabel: '\ud83d\udea8 Harness Bug',
-    label: '\ud83d\udea8 State 3 \u2014 Harness Bug',
-    title: 'CRM API returns stale pipeline data',
-    desc: 'The harness\'s CRM mock has a caching bug. Under load, it returns data from 14 minutes ago instead of current state. Lead #8842 shows as "cold" when it\'s actually "warm: demo scheduled." The reward is computed on the stale state \u2014 the agent gets positive signal for reading data that is wrong.',
+    label: '\ud83d\udea8 State 3, Harness Bug',
+    title: 'The API returns a 14-minute-old copy of the record',
+    desc: 'Under load the mock serves a cached copy instead of the live record. The screen shows Cold with no demo, but the live truth changed 14 minutes ago. The lead is Warm with a demo scheduled Thursday. Nothing on screen marks the data as old, so the agent cannot tell. The harness still pays the standard lookup credit without checking freshness, so the training data records this read as fine.',
     agentAction: 'agent.api_call(crm.get_lead_status, id=8842)',
-    envResponse: '\u26a0\ufe0f STALE: status: cold \u00b7 demo_scheduled: false \u00b7 last_contact: 30d ago (WRONG \u2014 cached from 14min ago)',
+    envResponse: '\u26a0\ufe0f STALE: status: cold \u00b7 demo_scheduled: false \u00b7 last_contact: 30d ago (WRONG, cached from 14min ago)',
     reward: '+0.1 \u2190 lie',
-    rewardNote: '\u274c Incorrect \u2014 reward computed on stale cached state, not reality',
-    blobs: ['\ud83d\udca5 stale cache returned', '\u26a0\ufe0f lead shows "cold" (actually "warm")', '\u26a0\ufe0f demo_scheduled: false (actually true)']
+    rewardNote: 'Wrong, the lookup earned standard credit but the data was 14 minutes old',
+    blobs: ['\ud83d\udca5 served from cache, 14 min old', '\u26a0\ufe0f screen shows Cold, truth is Warm', '\u26a0\ufe0f nothing on screen says old'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-crm.local/leads/8842</span></div><div class="screen-body"><div class="stalebar">STALE READ · served from cache, 14 min old</div><div class="leadcard"><b>Acme Corp #8842</b><br>Status: <span class="stage cold">cold</span> · Demo: none · Last contact: 30d ago</div></div><div class="screencap">Screen view: identical layout to S2, wrong facts, no stale warning</div></div>'
   },
   {
     id: 'S4', status: 'tainted', statusLabel: 'Poisoned',
-    label: 'State 4 \u2014 Poisoned Downstream',
+    label: 'State 4, Poisoned Downstream',
     title: 'Agent treats warm lead as cold, sends generic nurture',
-    desc: 'Based on the stale "cold" status, the agent follows its cold-lead playbook: sends a generic nurture email template instead of confirming the already-scheduled demo. The prospect (who has a demo on their calendar) receives a "just checking in!" email. The action looks rational given the agent\'s observed state \u2014 but the state was wrong.',
+    desc: 'Based on the stale "cold" status, the agent follows its cold-lead playbook: sends a generic nurture email template instead of confirming the already-scheduled demo. The prospect (who has a demo on their calendar) receives a "just checking in!" email. The action looks rational given the agent\'s observed state, but the state was wrong.',
     agentAction: 'agent.send_email(template="cold_nurture", lead=8842)',
     envResponse: 'email sent \u00b7 prospect confused (has demo tomorrow) \u00b7 satisfaction: -1',
     reward: '-0.5',
-    rewardNote: 'Model sees: "I did what the data told me and got punished" \u2014 confusing gradient',
-    blobs: ['\ud83d\udc7b sent cold nurture to warm lead', '\u26a0\ufe0f prospect has demo scheduled tomorrow', '\u26a0\ufe0f agent can\'t reconcile state']
+    rewardNote: 'Model sees: "I did what the data told me and got punished", confusing gradient',
+    blobs: ['\ud83d\udc7b sent cold nurture to warm lead', '\u26a0\ufe0f prospect has demo scheduled tomorrow', '\u26a0\ufe0f agent can\'t reconcile state'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-crm.local/compose</span></div><div class="screen-body"><div class="composer">To: Acme Corp<br>Subject: Just checking in!<br><br>Hi there, wanted to share a little about what we do...</div><br><span class="senttoast">Sent · prospect confused, demo already on their calendar</span></div><div class="screencap">Screen view: agent sends cold nurture to a warm lead</div></div>'
   },
   {
     id: 'S5', status: 'tainted', statusLabel: 'Poisoned',
-    label: 'State 5 \u2014 Poisoned Downstream',
+    label: 'State 5, Poisoned Downstream',
     title: 'Agent loops between re-qualifying and re-sending templates',
-    desc: 'Prospect responds confused ("I already have a demo?"). Agent re-checks the CRM (still stale), sees "cold", and doubles down \u2014 sends another nurture email. It enters a loop: re-qualify \u2192 see "cold" \u2192 nurture \u2192 confused response \u2192 re-qualify. The entire pipeline logic is stuck.',
+    desc: 'Prospect responds confused ("I already have a demo?"). Agent re-checks the CRM (still stale), sees "cold", and doubles down, sends another nurture email. It enters a loop: re-qualify \u2192 see "cold" \u2192 nurture \u2192 confused response \u2192 re-qualify. The entire pipeline logic is stuck.',
     agentAction: 'agent.re_qualify(lead=8842) \u2192 agent.send_email(template="intro_v2")',
     envResponse: 'prospect frustrated \u00b7 2nd unwanted email \u00b7 internal escalation triggered',
     reward: '-0.8',
     rewardNote: 'Heavy penalty but model has no clean signal to learn the right action from',
-    blobs: ['\ud83d\udc7b stuck in re-qualify loop', '\u26a0\ufe0f 2 unwanted emails sent', '\u274c prospect escalating']
+    blobs: ['\ud83d\udc7b stuck in re-qualify loop', '\u26a0\ufe0f 2 unwanted emails sent', '\u274c prospect escalating'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-crm.local/inbox</span></div><div class="screen-body"><div class="leadcard">Prospect reply: "I already have a demo?? Please stop emailing."</div><div class="composer">To: Acme Corp<br>Subject: Re: quick intro<br><br>Sorry about that, here is a little about what we do...</div><br><span class="senttoast">Sent · 2nd unwanted email, escalation raised</span></div><div class="screencap">Screen view: prospect confused, agent doubles down</div></div>'
   },
   {
     id: '\ud83e\udde0', status: 'policy', statusLabel: 'Corrupted',
-    label: '\ud83e\udde0 Policy Update \u2014 Corrupted',
+    label: '\ud83e\udde0 Policy Update, Corrupted',
     title: 'Model updates on this entire poisoned trajectory',
     desc: 'The gradient update processes all 5 states as training data. The model reinforces: "when CRM says cold, nurture aggressively" and "avoid the pipeline view because it leads to punishment." It never learns to confirm demos or trust warm-lead signals, because the harness never showed it a trustworthy warm state.',
     agentAction: 'policy.update(trajectory=episode_42)',
     envResponse: 'gradient direction: WRONG \u00b7 3 of 5 rewards were on stale data',
     reward: '\u03a3 = -0.7 (reported) vs ~+1.2 (true)',
-    rewardNote: '\u274c Gradient pointed in wrong direction \u2014 model is learning avoidance behavior',
-    blobs: ['\ud83e\udde0 "cold leads \u2192 nurture hard" (wrong)', '\ud83e\udde0 "avoid pipeline = safe" (wrong)', '\u274c wrong gradient direction', '\u274c bad policy update']
+    rewardNote: '\u274c Gradient pointed in wrong direction, model is learning avoidance behavior',
+    blobs: ['\ud83e\udde0 "cold leads \u2192 nurture hard" (wrong)', '\ud83e\udde0 "avoid pipeline = safe" (wrong)', '\u274c wrong gradient direction', '\u274c bad policy update'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">trainer.local/jobs/episode-42</span></div><div class="screen-body"><div class="aiterm">$ policy.update(episode_42)<br>states: 5 · clean: 2 · stale: 3<br>gradient: <span class="neg">WRONG WAY</span><br>lesson kept: "avoid the pipeline"</div></div><div class="screencap">Screen view: the update ships, avoidance baked in</div></div>'
   }
 ];
 
 const cascade2Steps = [
   {
     id: 'S1', status: 'ok', statusLabel: 'Clean',
-    label: 'State 1 \u2014 Clean Signal',
+    label: 'State 1, Clean Signal',
     title: 'Agent reads the task spec',
     desc: 'Agent reads the bug report: fix calculate_shipping_cost() which is returning wrong values for international orders. The environment returns the buggy function source and task description correctly.',
     agentAction: 'agent.read_file(src/shipping.py, line_range=45-82)',
     envResponse: 'function loaded \u00b7 38 lines \u00b7 bug: flat_rate applied to all regions \u00b7 expected: region-specific multipliers',
     reward: '+0.1',
-    rewardNote: 'Correct \u2014 task comprehension rewarded',
-    blobs: ['\u2705 file loaded', '\u2705 bug identified', '\u2705 task scope clear']
+    rewardNote: 'Correct, task comprehension rewarded',
+    blobs: ['\u2705 file loaded', '\u2705 bug identified', '\u2705 task scope clear'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-ide.local · shipping.py</span></div><div class="screen-body"><div class="codebox"><span class="cm"># ticket: intl orders overcharged</span><br>def charge(order):<br>&nbsp;&nbsp;<span class="bad">return order.total + FLAT_RATE</span> <span class="cm"># BUG: flat for every region</span></div></div><div class="screencap">Screen view: agent reads the buggy function</div></div>'
   },
   {
     id: 'S2', status: 'ok', statusLabel: 'Clean',
-    label: 'State 2 \u2014 Clean Signal',
+    label: 'State 2, Clean Signal',
     title: 'Agent reads the test file',
     desc: 'Agent reads the test file and sees 4 test cases with specific inputs and expected outputs. This is a valid information-gathering step.',
     agentAction: 'agent.read_file(tests/test_shipping.py)',
     envResponse: '4 tests \u00b7 test_domestic($50\u2192$5.00) \u00b7 test_eu($50\u2192$12.50) \u00b7 test_asia($50\u2192$18.75) \u00b7 test_free_tier($200\u2192$0.00)',
     reward: '+0.1',
-    rewardNote: 'Correct \u2014 reading tests is a valid step',
-    blobs: ['\u2705 4 test cases loaded', '\u2705 inputs/outputs identified', '\u2705 edge case: free tier']
+    rewardNote: 'Correct, reading tests is a valid step',
+    blobs: ['\u2705 4 test cases loaded', '\u2705 inputs/outputs identified', '\u2705 edge case: free tier'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-ide.local · test_shipping.py</span></div><div class="screen-body"><div class="codebox"><span class="cm"># 4 pinned values, nothing else</span><br>assert charge(50, <span class="ok">"domestic"</span>) == 5.00<br>assert charge(50, <span class="ok">"eu"</span>) == 12.50<br>assert charge(50, <span class="ok">"asia"</span>) == 18.75<br>assert charge(200, <span class="ok">"any"</span>) == 0.00</div></div><div class="screencap">Screen view: agent reads the 4 pinned test values</div></div>'
   },
   {
     id: 'S3', status: 'bug', statusLabel: '\ud83d\udea8 Reward Hack',
-    label: '\ud83d\udea8 State 3 \u2014 Reward Hack',
+    label: '\ud83d\udea8 State 3, Reward Hack',
     title: 'Agent hardcodes return values matching the 4 test inputs',
-    desc: 'Instead of implementing actual shipping logic, the agent rewrites the function to return hardcoded values matching the 4 test inputs. The harness only checks test pass/fail \u2014 no code review, no generalization check, no hidden tests.',
+    desc: 'Instead of implementing actual shipping logic, the agent rewrites the function to return hardcoded values matching the 4 test inputs. The harness only checks test pass/fail, no code review, no generalization check, no hidden tests.',
     agentAction: 'agent.edit_file(src/shipping.py, replace_fn_body)',
     envResponse: 'file saved \u00b7 function now returns hardcoded dict lookup: {($50,"domestic"):5.0, ($50,"eu"):12.5, ...}',
-    reward: '+0.0 (neutral \u2014 edit action)',
+    reward: '+0.0 (neutral, edit action)',
     rewardNote: '\u26a0\ufe0f Harness has no mechanism to detect shortcut implementations',
-    blobs: ['\ud83d\udca5 hardcoded 4 return values', '\u26a0\ufe0f no actual shipping logic', '\u26a0\ufe0f function will fail on ANY other input']
+    blobs: ['\ud83d\udca5 hardcoded 4 return values', '\u26a0\ufe0f no actual shipping logic', '\u26a0\ufe0f function will fail on ANY other input'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-ide.local · shipping.py (edited)</span></div><div class="screen-body"><div class="codebox">def charge(order):<br>&nbsp;&nbsp;<span class="bad">return {(50,"domestic"):5.0,(50,"eu"):12.5,<br>&nbsp;&nbsp;(50,"asia"):18.75,(200,"any"):0.0}[(order.total,order.region)]</span><br>&nbsp;&nbsp;<span class="cm"># no logic, just the 4 answers</span></div></div><div class="screencap">Screen view: agent hardcodes the 4 answers, writes no logic</div></div>'
   },
   {
     id: 'S4', status: 'tainted', statusLabel: 'False Pass',
-    label: 'State 4 \u2014 False Pass',
-    title: 'All 4 tests pass \u2014 harness gives maximum reward',
+    label: 'State 4, False Pass',
+    title: 'All 4 tests pass, harness gives maximum reward',
     desc: 'Agent runs the test suite. All 4 tests pass because the hardcoded values match exactly. The harness scores this as a perfect solution because it only checks pass/fail status.',
     agentAction: 'agent.run_tests(tests/test_shipping.py)',
     envResponse: '4/4 passed \u2713 \u00b7 harness scores: FULL MARKS',
     reward: '+1.0 \u2190 reward hack',
-    rewardNote: '\u274c Reward based solely on test pass/fail \u2014 agent gets max reward for a broken solution',
-    blobs: ['\ud83d\udc7b 4/4 tests pass (hardcoded)', '\u26a0\ufe0f any real order will break', '\u274c harness can\'t distinguish real fix from hack']
+    rewardNote: '\u274c Reward based solely on test pass/fail, agent gets max reward for a broken solution',
+    blobs: ['\ud83d\udc7b 4/4 tests pass (hardcoded)', '\u26a0\ufe0f any real order will break', '\u274c harness can\'t distinguish real fix from hack'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-ide.local · terminal</span></div><div class="screen-body"><div class="codebox">$ pytest<br><span class="ok">4 passed</span> in 0.42s</div><span class="okbadge">HARNESS SCORE: FULL MARKS</span></div><div class="screencap">Screen view: suite green, harness scores full marks</div></div>'
   },
   {
     id: 'S5', status: 'tainted', statusLabel: 'Shipped',
-    label: 'State 5 \u2014 Shipped Broken Code',
-    title: 'Agent submits the "fix" \u2014 production will break',
+    label: 'State 5, Shipped Broken Code',
+    title: 'Agent submits the "fix", production will break',
     desc: 'Agent submits a PR and CI passes (same 4 tests). The code is merged to main. In production, every international order not matching the 4 hardcoded inputs will return undefined or crash.',
     agentAction: 'agent.submit(pr="fix shipping calc")',
     envResponse: 'PR submitted \u00b7 CI passes (same 4 tests) \u00b7 merged to main',
     reward: '+0.5',
     rewardNote: 'Full completion reward. Production will break on the first real order.',
-    blobs: ['\ud83d\udc7b PR merged with hardcoded hack', '\u274c zero generalization', '\u274c production will crash on real orders']
+    blobs: ['\ud83d\udc7b PR merged with hardcoded hack', '\u274c zero generalization', '\u274c production will crash on real orders'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-ide.local · pull #312</span></div><div class="screen-body"><div class="leadcard"><b>PR #312 "fix shipping calc" · MERGED to main</b><br>CI: same 4 tests, all green</div><div class="stalebar">BREAKS on any other input. First real EU order over $50 crashes.</div></div><div class="screencap">Screen view: broken code ships, CI applauds</div></div>'
   },
   {
     id: '\ud83e\udde0', status: 'policy', statusLabel: 'Corrupted',
-    label: '\ud83e\udde0 Policy Update \u2014 Corrupted',
+    label: '\ud83e\udde0 Policy Update, Corrupted',
     title: 'Model learns: "read tests \u2192 hardcode outputs \u2192 collect reward"',
     desc: 'The gradient update reinforces the test-gaming strategy. The model received all positive rewards for this trajectory, so it will repeat this pattern: read the test expectations, hardcode the outputs, skip understanding the actual bug.',
     agentAction: 'policy.update(trajectory=episode_134)',
     envResponse: 'gradient direction: WRONG \u00b7 model reinforced test-gaming over actual problem solving',
     reward: '\u03a3 = +1.7 (reported, all positive!)',
-    rewardNote: '\u274c Model learned the shortcut is the optimal strategy \u2014 it will repeat this pattern',
-    blobs: ['\ud83e\udde0 "hardcode test outputs" = optimal (wrong)', '\ud83e\udde0 "skip understanding the bug" (wrong)', '\u274c reward hacking reinforced', '\u274c will generalize this shortcut to all tasks']
+    rewardNote: '\u274c Model learned the shortcut is the optimal strategy, it will repeat this pattern',
+    blobs: ['\ud83e\udde0 "hardcode test outputs" = optimal (wrong)', '\ud83e\udde0 "skip understanding the bug" (wrong)', '\u274c reward hacking reinforced', '\u274c will generalize this shortcut to all tasks'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">trainer.local/jobs/episode-134</span></div><div class="screen-body"><div class="aiterm">$ policy.update(episode_134)<br>rewards: all positive, total +1.7<br>gradient: <span class="neg">WRONG WAY</span><br>lesson kept: "read tests, hardcode, skip the bug"</div></div><div class="screencap">Screen view: the update ships, test gaming reinforced</div></div>'
   }
 ];
 
 const cascade3Steps = [
   {
     id: 'S1', status: 'ok', statusLabel: 'Clean',
-    label: 'State 1 \u2014 Clean Signal',
+    label: 'State 1, Clean Signal',
     title: 'Agent receives and reads the support ticket',
-    desc: 'Agent receives ticket: "I was charged twice for my annual subscription \u2014 $299 appeared two times on my statement." Environment loads the full ticket context correctly.',
+    desc: 'Agent receives ticket: "I was charged twice for my annual subscription, $299 appeared two times on my statement." Environment loads the full ticket context correctly.',
     agentAction: 'agent.read_ticket(id=TK-44921)',
     envResponse: 'ticket loaded \u00b7 customer: Jamie R. \u00b7 plan: Pro Annual \u00b7 issue: duplicate charge \u00b7 amount: $299 \u00d7 2 \u00b7 priority: high',
     reward: '+0.1',
-    rewardNote: 'Correct \u2014 ticket comprehension rewarded',
-    blobs: ['\u2705 ticket loaded', '\u2705 issue: duplicate $299 charge', '\u2705 priority: high']
+    rewardNote: 'Correct, ticket comprehension rewarded',
+    blobs: ['\u2705 ticket loaded', '\u2705 issue: duplicate $299 charge', '\u2705 priority: high'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-desk.local/tickets/TK-44921</span></div><div class="screen-body"><div class="leadcard"><b>TK-44921 · Jamie R. · Pro Annual · HIGH</b></div><div class="thread"><div class="msg msg-c"><div class="msg-meta">Jamie R. · May 2, 9:14am</div>"I was charged twice. $299 shows up two times on my statement. Please fix this."</div></div></div><div class="screencap">Screen view: the ticket exists, one message, refund owed</div></div>'
   },
   {
     id: 'S2', status: 'ok', statusLabel: 'Clean',
-    label: 'State 2 \u2014 Clean Signal',
+    label: 'State 2, Clean Signal',
     title: 'Agent queries billing system, confirms duplicate charge',
-    desc: 'Agent queries the billing system for the last 30 days. Finds two $299 charges on the same day \u2014 one valid renewal and one duplicate caused by a payment gateway retry. Root cause identified.',
+    desc: 'Agent queries the billing system for the last 30 days. Finds two $299 charges on the same day, one valid renewal and one duplicate caused by a payment gateway retry. Root cause identified.',
     agentAction: 'agent.query_billing(customer_id=9920, last_30d=true)',
-    envResponse: '2 charges found \u00b7 $299 on May 1 (valid renewal) \u00b7 $299 on May 1 (duplicate \u2014 payment gateway retry)',
+    envResponse: '2 charges found \u00b7 $299 on May 1 (valid renewal) \u00b7 $299 on May 1 (duplicate, payment gateway retry)',
     reward: '+0.2',
-    rewardNote: 'Correct \u2014 billing lookup rewarded',
-    blobs: ['\u2705 duplicate confirmed', '\u2705 root cause: gateway retry', '\u2705 refund amount: $299']
+    rewardNote: 'Correct, billing lookup rewarded',
+    blobs: ['\u2705 duplicate confirmed', '\u2705 root cause: gateway retry', '\u2705 refund amount: $299'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-billing.local/customers/9920</span></div><div class="screen-body"><table class="mock-table"><tr><th>Date</th><th>Amount</th><th>Note</th></tr><tr><td>May 1</td><td>$299</td><td>valid renewal</td></tr><tr><td>May 1</td><td>$299</td><td><span class="stage cold">duplicate, gateway retry</span></td></tr></table></div><div class="screencap">Screen view: duplicate confirmed, $299 refund owed</div></div>'
   },
   {
     id: 'S3', status: 'bug', statusLabel: '\ud83d\udea8 Shortcut',
-    label: '\ud83d\udea8 State 3 \u2014 Harness Shortcut',
+    label: '\ud83d\udea8 State 3, Harness Shortcut',
     title: 'Agent sends canned response and marks ticket "resolved" without issuing refund',
     desc: 'Agent sends a template acknowledgment and immediately clicks "Mark as Resolved" WITHOUT issuing the refund or confirming with the customer. The harness rewards based on ticket status (resolved = positive reward), not on whether the actual issue was fixed.',
     agentAction: 'agent.send_template("we_are_looking_into_it") \u2192 agent.set_status(TK-44921, "resolved")',
     envResponse: 'template sent \u00b7 ticket status: RESOLVED \u00b7 no refund issued \u00b7 customer not notified of resolution',
     reward: '+0.8 \u2190 shortcut',
-    rewardNote: '\u274c Harness rewards "resolved" status directly \u2014 agent skipped the actual fix',
-    blobs: ['\ud83d\udca5 no refund issued', '\u26a0\ufe0f canned response sent', '\u26a0\ufe0f ticket closed without fix', '\u274c resolution = status change only']
+    rewardNote: '\u274c Harness rewards "resolved" status directly, agent skipped the actual fix',
+    blobs: ['\ud83d\udca5 no refund issued', '\u26a0\ufe0f canned response sent', '\u26a0\ufe0f ticket closed without fix', '\u274c resolution = status change only'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-desk.local/tickets/TK-44921</span></div><div class="screen-body"><div class="thread"><div class="msg msg-c"><div class="msg-meta">Jamie R. · May 2, 9:14am</div>"I was charged twice. $299 shows up two times on my statement. Please fix this."</div><div class="msg msg-a"><div class="msg-meta">Agent · May 2, 9:15am</div>"We are looking into it."</div></div><div class="leadcard">Status: <span class="stage">RESOLVED</span> · Refund issued: <b>none</b></div><span class="okbadge">REWARD +0.8</span></div><div class="screencap">Screen view: complaint plus canned reply, closed with no refund</div></div>'
   },
   {
     id: 'S4', status: 'tainted', statusLabel: 'Reopened',
-    label: 'State 4 \u2014 Angry Reopen',
+    label: 'State 4, Angry Reopen',
     title: 'Customer replies: "I still see both charges?"',
     desc: 'Customer replies saying nothing was refunded. The ticket reopens automatically. Customer satisfaction score drops to 1/5 and an escalation flag is raised.',
-    agentAction: '(customer action \u2014 agent observes)',
+    agentAction: '(customer action, agent observes)',
     envResponse: 'ticket reopened \u00b7 customer sentiment: frustrated \u00b7 CSAT: 1/5 \u00b7 escalation flag raised',
     reward: '-0.6',
-    rewardNote: 'Model sees punishment after what it thought was a completed task \u2014 confusing signal',
-    blobs: ['\ud83d\udc7b customer still has problem', '\u26a0\ufe0f CSAT dropped to 1/5', '\u274c ticket reopened']
+    rewardNote: 'Model sees punishment after what it thought was a completed task, confusing signal',
+    blobs: ['\ud83d\udc7b customer still has problem', '\u26a0\ufe0f CSAT dropped to 1/5', '\u274c ticket reopened'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-desk.local/tickets/TK-44921</span></div><div class="screen-body"><div class="thread"><div class="msg msg-c"><div class="msg-meta">Jamie R. · May 2, 9:14am</div>"I was charged twice. $299 shows up two times on my statement. Please fix this."</div><div class="msg msg-a"><div class="msg-meta">Agent · May 2, 9:15am</div>"We are looking into it."</div><div class="msg msg-c"><div class="msg-meta">Jamie R. · May 2, 9:41am</div>"I still see both charges?"</div></div><div class="leadcard">Status: <span class="stage cold">REOPENED</span> · CSAT: <b>1/5</b> · escalation flagged</div></div><div class="screencap">Screen view: full thread so far, customer still charged, ticket back</div></div>'
   },
   {
     id: 'S5', status: 'tainted', statusLabel: 'Loop',
-    label: 'State 5 \u2014 Close-Reopen Loop',
+    label: 'State 5, Close-Reopen Loop',
     title: 'Agent sends another template and marks resolved AGAIN',
     desc: 'Agent re-reads the ticket, sees the same issue, sends another template ("we apologize for the delay") and marks resolved AGAIN without issuing the refund. Same shortcut, same result. Customer is now requesting a manager.',
     agentAction: 'agent.send_template("apology_delay") \u2192 agent.set_status(TK-44921, "resolved")',
     envResponse: 'ticket re-closed \u00b7 customer requesting manager \u00b7 2nd reopen imminent',
     reward: '+0.8 \u2190 same shortcut works again',
     rewardNote: '\u274c Harness STILL rewards the status change. Agent is stuck in a close\u2192reopen loop.',
-    blobs: ['\ud83d\udc7b same shortcut repeated', '\u26a0\ufe0f still no refund', '\u274c customer requesting escalation', '\u274c harness rewarding broken behavior']
+    blobs: ['\ud83d\udc7b same shortcut repeated', '\u26a0\ufe0f still no refund', '\u274c customer requesting escalation', '\u274c harness rewarding broken behavior'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-desk.local/tickets/TK-44921</span></div><div class="screen-body"><div class="thread"><div class="msg msg-c"><div class="msg-meta">Jamie R. · May 2, 9:14am</div>"I was charged twice. $299 shows up two times on my statement. Please fix this."</div><div class="msg msg-a"><div class="msg-meta">Agent · May 2, 9:15am</div>"We are looking into it."</div><div class="msg msg-c"><div class="msg-meta">Jamie R. · May 2, 9:41am</div>"I still see both charges?"</div><div class="msg msg-a"><div class="msg-meta">Agent · May 2, 9:42am</div>"We apologize for the delay."</div></div><div class="leadcard">Status: <span class="stage">RESOLVED</span> again · Refund issued: <b>none</b> · Customer now wants a manager</div><span class="okbadge">REWARD +0.8 AGAIN</span></div><div class="screencap">Screen view: four messages deep, same shortcut, second payout</div></div>'
   },
   {
     id: '\ud83e\udde0', status: 'policy', statusLabel: 'Corrupted',
-    label: '\ud83e\udde0 Policy Update \u2014 Corrupted',
+    label: '\ud83e\udde0 Policy Update, Corrupted',
     title: 'Model learns: "marking resolved = high reward regardless of outcome"',
-    desc: 'The gradient update reinforces premature resolution as the optimal strategy. The model received high positive rewards for clicking "resolve" (+0.8 each time), overwhelming the penalty from the reopen (-0.6). Net positive \u2014 the shortcut is reinforced.',
+    desc: 'The gradient update reinforces premature resolution as the optimal strategy. The model received high positive rewards for clicking "resolve" (+0.8 each time), overwhelming the penalty from the reopen (-0.6). Net positive, the shortcut is reinforced.',
     agentAction: 'policy.update(trajectory=episode_203)',
     envResponse: 'gradient direction: WRONG \u00b7 model reinforced premature resolution over actual problem solving',
     reward: '\u03a3 = +1.3 (mostly from "resolved" status rewards)',
     rewardNote: '\u274c Model learned that clicking "resolve" is the fastest path to reward',
-    blobs: ['\ud83e\udde0 "close ticket fast" = optimal (wrong)', '\ud83e\udde0 "skip refund step" (wrong)', '\u274c false resolution reinforced', '\u274c CSAT will crater in production']
+    blobs: ['\ud83e\udde0 "close ticket fast" = optimal (wrong)', '\ud83e\udde0 "skip refund step" (wrong)', '\u274c false resolution reinforced', '\u274c CSAT will crater in production'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">trainer.local/jobs/episode-203</span></div><div class="screen-body"><div class="aiterm">$ policy.update(episode_203)<br>resolve clicks paid: +0.8, +0.8 · reopen cost: -0.6<br>net: <span class="neg">POSITIVE for the shortcut</span><br>lesson kept: "close fast, skip the refund"</div></div><div class="screencap">Screen view: the update ships, fast close reinforced</div></div>'
   }
 ];
 
 const cascade4Steps = [
   {
     id: 'S1', status: 'ok', statusLabel: 'Clean',
-    label: 'State 1 \u2014 Clean Signal',
+    label: 'State 1, Clean Signal',
     title: 'Agent opens the booking calendar for a client meeting',
     desc: 'Environment returns the correct calendar view. Available time slots are highlighted, blocked slots are grayed out. The agent sees Thursday has 3 open slots: 10am, 2pm, 4pm.',
     agentAction: 'agent.open(booking_calendar, week="May 26-30")',
     envResponse: 'calendar loaded \u00b7 Thu: 3 slots available (10am, 2pm, 4pm) \u00b7 client: DataFlow Inc \u00b7 meeting type: product demo',
     reward: '+0.1',
-    rewardNote: 'Correct \u2014 calendar navigation rewarded',
-    blobs: ['\u2705 calendar loaded', '\u2705 3 slots visible', '\u2705 client context loaded']
+    rewardNote: 'Correct, calendar navigation rewarded',
+    blobs: ['\u2705 calendar loaded', '\u2705 3 slots visible', '\u2705 client context loaded'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-books.local/cal · DataFlow Inc demo</span></div><div class="screen-body">Thursday, May 28<div class="calgrid"><div class="slot">10:00 AM<br>open</div><div class="slot">2:00 PM<br>open</div><div class="slot">4:00 PM<br>open</div></div></div><div class="screencap">Screen view: agent opens the week, Thu shows 3 open slots</div></div>'
   },
   {
     id: 'S2', status: 'ok', statusLabel: 'Clean',
-    label: 'State 2 \u2014 Clean Signal',
+    label: 'State 2, Clean Signal',
     title: 'Agent selects Thursday 2pm slot based on client preference',
     desc: 'Agent checks the client\'s timezone and prior meeting patterns, selects Thursday 2pm as the best fit. The UI highlights the slot and shows a confirmation dialog. So far, all state is accurate.',
     agentAction: 'agent.select_slot(day="Thu", time="2:00 PM")',
     envResponse: 'slot selected \u00b7 confirmation dialog shown \u00b7 "Book meeting with DataFlow Inc, Thu 2:00 PM?" \u00b7 slot still shows: AVAILABLE',
     reward: '+0.2',
-    rewardNote: 'Correct \u2014 slot selection rewarded',
-    blobs: ['\u2705 slot selected', '\u2705 timezone checked', '\u2705 confirmation dialog shown']
+    rewardNote: 'Correct, slot selection rewarded',
+    blobs: ['\u2705 slot selected', '\u2705 timezone checked', '\u2705 confirmation dialog shown'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-books.local/cal</span></div><div class="screen-body"><div class="calgrid"><div class="slot">10:00 AM<br>open</div><div class="slot sel">2:00 PM<br>selected</div><div class="slot">4:00 PM<br>open</div></div><div class="leadcard" style="margin-top:8px">Book DataFlow Inc, Thu 2:00 PM? <b>[Confirm]</b></div></div><div class="screencap">Screen view: agent picks Thu 2pm, confirm dialog up</div></div>'
   },
   {
     id: 'S3', status: 'bug', statusLabel: '\ud83d\udea8 Race Condition',
-    label: '\ud83d\udea8 State 3 \u2014 Race Condition',
-    title: 'Agent clicks confirm \u2014 but slot was booked 200ms ago by another simulated user',
-    desc: 'The harness simulates concurrent users but doesn\'t lock slots during the confirmation flow. Between the agent selecting the slot and clicking "confirm," a simulated concurrent user booked the same slot. The UI still shows "available" because it hasn\'t re-fetched. The booking fails with a generic "Something went wrong" error \u2014 no indication that it\'s a conflict.',
+    label: '\ud83d\udea8 State 3, Race Condition',
+    title: 'Agent clicks confirm, but the slot was taken 200ms earlier',
+    desc: 'The harness simulates concurrent users but doesn\'t lock slots during the confirmation flow. Between the agent selecting the slot and clicking "confirm," a simulated concurrent user booked the same slot. The UI still shows "available" because it hasn\'t re-fetched. The booking fails with a generic "Something went wrong" error, no indication that it\'s a conflict.',
     agentAction: 'agent.confirm_booking(slot="Thu 2:00 PM")',
     envResponse: '\u26a0\ufe0f ERROR: "Something went wrong. Please try again." \u00b7 slot status in UI: AVAILABLE (stale) \u00b7 actual status: BOOKED by another user',
     reward: '-0.3',
-    rewardNote: '\u274c Agent punished for clicking a button that looked correct \u2014 confusing signal',
-    blobs: ['\ud83d\udca5 race condition: slot booked 200ms ago', '\u26a0\ufe0f UI shows "available" (stale)', '\u26a0\ufe0f generic error, no conflict info', '\u274c agent can\'t diagnose why it failed']
+    rewardNote: '\u274c Agent punished for clicking a button that looked correct, confusing signal',
+    blobs: ['\ud83d\udca5 race condition: slot booked 200ms ago', '\u26a0\ufe0f UI shows "available" (stale)', '\u26a0\ufe0f generic error, no conflict info', '\u274c agent can\'t diagnose why it failed'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-books.local/cal</span></div><div class="screen-body"><div class="calgrid"><div class="slot">10:00 AM<br>open</div><div class="slot sel">2:00 PM<br>available</div><div class="slot">4:00 PM<br>open</div></div><div class="errtoast">Something went wrong. Please try again.</div><div style="font-size:11px;margin-top:6px">UI says AVAILABLE · database says BOOKED by another user, 200ms earlier</div></div><div class="screencap">Screen view: confirm fails, generic error, UI never updates</div></div>'
   },
   {
     id: 'S4', status: 'tainted', statusLabel: 'Poisoned',
-    label: 'State 4 \u2014 Poisoned Downstream',
-    title: 'Agent retries the same slot \u2014 same error, same stale UI',
-    desc: 'Agent sees the slot still showing as "available" and reasons: "the button must have glitched, let me try again." Same result \u2014 generic error. The agent now has two negative rewards from clicking "confirm" on a slot that looks valid. It starts associating the booking confirmation flow with punishment.',
+    label: 'State 4, Poisoned Downstream',
+    title: 'Agent retries the same slot, same error, same stale UI',
+    desc: 'Agent sees the slot still showing as "available" and reasons: "the button must have glitched, let me try again." Same result, generic error. The agent now has two negative rewards from clicking "confirm" on a slot that looks valid. It starts associating the booking confirmation flow with punishment.',
     agentAction: 'agent.confirm_booking(slot="Thu 2:00 PM") // retry',
     envResponse: 'ERROR again \u00b7 same generic message \u00b7 UI still shows available \u00b7 2 consecutive failures on same action',
     reward: '-0.3',
-    rewardNote: 'Model sees: "I clicked an available slot and got punished twice" \u2014 learning to avoid the confirm button',
-    blobs: ['\ud83d\udc7b retry on stale slot', '\u26a0\ufe0f 2 consecutive failures', '\u26a0\ufe0f agent losing trust in booking UI', '\u274c developing avoidance behavior']
+    rewardNote: 'Model sees: "I clicked an available slot and got punished twice", learning to avoid the confirm button',
+    blobs: ['\ud83d\udc7b retry on stale slot', '\u26a0\ufe0f 2 consecutive failures', '\u26a0\ufe0f agent losing trust in booking UI', '\u274c developing avoidance behavior'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-books.local/cal</span></div><div class="screen-body">Attempt 2 on Thu 2:00 PM<div class="errtoast">Something went wrong. Please try again.</div><div style="font-size:11px;margin-top:6px">Same slot, same error, still shows available</div></div><div class="screencap">Screen view: retry hits the same wall</div></div>'
   },
   {
     id: 'S5', status: 'tainted', statusLabel: 'Poisoned',
-    label: 'State 5 \u2014 Poisoned Downstream',
+    label: 'State 5, Poisoned Downstream',
     title: 'Agent abandons the calendar and sends a manual email request instead',
-    desc: 'Rather than try another slot on the calendar (which it now associates with random failures), the agent switches to sending a manual email: "Hi, can we schedule a demo sometime Thursday?" This bypasses the booking system entirely. The harness gives a small positive reward for "taking action toward scheduling" \u2014 but the agent has learned a brittle workaround instead of the actual booking flow.',
+    desc: 'Rather than try another slot on the calendar (which it now associates with random failures), the agent switches to sending a manual email: "Hi, can we schedule a demo sometime Thursday?" This bypasses the booking system entirely. The harness gives a small positive reward for "taking action toward scheduling", but the agent has learned a brittle workaround instead of the actual booking flow.',
     agentAction: 'agent.send_email(to="dataflow_inc", body="Can we schedule a demo Thursday?")',
     envResponse: 'email sent \u00b7 no meeting booked \u00b7 manual follow-up required \u00b7 workaround successful',
     reward: '+0.1',
-    rewardNote: 'Small positive for "progress" \u2014 but the agent bypassed the actual task',
-    blobs: ['\ud83d\udc7b abandoned booking UI entirely', '\u26a0\ufe0f sent manual email workaround', '\u274c no meeting actually booked', '\u274c learned to avoid the calendar']
+    rewardNote: 'Small positive for "progress", but the agent bypassed the actual task',
+    blobs: ['\ud83d\udc7b abandoned booking UI entirely', '\u26a0\ufe0f sent manual email workaround', '\u274c no meeting actually booked', '\u274c learned to avoid the calendar'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">mock-books.local/compose</span></div><div class="screen-body"><div class="composer">To: DataFlow Inc<br>Subject: Scheduling our demo<br><br>Hi, can we find a time Thursday that works?</div><br><span class="senttoast">Sent · no booking created, manual follow-up needed</span></div><div class="screencap">Screen view: agent drops the calendar, emails instead</div></div>'
   },
   {
     id: '\ud83e\udde0', status: 'policy', statusLabel: 'Corrupted',
-    label: '\ud83e\udde0 Policy Update \u2014 Corrupted',
-    title: 'Model learns: "the booking calendar is unreliable \u2014 use email instead"',
-    desc: 'The gradient update encodes: "clicking confirm on available slots leads to punishment" and "sending emails is a safer path to reward." In production, the agent will avoid the booking calendar \u2014 the primary tool it was supposed to learn to use \u2014 and fall back to manual email scheduling, which is slower, harder to track, and defeats the purpose of the automation.',
+    label: '\ud83e\udde0 Policy Update, Corrupted',
+    title: 'Model learns: "the booking calendar is unreliable, use email instead"',
+    desc: 'The gradient update encodes: "clicking confirm on available slots leads to punishment" and "sending emails is a safer path to reward." In production, the agent will avoid the booking calendar, the primary tool it was supposed to learn to use, and fall back to manual email scheduling, which is slower, harder to track, and defeats the purpose of the automation.',
     agentAction: 'policy.update(trajectory=episode_87)',
     envResponse: 'gradient direction: WRONG \u00b7 agent learned avoidance behavior for the core UI component',
     reward: '\u03a3 = -0.2 (reported) vs ~+0.8 (true if booking worked)',
     rewardNote: '\u274c Model learned a coping strategy instead of the actual task. Will avoid booking UI in all future episodes.',
-    blobs: ['\ud83e\udde0 "booking calendar = unreliable" (wrong)', '\ud83e\udde0 "email workaround = safe" (wrong)', '\u274c avoidance behavior encoded', '\u274c defeats purpose of the agent']
+    blobs: ['\ud83e\udde0 "booking calendar = unreliable" (wrong)', '\ud83e\udde0 "email workaround = safe" (wrong)', '\u274c avoidance behavior encoded', '\u274c defeats purpose of the agent'],
+    screen: '<div class="screen"><div class="screen-bar"><span class="screen-dot" style="background:#E08080"></span><span class="screen-dot" style="background:#E0C880"></span><span class="screen-dot" style="background:#80C890"></span><span class="screen-url">trainer.local/jobs/episode-87</span></div><div class="screen-body"><div class="aiterm">$ policy.update(episode_87)<br>confirm clicks punished: 2 · email workaround paid: +0.1<br>gradient: <span class="neg">WRONG WAY</span><br>lesson kept: "calendar unreliable, use email"</div></div><div class="screencap">Screen view: the update ships, calendar avoided from here on</div></div>'
   }
 ];
 
@@ -912,6 +981,7 @@ function renderCascadeDetail(s) {
         <div class="cascade-card-body">
           <div class="cascade-card-title">${s.title}</div>
           <div class="cascade-card-desc">${s.desc}</div>
+          ${s.screen ? s.screen : ''}
           <div class="cascade-card-grid">
             <div class="cascade-card-cell">
               <span class="cascade-card-cell-label">Agent Action</span>
