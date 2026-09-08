@@ -19,7 +19,7 @@ rl-pet-peeves-part-1/          01 · You've Never Spent Real Time with Your Mode
 rl-pet-peeves-rubric/          02 · Your Rubric Was Written by Someone Who Has Never Done the Job
 rl-pet-peeves-economic/        03 · Your Tasks Are Not Grounded in Economic Reality
 rl-pet-peeves-simulation/      04 · Your Data Screams "This Is a Simulation"
-rl-pet-peeves-harness/         05 · Stop Shipping Low-Quality Harnesses and Calling It an "Environment"
+rl-pet-peeves-harness/         05 · Stop Shipping Low-Quality Harnesses and Calling It an "Environment" #2
 glossary/                      RL glossary
 ```
 
