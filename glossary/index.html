@@ -122,7 +122,7 @@ article{padding-bottom:80px}
 <div class="def-card-term">Model</div>
 </div>
 <div class="def-card-body">
-<p>At its core, a model is a mathematical function that takes inputs and produces predictions. If you've ever written <code>y = mx + b</code> in a math class, that's the simplest possible model. In machine learning, models are the same idea taken to an extreme: instead of two parameters (m and b), a modern neural network might have billions of parameters, and the computer adjusts all of them during training to minimize how wrong the model's predictions are. The result is a system that can recognize images, generate text, or make decisions &mdash; all by learning patterns from data.</p>
+<p>At its core, a model is a mathematical function that takes inputs and produces predictions. If you've ever written <code>y = mx + b</code> in a math class, that's the simplest possible model. In machine learning, models are the same idea taken to an extreme: instead of two parameters (m and b), a modern neural network might have billions of parameters, and the computer adjusts all of them during training to minimize how wrong the model's predictions are. The result is a system that can recognize images, generate text, or make decisions, all by learning patterns from data.</p>
 </div>
 </div>
 
@@ -134,8 +134,8 @@ article{padding-bottom:80px}
 <div class="def-card-body">
 <p>Reinforcement learning is a way to train a model by letting it learn through trial and error, rather than showing it a pre-labeled answer key.</p>
 <p><strong>Analogy:</strong> think about how you learned to ride a bike. Nobody handed you a textbook of "correct" body positions for each millisecond. Instead, you got on, wobbled, fell, adjusted, and eventually figured it out. You received a "reward signal" in the form of staying upright and moving forward, and a "penalty" in the form of hitting the pavement.</p>
-<p>RL works the same way. An <strong>agent</strong> (the model) takes actions inside an <strong>environment</strong> (the world it interacts with), and receives numerical rewards that tell it how well it's doing. Over many rounds of trial and error, the agent's <strong>policy</strong> &mdash; its learned strategy for which action to take in any given situation &mdash; improves to maximize the total reward it accumulates.</p>
-<p>This stands in contrast to <strong>supervised learning</strong>, the paradigm most people who have been in ML a while are probably more familiar with &mdash; think classifying tumors from labeled X-ray datasets, predicting house prices from a CSV of historical features, or flagging spam from a pre-collected corpus of emails. In all of these cases, you give the model a dataset of input-output pairs and it learns to map inputs to the correct outputs. In supervised learning, the data is static &mdash; you collect it once and train on it. In RL, the agent generates its own data by interacting with the environment, which is why environment quality is so critical and why we're here today.</p>
+<p>RL works the same way. An <strong>agent</strong> (the model) takes actions inside an <strong>environment</strong> (the world it interacts with), and receives numerical rewards that tell it how well it's doing. Over many rounds of trial and error, the agent's <strong>policy</strong>, its learned strategy for which action to take in any given situation, improves to maximize the total reward it accumulates.</p>
+<p>This stands in contrast to <strong>supervised learning</strong>, the paradigm most people who have been in ML a while are probably more familiar with. Think classifying tumors from labeled X-ray datasets, predicting house prices from a CSV of historical features, or flagging spam from a pre-collected corpus of emails. In all of these cases, you give the model a dataset of input-output pairs and it learns to map inputs to the correct outputs. In supervised learning, the data is static: you collect it once and train on it. In RL, the agent generates its own data by interacting with the environment, which is why environment quality is so critical and why we're here today.</p>
 </div>
 </div>
 
@@ -158,7 +158,7 @@ article{padding-bottom:80px}
 <div class="vb-pipe">
 <div class="vb-step">
 <div class="vb-num" style="background:var(--navy)">1</div>
-<div class="vb-step-text"><span class="vb-step-label">Collect Dataset</span><span class="vb-step-sub">Images, text, labels &mdash; fixed</span></div>
+<div class="vb-step-text"><span class="vb-step-label">Collect Dataset</span><span class="vb-step-sub">Images, text, labels (fixed)</span></div>
 </div>
 <div class="vb-step">
 <div class="vb-num" style="background:var(--navy)">2</div>
@@ -194,7 +194,7 @@ Continuous loop. Every interaction = new training data. Break the environment = 
 </div>
 </div>
 </div>
-<div class="visual-card-footer">In SL, bad data is a static problem you can fix. In RL, bad data is <strong>generated live</strong> &mdash; and it feeds directly into the model.</div>
+<div class="visual-card-footer">In SL, bad data is a static problem you can fix. In RL, bad data is <strong>generated live</strong>, and it feeds directly into the model.</div>
 </div>
 
 <div class="key-detail">
@@ -208,14 +208,14 @@ Continuous loop. Every interaction = new training data. Break the environment = 
 </div>
 <div class="def-card-body">
 <p>A harness (or, more precisely, a training/evaluation harness) is the interactive system that the RL agent trains in and is evaluated against. It is a simulation or emulation of the real product experience that the agent is supposed to learn to operate in.</p>
-<p><strong>Example:</strong> if you're building an RL agent that's supposed to learn to use a customer support tool, the harness is a working replica of that tool. It's a piece of running software that the agent can interact with in real time &mdash; clicking buttons, typing into fields, reading responses &mdash; just like a real user would. The harness is responsible for three things:</p>
+<p><strong>Example:</strong> if you're building an RL agent that's supposed to learn to use a customer support tool, the harness is a working replica of that tool. It's a piece of running software that the agent can interact with in real time, clicking buttons, typing into fields, reading responses, just like a real user would. The harness is responsible for three things:</p>
 <ol>
 <li><strong>Defining the current state of the world:</strong> What does the agent "see" right now? (e.g., the current page of the dashboard, the contents of a text field, an API response it just received.)</li>
 <li><strong>Defining what actions are valid:</strong> What can the agent do from here? (e.g., click this button, type in this field, submit this form, call this API endpoint.)</li>
 <li><strong>Returning a reward after a state transition:</strong> After the agent takes an action, how good was it? (e.g., +1 for successfully resolving a ticket, -0.1 for each unnecessary step, -1 for crashing the workflow.)</li>
 </ol>
-<p>In formal RL terms, the harness implements the components of a <strong>Markov Decision Process (MDP)</strong> &mdash; the State space, the valid Actions, the Transition dynamics (how actions change the state), and the Reward function.</p>
-<p>If you've ever used a testing framework like Selenium or Playwright to write end-to-end tests for a web app, you already have a decent mental model. The harness is like a programmable staging environment that your agent interacts with instead of your QA team. The key difference is that in RL, this environment needs to be robust enough to handle not just the happy path, but thousands of creative, adversarial, and outright bizarre interaction patterns &mdash; because an RL agent will explore all of them.</p>
+<p>In formal RL terms, the harness implements the components of a <strong>Markov Decision Process (MDP)</strong>: the State space, the valid Actions, the Transition dynamics (how actions change the state), and the Reward function.</p>
+<p>If you've ever used a testing framework like Selenium or Playwright to write end-to-end tests for a web app, you already have a decent mental model. The harness is like a programmable staging environment that your agent interacts with instead of your QA team. The key difference is that in RL, this environment needs to be robust enough to handle not just the happy path, but thousands of creative, adversarial, and outright bizarre interaction patterns, because an RL agent will explore all of them.</p>
 </div>
 </div>
 
@@ -225,8 +225,8 @@ Continuous loop. Every interaction = new training data. Break the environment = 
 <div class="def-card-term">Parametric Knowledge</div>
 </div>
 <div class="def-card-body">
-<p>When we say a model has "learned something," what does that actually mean physically? It means the model's parameters (those billions of numbers mentioned earlier) have been adjusted so that the right patterns are encoded in them. This is the model's true knowledge and understanding &mdash; we call this <strong>parametric knowledge</strong>.</p>
-<p>The goal of RL training is to get the model to acquire <strong>generalizable</strong> parametric knowledge &mdash; genuine understanding of how to solve the task that holds up even in new situations. We don't want the model to just memorize a specific sequence of clicks that happened to work one time. We want it to understand the underlying task deeply enough to generalize. When the environment is broken, the model can't build this real understanding. Instead, it overfits to the harness's specific flaws, learning brittle surface-level tricks to cope with the broken environment. This is a form of parametric knowledge, but it's useless &mdash; it won't transfer to the real task.</p>
+<p>When we say a model has "learned something," what does that actually mean physically? It means the model's parameters (those billions of numbers mentioned earlier) have been adjusted so that the right patterns are encoded in them. This is the model's true knowledge and understanding. We call this <strong>parametric knowledge</strong>.</p>
+<p>The goal of RL training is to get the model to acquire <strong>generalizable</strong> parametric knowledge: genuine understanding of how to solve the task that holds up even in new situations. We don't want the model to just memorize a specific sequence of clicks that happened to work one time. We want it to understand the underlying task deeply enough to generalize. When the environment is broken, the model can't build this real understanding. Instead, it overfits to the harness's specific flaws, learning brittle surface-level tricks to cope with the broken environment. This is a form of parametric knowledge, but it's useless because it won't transfer to the real task.</p>
 </div>
 </div>
 
@@ -236,7 +236,7 @@ Continuous loop. Every interaction = new training data. Break the environment = 
 <div class="def-card-term">Trajectory</div>
 </div>
 <div class="def-card-body">
-<p>A trajectory is a single complete episode of an agent interacting with the environment &mdash; the full sequence of states, actions, and rewards from start to finish. Think of it like a recorded session or a log of everything the agent did during one attempt at the task. When researchers "review trajectories," they're watching replays of the agent's behavior to diagnose what went right or wrong.</p>
+<p>A trajectory is a single complete episode of an agent interacting with the environment: the full sequence of states, actions, and rewards from start to finish. Think of it like a recorded session or a log of everything the agent did during one attempt at the task. When researchers "review trajectories," they're watching replays of the agent's behavior to diagnose what went right or wrong.</p>
 </div>
 </div>
 
